@@ -32,6 +32,7 @@ const VerifyOtp = (props: any) => {
                 console.log(result)
                 // User signed in successfully.
                 const user = result.user;
+                localStorage.setItem("user", JSON.stringify(user));
                 // ...
             }).catch((error:any) => {
                 console.log(error);
