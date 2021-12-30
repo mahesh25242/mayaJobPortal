@@ -1,0 +1,81 @@
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import { FormControl, MenuItem, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Controller, useForm } from "react-hook-form";
+
+const categories = [
+    {
+        id: 1,
+        name: 'category 1'
+    },
+    {
+        id: 2,
+        name: 'category 2'
+    }
+]
+export default function SearchBar(){
+    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const onSubmit = (data:any) => console.log(data);
+
+
+    return(<Paper component="form" method='post'
+        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>  
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"state"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField fullWidth onChange={onChange} value={value} label={"State"} />                                                    
+                        )}
+                    />                   
+                </FormControl> 
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"district"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField fullWidth onChange={onChange} value={value} label={"District"} />                                                    
+                        )}
+                    />                   
+                </FormControl> 
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                 <FormControl fullWidth>                    
+                    <Controller
+                        name={"category"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
+                             {categories.map((cat) => (
+                                <MenuItem key={cat.id} value={cat.id}>
+                                {cat.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        )}
+                    />                   
+                </FormControl>
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"type"}
+                        control={control}
+                        render={({ field: { onChange, value = 'employee' } }) => (
+                        <ToggleButtonGroup fullWidth onChange={onChange} value={value} exclusive>                                                    
+                            <ToggleButton value="employee">Employee</ToggleButton>
+                            <ToggleButton value="employeer">Employeer</ToggleButton>                            
+                        </ToggleButtonGroup>
+                        )}
+                    />                   
+                </FormControl> 
+
+                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                </IconButton>                
+    </Paper>);
+};
