@@ -2,6 +2,11 @@ import { Button, FormControl, MenuItem, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
+import { forwardRef, MutableRefObject, useEffect } from "react";
+
+import { RootState } from '../../../app/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { setOtpPhone } from '../OtpMobileSlice'
 
 const categories = [
     {
@@ -16,23 +21,40 @@ const categories = [
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
 
-export default function Employer(){
- 
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
-    const onSubmit = (data:any) => console.log(data);
 
+  
+const Employer = ()  => {
+    // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
+    const { register, handleSubmit, control, formState: { errors }, getValues, watch } = useForm();
+    const dispatch = useDispatch()
+    
+
+
+    const onSubmit = (data:any) => {
+        dispatch(setOtpPhone( getValues('phone') ))
+
+        console.log(data)
+    };
+ 
+
+    
 
     return(
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} >
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 >
                 <FormControl fullWidth>                    
                     <Controller
+                        rules={{ required: { value: true, message: 'Category is required'} }}
                         name={"category"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
+                        <TextField 
+                        error={!!errors.category}
+                        helperText={ (errors.category) ? errors.category?.message: '' }
+
+                        fullWidth onChange={onChange} value={value} label={"Job Category"} select>
                              {categories.map((cat) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
@@ -40,14 +62,18 @@ export default function Employer(){
                             ))}
                         </TextField>
                         )}
-                    />                   
+                    />                          
                 </FormControl>
                 <FormControl fullWidth>                    
                     <Controller
                         name={"name"}
+                        rules={{ required: { value: true, message: 'Name is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"Company Name"} />
+                        <TextField 
+                        error={!!errors.name}
+                        helperText={ (errors.name) ? errors.name?.message: '' }
+                        fullWidth onChange={onChange} value={value} label={"Company Name"} />
                         )}
                     />                   
                 </FormControl>
@@ -55,9 +81,18 @@ export default function Employer(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"email"}
+                        rules={{ required: { value: true, message: 'Email is required'}, 
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "invalid email address"
+                            }
+                        }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth type="email" onChange={onChange} value={value} label={"Email"} />
+                        <TextField 
+                        error={!!errors.email}
+                        helperText={ (errors.email) ? errors.email?.message: '' }
+                        fullWidth type="email" onChange={onChange} value={value} label={"Email"} />
                         )}
                     />                   
                 </FormControl>
@@ -68,10 +103,14 @@ export default function Employer(){
                 mt={2}>
                 <FormControl fullWidth>                    
                     <Controller
-                        name={"phone"}
+                        name={"phone"}   
+                        rules={{ required: { value: true, message: 'Primary Phone is required'} }}             
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                        <TextField type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone"} />
+                        render={({ field: { onChange, value =  '' } }) => (
+                        <TextField 
+                        error={!!errors.phone}
+                        helperText={ (errors.phone) ? errors.phone?.message: '' }
+                        type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone"} />
                         )}
                     />                   
                 </FormControl>
@@ -81,7 +120,7 @@ export default function Employer(){
                         name={"secondry_phone"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField type="tel" fullWidth onChange={onChange} value={value} label={"Alternate Phone"} />
+                        <TextField  type="tel" fullWidth onChange={onChange} value={value} label={"Alternate Phone"} />
                         )}
                     />                   
                 </FormControl>
@@ -89,9 +128,13 @@ export default function Employer(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"contact_name"}
+                        rules={{ required: { value: true, message: 'Contact Name is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField  fullWidth onChange={onChange} value={value} label={"Contact Name"} />
+                        <TextField 
+                        error={!!errors.contact_name}
+                        helperText={ (errors.contact_name) ? errors.contact_name?.message: '' }
+                        fullWidth onChange={onChange} value={value} label={"Contact Name"} />
                         )}
                     />                   
                 </FormControl>
@@ -103,10 +146,13 @@ export default function Employer(){
                 mt={2}>
                     <FormControl fullWidth>                    
                         <Controller
-                            name={"address"}                        
+                            name={"address"}    
+                            rules={{ required: { value: true, message: 'Address is required'} }}                    
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField multiline
+                            <TextField multiline 
+                            error={!!errors.address}
+                            helperText={ (errors.address) ? errors.address?.message: '' }
                             maxRows={4} fullWidth onChange={onChange} value={value} label={"Address"} />
                             )}
                         />                   
@@ -288,3 +334,5 @@ export default function Employer(){
         </form>
     );
 };
+
+export default Employer;

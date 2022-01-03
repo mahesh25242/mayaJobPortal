@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { PhoneOtp } from '../../firebase/Firebase';
 import { useForm, Controller } from 'react-hook-form';
 import FormControl from '@mui/material/FormControl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -42,7 +42,7 @@ const VerifyOtp = (props: any) => {
     };
 
     return (<Paper  component="form"
-    sx={{ position: 'absolute', top: '7px', p: '2px 4px', display: 'flex', alignItems: 'center'}} 
+    sx={{  display: 'flex', alignItems: 'center'}} 
     onSubmit={handleSubmit(verify)}>
 
 <FormControl fullWidth>                    
@@ -83,7 +83,7 @@ const OtpSection = (props: any) => {
     };
 
     return (<Paper  component="form"
-    sx={{ position: 'absolute', top: '7px', p: '2px 4px', display: 'flex', alignItems: 'center'}} 
+    sx={{  p: '2px 4px', display: 'flex', alignItems: 'center'}} 
     onSubmit={handleSubmit(sentOtp)}>
 
 <FormControl fullWidth>                    
@@ -112,10 +112,16 @@ const OtpSection = (props: any) => {
    </Paper>);
 };
 
-export default function MobileOtp() {
+export default function MobileOtp(props: any) {
     
     const [confirmationResult, setConfirmationResult] = useState(null);
 
+    useEffect(() => {
+      console.log(props?.current);
+      // PhoneOtp(`+91${data?.mobile}`).then((confirmationResult) => {
+      //     props.setConfirmationResult(confirmationResult);                
+      // });
+    }, []);
     return ( <>
     {
         !confirmationResult && <OtpSection  setConfirmationResult={setConfirmationResult}/>

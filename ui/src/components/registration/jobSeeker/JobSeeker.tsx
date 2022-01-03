@@ -3,7 +3,9 @@ import { Controller, useForm } from "react-hook-form";
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { setOtpPhone } from '../OtpMobileSlice'
+import { RootState } from "../../../app/store";
 
 export default function JobSeeker(){
     const categories = [
@@ -16,8 +18,13 @@ export default function JobSeeker(){
             name: 'category 2'
         }
     ]
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
-    const onSubmit = (data:any) => console.log(data);
+    const { register, handleSubmit, control, formState: { errors }, getValues, watch } = useForm();
+    
+    const dispatch = useDispatch()
+    const onSubmit = (data:any) => {
+        dispatch(setOtpPhone( getValues('phone') ))
+        console.log(data)
+    };
 
 
     return(
@@ -28,9 +35,13 @@ export default function JobSeeker(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"category"}
+                        rules={{ required: { value: true, message: 'Category is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
+                        <TextField 
+                        error={!!errors.category}
+                        helperText={ (errors.category) ? errors.category?.message: '' }
+                        fullWidth onChange={onChange} value={value} label={"Job Category"} select>
                              {categories.map((cat) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
@@ -43,9 +54,13 @@ export default function JobSeeker(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"name"}
+                        rules={{ required: { value: true, message: 'Name is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"Name"} />
+                        <TextField 
+                        error={!!errors.name}
+                        helperText={ (errors.name) ? errors.name?.message: '' }
+                        fullWidth onChange={onChange} value={value} label={"Name"} />
                         )}
                     />                   
                 </FormControl>
@@ -53,9 +68,17 @@ export default function JobSeeker(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"email"}
+                        rules={{ required: { value: true, message: 'Email is required'}, 
+                        pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: "invalid email address"
+                        } }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth type="email" onChange={onChange} value={value} label={"Email"} />
+                        <TextField 
+                        error={!!errors.email}
+                        helperText={ (errors.email) ? errors.email?.message: '' }
+                        fullWidth type="email" onChange={onChange} value={value} label={"Email"} />
                         )}
                     />                   
                 </FormControl>
@@ -67,9 +90,13 @@ export default function JobSeeker(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"phone"}
+                        rules={{ required: { value: true, message: 'Phone is required'} }}
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                        <TextField type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone"} />
+                        render={({ field: { onChange, value =  '' } }) => (
+                        <TextField 
+                        error={!!errors.phone}
+                        helperText={ (errors.phone) ? errors.phone?.message: '' }
+                        type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone"} />
                         )}
                     />                   
                 </FormControl>
@@ -86,10 +113,13 @@ export default function JobSeeker(){
 
                 <FormControl fullWidth>                    
                     <Controller
-                        name={"address"}                        
+                        name={"address"}  
+                        rules={{ required: { value: true, message: 'Address is required'} }}                      
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <TextField multiline
+                        error={!!errors.address}
+                        helperText={ (errors.address) ? errors.address?.message: '' }
                         maxRows={4} fullWidth onChange={onChange} value={value} label={"Address"} />
                         )}
                     />                   
@@ -102,9 +132,13 @@ export default function JobSeeker(){
                 <FormControl fullWidth>                    
                     <Controller
                         name={"nationality"}
+                        rules={{ required: { value: true, message: 'Nationality is required'} }}   
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField type="tel" fullWidth onChange={onChange} value={value} label={"Nationality"} />
+                        <TextField 
+                        error={!!errors.nationality}
+                        helperText={ (errors.nationality) ? errors.nationality?.message: '' }
+                        type="tel" fullWidth onChange={onChange} value={value} label={"Nationality"} />
                         )}
                     />                   
                 </FormControl>    
