@@ -1,12 +1,16 @@
-import { Button, FormControl, MenuItem, TextField } from "@mui/material";
+import { Button, FormControl, Input, InputLabel, MenuItem, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-import { forwardRef, MutableRefObject, useEffect } from "react";
+import { forwardRef, MutableRefObject, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 
 import { RootState } from '../../../app/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { setOtpPhone } from '../OtpMobileSlice'
+import { setRegisterForm } from '../registerFormSlice'
+import { usePlacesWidget } from "react-google-autocomplete";
+
+
 
 const categories = [
     {
@@ -21,29 +25,104 @@ const categories = [
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
 
+interface IFormValues {
+    phone?: string;
+    category?: string;
+    name?: string;
+    email?: string;
+    secondry_phone?: string;
+    contact_name?: string;
+    address?: string;
+    country?: string;
+    pin?: string;
+    state?: string;
+    district?: string;
+    city?: string;
+    gender?: string;
+    marital_status?: string;
+    food_accommodation?: string;
+    working_time?: string;
+    salary?: string;
+    experience?: string;
+    qualifications?: string;
+    other_demands?: string,
 
+    lat?: string;
+    lng?: string;
+    
+
+  }
   
-const Employer = ()  => {
+  
+const Employer = forwardRef((props, empRef) =>  {
     // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
-    const { register, handleSubmit, control, formState: { errors }, getValues, watch } = useForm();
+    const formData = useSelector((state: RootState) => state.registerForm?.employer)
+    
+    const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
+        defaultValues: formData
+    });
     const dispatch = useDispatch()
     
 
+    useImperativeHandle(empRef, () => ({
+
+        saveIt() {            
+            return handleSubmit(onSubmit, onError);                        
+        }
+    
+      }));
+    
 
     const onSubmit = (data:any) => {
         dispatch(setOtpPhone( getValues('phone') ))
+        dispatch(setRegisterForm({employer: data}))        
+    };
 
-        console.log(data)
+    const onError  = (errors:any) => {
+        throw new Error('Validation failed');        
     };
  
-
+    const { ref, autocompleteRef } = usePlacesWidget({
+        apiKey:process.env.REACT_APP_GOOGLE_MAP_API,
+        onPlaceSelected: (place) => {
+            
+            place.address_components.forEach((element:any) => {
+                if(element.types.includes("locality")){
+                    setValue("city", element.long_name)
+                }
+                if(element.types.includes("administrative_area_level_2")){
+                    setValue("district", element.long_name)
+                }
+                if(element.types.includes("administrative_area_level_1")){
+                    setValue("state", element.long_name)
+                }
+                if(element.types.includes("country")){
+                    setValue("country", element.long_name)
+                }
+                if(element.types.includes("postal_code")){
+                    setValue("pin", element.long_name)
+                }
+            });
+            setValue('lat', place.geometry.location.lat());  
+            setValue('lng', place.geometry.location.lng());  
+            setValue('address', place.formatted_address);           
+        },
+        options: {
+            // types: ["(regions)"],
+            // componentRestrictions: { country: "ru" },
+          },
+      
+      });
+    
     
 
     return(
-        <form onSubmit={handleSubmit(onSubmit)} >
+        <>
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 >
+                
+          
                 <FormControl fullWidth>                    
                     <Controller
                         rules={{ required: { value: true, message: 'Category is required'} }}
@@ -143,17 +222,18 @@ const Employer = ()  => {
 
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                mt={2}>
+                mt={2}>                   
                     <FormControl fullWidth>                    
                         <Controller
                             name={"address"}    
                             rules={{ required: { value: true, message: 'Address is required'} }}                    
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField multiline 
+                            <TextField  
+                            inputRef={ref}
                             error={!!errors.address}
                             helperText={ (errors.address) ? errors.address?.message: '' }
-                            maxRows={4} fullWidth onChange={onChange} value={value} label={"Address"} />
+                             fullWidth onChange={onChange} value={value} label={"Address"} />
                             )}
                         />                   
                     </FormControl>
@@ -192,10 +272,10 @@ const Employer = ()  => {
                     </FormControl>
                     <FormControl fullWidth>                    
                         <Controller
-                            name={"distric"}
+                            name={"district"}
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField  fullWidth onChange={onChange} value={value} label={"Distric"} />
+                            <TextField  fullWidth onChange={onChange} value={value} label={"District"} />
                             )}
                         />                   
                     </FormControl>
@@ -327,12 +407,9 @@ const Employer = ()  => {
                         )}
                     />                   
                 </FormControl>
-            </Stack>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-                Save
-            </Button>
-        </form>
+            </Stack>               
+        </>
     );
-};
+});
 
 export default Employer;

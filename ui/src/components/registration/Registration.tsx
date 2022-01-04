@@ -77,7 +77,7 @@ export default function Registration() {
 
   return (
     <Box>
-      <button type='button' onClick={handleToggle}>asas</button>
+      {/* <button type='button' onClick={handleToggle}>asas</button> */}
       {/* <button type='button' onClick={() => PhoneOtp('+919995453566')}>asas</button> */}
       {/* <Backdrop
         sx={{ position: "absolute", color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

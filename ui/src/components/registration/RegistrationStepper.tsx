@@ -16,22 +16,27 @@ type content = {
 const RegistrationStepper  = (props:any) => {  
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+  const childRef: null | {current: any} = React.useRef();  
+
 
   
   
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
-
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+      
+    if(activeStep === steps.length - 1) {
+      
+      childRef?.current?.verification()().then((res:any)=>{
+        console.log(res)
+      }).catch((err:any)=>{
+        console.log(err)
+      });
+    }else{      
+      childRef?.current?.saveIt()().then((res:any)=>{
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);   
+      }).catch((err:any)=>{
+        console.log(err)
+      });  
+    }            
   };
 
   const handleBack = () => {
@@ -52,9 +57,7 @@ const RegistrationStepper  = (props:any) => {
             optional?: React.ReactNode;
           } = {};
         
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
+          
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -62,23 +65,14 @@ const RegistrationStepper  = (props:any) => {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
+      <br/>
+      <React.Fragment>
           {
-            activeStep === 0 && props?.children
+            activeStep === 0 && <div>{React.cloneElement(props.children, {...props, ...{ref: childRef}})}</div>
+
           }
           {
-            activeStep !== 0 && <MobileOtp/>
+            activeStep !== 0 && <MobileOtp ref={childRef}/>
           }
           
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -91,12 +85,11 @@ const RegistrationStepper  = (props:any) => {
               Back
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />           
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            <Button onClick={handleNext} variant="contained">
+              {activeStep === steps.length - 1 ? 'Verify OTP' : 'Next'}
             </Button>
           </Box>
         </React.Fragment>
-      )}
     </Box>
   );
 };

@@ -1,29 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface OtpMobileState {
-  mobile: string
+export interface registerFormState {
+  employer?: {
+    
+  },
+  seeker?: {
+    
+
+  }
 }
 
-const initialState: OtpMobileState = {
-    mobile: '',
+const initialState: registerFormState = {
+  
 }
 
 export const counterSlice = createSlice({
-  name: 'otpMobile',
+  name: 'registerForm',
   initialState,
   reducers: {
-    setOtpPhone: (state, mobile) => {
+    setRegisterForm: (state, regForm) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.mobile = mobile.payload
+      // state.mobile = mobile.payload      
+      return {...state, ...regForm.payload}      
     },
     
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setOtpPhone } = counterSlice.actions
+export const { setRegisterForm } = counterSlice.actions
 
 export default counterSlice.reducer

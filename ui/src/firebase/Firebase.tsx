@@ -12,13 +12,13 @@ const firebaseConfig = {
 //   messagingSenderId: "717157472041",
 //   appId: "1:717157472041:web:ffedb70bff29fcd9390938",
 //   measurementId: "G-JQHPN5ELGR"
-apiKey: "AIzaSyC_2Ct-PSH96U9KwCGimdyQI7LxV2MFMQc",
-authDomain: "mayajobs-ca94a.firebaseapp.com",
-projectId: "mayajobs-ca94a",
-storageBucket: "mayajobs-ca94a.appspot.com",
-messagingSenderId: "150283202677",
-appId: "1:150283202677:web:b0af9fb7b2af77e3df483c",
-measurementId: "G-4GNGK69Q9C"
+apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+appId: process.env.REACT_APP_FIREBASE_APP_ID,
+measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
   
 const fire = initializeApp(firebaseConfig);
@@ -27,7 +27,7 @@ const auth = getAuth(fire);
 const recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
     'size': 'invisible',
     'callback': (response:any) => {
-        console.log(response)
+        // console.log(response)
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         // onSignInSubmit();
     }

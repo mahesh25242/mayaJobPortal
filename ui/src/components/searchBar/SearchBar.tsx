@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
-import { FormControl, MenuItem, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { FormControl, MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, useForm } from "react-hook-form";
 
 const categories = [
@@ -23,8 +23,9 @@ export default function SearchBar(){
     const onSubmit = (data:any) => console.log(data);
 
 
-    return(<Paper component="form" method='post'
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>  
+    return(<Stack component="form" method='post' 
+        direction={{ xs: 'column', md: 'row' }}
+        sx={{ p: '2px 4px',  alignItems: 'center' }}>  
                 <FormControl fullWidth>                    
                     <Controller
                         name={"state"}
@@ -77,5 +78,5 @@ export default function SearchBar(){
                 <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                     <SearchIcon />
                 </IconButton>                
-    </Paper>);
+    </Stack>);
 };

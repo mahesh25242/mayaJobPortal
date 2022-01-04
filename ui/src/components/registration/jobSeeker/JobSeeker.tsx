@@ -6,8 +6,39 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import { useDispatch, useSelector } from 'react-redux'
 import { setOtpPhone } from '../OtpMobileSlice'
 import { RootState } from "../../../app/store";
+import { forwardRef, useImperativeHandle } from "react";
+import { setRegisterForm } from '../registerFormSlice'
+import { usePlacesWidget } from "react-google-autocomplete";
 
-export default function JobSeeker(){
+interface IFormValues {
+    phone?: string;
+    category?: string;
+    name?: string;
+    email?: string;
+    secondry_phone?: string;    
+    address?: string;
+    nationality?: string;
+    dob?: string;
+    gender?: string;
+    marital?: string;
+    languages?: string;
+    religion?: string;
+    
+    country?: string;
+    pin?: string;
+    state?: string;
+    district?: string;
+    city?: string;
+            
+    experience?: string;
+    qualifications?: string;    
+
+    lat?: string;
+    lng?: string;
+  }
+  
+const JobSeeker = forwardRef((props, seekRef) =>  {
+    const formData = useSelector((state: RootState) => state.registerForm?.seeker)
     const categories = [
         {
             id: 1,
@@ -18,17 +49,64 @@ export default function JobSeeker(){
             name: 'category 2'
         }
     ]
-    const { register, handleSubmit, control, formState: { errors }, getValues, watch } = useForm();
+    const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
+        defaultValues: formData
+    });
     
     const dispatch = useDispatch()
-    const onSubmit = (data:any) => {
-        dispatch(setOtpPhone( getValues('phone') ))
-        console.log(data)
+    const onSubmit = (data:any) => {        
+        dispatch(setRegisterForm({seeker: data}))
+        dispatch(setOtpPhone( getValues('phone') ))        
     };
+    const onError  = (errors:any) => {
+        throw new Error('Validation failed');        
+    };
+ 
 
+
+    useImperativeHandle(seekRef, () => ({
+
+        saveIt() {
+            return handleSubmit(onSubmit, onError);
+
+        }
+
+    }));
+
+    const { ref, autocompleteRef } = usePlacesWidget({
+        apiKey:process.env.REACT_APP_GOOGLE_MAP_API,
+        onPlaceSelected: (place) => {
+            
+            place.address_components.forEach((element:any) => {
+                if(element.types.includes("locality")){
+                    setValue("city", element.long_name)
+                }
+                if(element.types.includes("administrative_area_level_2")){
+                    setValue("district", element.long_name)
+                }
+                if(element.types.includes("administrative_area_level_1")){
+                    setValue("state", element.long_name)
+                }
+                if(element.types.includes("country")){
+                    setValue("country", element.long_name)
+                }
+                if(element.types.includes("postal_code")){
+                    setValue("pin", element.long_name)
+                }
+            });
+            setValue('lat', place.geometry.location.lat());  
+            setValue('lng', place.geometry.location.lng());  
+            setValue('address', place.formatted_address);           
+        },
+        options: {
+            // types: ["(regions)"],
+            // componentRestrictions: { country: "ru" },
+          },
+      
+      });
 
     return(
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <>
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 >
@@ -113,24 +191,6 @@ export default function JobSeeker(){
 
                 <FormControl fullWidth>                    
                     <Controller
-                        name={"address"}  
-                        rules={{ required: { value: true, message: 'Address is required'} }}                      
-                        control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                        <TextField multiline
-                        error={!!errors.address}
-                        helperText={ (errors.address) ? errors.address?.message: '' }
-                        maxRows={4} fullWidth onChange={onChange} value={value} label={"Address"} />
-                        )}
-                    />                   
-                </FormControl>
-            </Stack>
-            
-            <Stack direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 1, sm: 2, md: 4 }}
-                mt={2}>
-                <FormControl fullWidth>                    
-                    <Controller
                         name={"nationality"}
                         rules={{ required: { value: true, message: 'Nationality is required'} }}   
                         control={control}
@@ -138,7 +198,43 @@ export default function JobSeeker(){
                         <TextField 
                         error={!!errors.nationality}
                         helperText={ (errors.nationality) ? errors.nationality?.message: '' }
-                        type="tel" fullWidth onChange={onChange} value={value} label={"Nationality"} />
+                        type="text" fullWidth onChange={onChange} value={value} label={"Nationality"} />
+                        )}
+                    />                   
+                </FormControl>    
+                
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"address"}  
+                        rules={{ required: { value: true, message: 'Address is required'} }}                      
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField multiline
+                        inputRef={ref}
+                        error={!!errors.address}
+                        helperText={ (errors.address) ? errors.address?.message: '' }
+                        maxRows={4} fullWidth onChange={onChange} value={value} label={"Address"} />
+                        )}
+                    />                   
+                </FormControl>
+
+                
+
+            </Stack>
+            
+            <Stack direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+                mt={2}>
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"country"}
+                        rules={{ required: { value: true, message: 'Country is required'} }}   
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField 
+                        error={!!errors.country}
+                        helperText={ (errors.country) ? errors.country?.message: '' }
+                        type="text" fullWidth onChange={onChange} value={value} label={"Country"} />
                         )}
                     />                   
                 </FormControl>    
@@ -191,7 +287,7 @@ export default function JobSeeker(){
                     <Controller
                         name={"dob"}
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
+                        render={({ field: { onChange, value = null } }) => (
                             <MobileDatePicker
                             label="Date of birth"
                             inputFormat="dd/MM/yyyy"
@@ -268,9 +364,9 @@ export default function JobSeeker(){
 
             </Stack>
 
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-                Save
-            </Button>
-        </form>
+         
+        </>
     );
-};
+});
+
+export default JobSeeker;

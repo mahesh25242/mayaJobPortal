@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import OtpMobileSlice from '../components/registration/OtpMobileSlice';
+import registerFormSlice from '../components/registration/registerFormSlice';
+
 export const store = configureStore({
   reducer: {
     otpMobile: OtpMobileSlice,
+    registerForm: registerFormSlice,
   },
 })
 
