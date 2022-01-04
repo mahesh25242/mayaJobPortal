@@ -9,11 +9,13 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 
 const AppRoutes = () => {
-  const About = React.lazy(() => import("./pages/About/About"));
+  const About = React.lazy(() => import("./pages/about/About"));
   const Home = React.lazy(() => import("./pages/Home/Home"));
   const Contact = React.lazy(() => import("./pages/Contact/Contact"));
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
+
+  const Admin = React.lazy(() => import("./pages/admin/Admin"));
 
   return <Routes>
   <Route path="/" element={<LayOut />}>
@@ -42,6 +44,11 @@ const AppRoutes = () => {
     <Route path="terms" element={
         <React.Suspense fallback={<>...</>}>
           <Terms />
+        </React.Suspense>
+      } />
+    <Route path="admin/*" element={
+        <React.Suspense fallback={<>...</>}>
+          <Admin />
         </React.Suspense>
       } />
     <Route path="*" element={
