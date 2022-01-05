@@ -11,16 +11,25 @@ import FormControl from '@mui/material/FormControl';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
-
+import {
+  triggerRegister,
+  setRegistration
+} from "../../api/users/RegistartionSlice";
 
 const MobileOtp = forwardRef((props, ref:any) =>  {
     const [open, setOpen] = useState(false);
     const [confirmationResult, setConfirmationResult] = useState<any>(null);
-    
+    const mayaRegister = useSelector(setRegistration)?.register;
+    const { otpMobile, registerForm } = useSelector((state: RootState) => state)
+    const dispatch = useDispatch();
+    const {  page } = otpMobile;
 
-    const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
+    const formData = registerForm[page as keyof typeof registerForm];
+    
+    const mobile = formData?.phone;
+    
     const { register, handleSubmit, control, formState: { errors } } = useForm();
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -32,9 +41,12 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
       };
 
       
-    const verify = (data:any) =>{        
+    const verify = (data:any) =>{  
+      console.log({...formData, ...{page: page}})
+      dispatch(triggerRegister({postData: formData, page: page}));      
         if(data?.code && confirmationResult){
           confirmationResult?.confirm(data?.code).then((result:any) => {
+              dispatch(triggerRegister({...formData, ...{page: page}}));    
                 console.log(result)
                 // User signed in successfully.
                 const user = result.user;

@@ -4,7 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import { useDispatch, useSelector } from 'react-redux'
-import { setOtpPhone } from '../OtpMobileSlice'
+import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { RootState } from "../../../app/store";
 import { forwardRef, useImperativeHandle } from "react";
 import { setRegisterForm } from '../registerFormSlice'
@@ -56,7 +56,7 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
     const dispatch = useDispatch()
     const onSubmit = (data:any) => {        
         dispatch(setRegisterForm({seeker: data}))
-        dispatch(setOtpPhone( getValues('phone') ))        
+        dispatch(setOtpPhone( {mobile: getValues('phone'),page: 'seeker' } ))        
     };
     const onError  = (errors:any) => {
         throw new Error('Validation failed');        
@@ -242,9 +242,13 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"state"}
+                        rules={{ required: { value: true, message: 'State is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"State"} />
+                        <TextField 
+                        error={!!errors.state}
+                        helperText={ (errors.state) ? errors.state?.message: '' }
+                         fullWidth onChange={onChange} value={value} label={"State"} />
                         )}
                     />                   
                 </FormControl>     
@@ -252,9 +256,13 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"district"}
+                        rules={{ required: { value: true, message: 'State is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField  fullWidth onChange={onChange} value={value} label={"District"} />
+                        <TextField 
+                        error={!!errors.district}
+                        helperText={ (errors.district) ? errors.district?.message: '' }
+                        fullWidth onChange={onChange} value={value} label={"District"} />
                         )}
                     />                   
                 </FormControl> 
@@ -262,9 +270,13 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"city"}
+                        rules={{ required: { value: true, message: 'City is required'} }}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField  fullWidth onChange={onChange} value={value} label={"City"} />
+                        <TextField 
+                        error={!!errors.city}
+                        helperText={ (errors.city) ? errors.city?.message: '' }
+                         fullWidth onChange={onChange} value={value} label={"City"} />
                         )}
                     />                   
                 </FormControl>       

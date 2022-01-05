@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface registerFormState {
-  employer?: {
-    
-  },
-  seeker?: {
-    
-
-  }
+  employer?: any;
+  seeker?: any;
 }
 
 const initialState: registerFormState = {

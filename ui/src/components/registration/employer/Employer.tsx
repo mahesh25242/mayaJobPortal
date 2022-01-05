@@ -6,7 +6,7 @@ import { forwardRef, MutableRefObject, useEffect, useImperativeHandle, useMemo, 
 
 import { RootState } from '../../../app/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOtpPhone } from '../OtpMobileSlice'
+import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
 
@@ -74,7 +74,7 @@ const Employer = forwardRef((props, empRef) =>  {
     
 
     const onSubmit = (data:any) => {
-        dispatch(setOtpPhone( getValues('phone') ))
+        dispatch(setOtpPhone( {mobile: getValues('phone'),page: 'employer' } ))        
         dispatch(setRegisterForm({employer: data}))        
     };
 
@@ -241,9 +241,13 @@ const Employer = forwardRef((props, empRef) =>  {
                     <FormControl fullWidth>                    
                         <Controller
                             name={"country"}
+                            rules={{ required: { value: true, message: 'Country is required'} }}
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField  fullWidth onChange={onChange} value={value} label={"Country"} />
+                            <TextField 
+                            error={!!errors.country}
+                            helperText={ (errors.country) ? errors.country?.message: '' }
+                             fullWidth onChange={onChange} value={value} label={"Country"} />
                             )}
                         />                   
                     </FormControl>
@@ -264,27 +268,39 @@ const Employer = forwardRef((props, empRef) =>  {
                     <FormControl fullWidth>                    
                         <Controller
                             name={"state"}
+                            rules={{ required: { value: true, message: 'State is required'} }}
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField  fullWidth onChange={onChange} value={value} label={"State"} />
+                            <TextField  
+                            error={!!errors.state}
+                            helperText={ (errors.state) ? errors.state?.message: '' }
+                            fullWidth onChange={onChange} value={value} label={"State"} />
                             )}
                         />                   
                     </FormControl>
                     <FormControl fullWidth>                    
                         <Controller
                             name={"district"}
+                            rules={{ required: { value: true, message: 'District is required'} }}
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField  fullWidth onChange={onChange} value={value} label={"District"} />
+                            <TextField 
+                            error={!!errors.district}
+                            helperText={ (errors.district) ? errors.district?.message: '' }
+                             fullWidth onChange={onChange} value={value} label={"District"} />
                             )}
                         />                   
                     </FormControl>
                     <FormControl fullWidth>                    
                         <Controller
                             name={"city"}
+                            rules={{ required: { value: true, message: 'City is required'} }}
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
-                            <TextField  fullWidth onChange={onChange} value={value} label={"City"} />
+                            <TextField 
+                            error={!!errors.city}
+                            helperText={ (errors.city) ? errors.city?.message: '' }
+                             fullWidth onChange={onChange} value={value} label={"City"} />
                             )}
                         />                   
                     </FormControl>

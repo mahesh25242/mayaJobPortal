@@ -18,8 +18,22 @@ class UserController extends Controller
         //
     }
 
+    public function checkLogin(Request $request){
+        $validator = Validator::make($request->all(), [                       
+            'email' => ['required', 'email'],
+            'password' => ['required'],                        
+        ]);
+        
+       
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        return response(['message' => 'Successfully save', 'status' => false]);
+    }
+
     public function registerEmployer(Request $request){
-        $validator = Validator::make($request->all(), [
+       
+        $validator = Validator::make($request->all(), [            
             'category' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
@@ -31,11 +45,14 @@ class UserController extends Controller
             'district' => ['required', 'string'],
             'city' => ['required', 'string'],                                                
         ]);
-
-
+        
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+        }
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
+        return response(['message' => 'Successfully save', 'status' => false]);
     }
 
     public function registerSeeker(Request $request){
@@ -57,6 +74,8 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
+
+        return response(['message' => 'Successfully save', 'status' => false]);
     }
     //
 }

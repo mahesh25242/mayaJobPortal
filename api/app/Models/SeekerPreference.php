@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class SeekerPreference extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use HasApiTokens, Authenticatable, Authorizable, HasFactory, SoftDeletes;
 
@@ -20,20 +20,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'avatar', 'status', 
+        'employer_id', 'gender', 'marital', 'food_accommodation',
+        'working_time', 'salary', 'experience', 'qualifications', 
+        'other_demands', 
         'created_by', 'updated_by', 'deleted_by'
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
-
     protected $casts = [
+        'employer_id' => 'integer',
         'status' => 'boolean',
         'created_by' => 'integer',
         'updated_by' => 'integer',

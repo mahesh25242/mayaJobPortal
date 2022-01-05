@@ -17,7 +17,8 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'v1'], function () use ($router) {    
+$router->group(['prefix' => 'v1'], function () use ($router) {  
+    $router->post('checkLogin','UserController@checkLogin');
     $router->group(['prefix' => 'employer'], function () use ($router) {
         $router->post('register','UserController@registerEmployer');
     });

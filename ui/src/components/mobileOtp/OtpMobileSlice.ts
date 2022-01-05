@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface OtpMobileState {
-  mobile: string
+  mobile: string,
+  page: string,
 }
 
 const initialState: OtpMobileState = {
     mobile: '',
+    page: '',
 }
 
 export const otpMobileSlice = createSlice({
@@ -17,7 +19,7 @@ export const otpMobileSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.mobile = mobile.payload
+      return {...state, ...mobile.payload}      
     },
     
   },
