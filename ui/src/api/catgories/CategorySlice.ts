@@ -20,7 +20,7 @@ export const fetchCategories = createAsyncThunk(
         //const response = await fetch(`url`); //where you want to fetch data
         //Your Axios code part.
         const response = await instance.get(`categories`);//where you want to fetch data
-        return await response;
+        return await response.data;
       } catch (error:any) {
          return thunkAPI.rejectWithValue({ error: error.message });
       }

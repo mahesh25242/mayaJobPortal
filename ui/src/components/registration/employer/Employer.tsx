@@ -10,18 +10,23 @@ import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
 
+import {
+    fetchCategories,
+    categoryFetch
+  } from "../../../api/catgories/CategorySlice";
+  
 
 
-const categories = [
-    {
-        id: 1,
-        name: 'category 1'
-    },
-    {
-        id: 2,
-        name: 'category 2'
-    }
-]
+// const categories = [
+//     {
+//         id: 1,
+//         name: 'category 1'
+//     },
+//     {
+//         id: 2,
+//         name: 'category 2'
+//     }
+// ]
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
 
@@ -63,7 +68,11 @@ const Employer = forwardRef((props, empRef) =>  {
     });
     const dispatch = useDispatch()
     
-
+    const { categories } = useSelector(categoryFetch);
+    
+    useEffect(() => {
+        dispatch(fetchCategories());    
+    }, []);
     useImperativeHandle(empRef, () => ({
 
         saveIt() {            
@@ -134,7 +143,10 @@ const Employer = forwardRef((props, empRef) =>  {
                         helperText={ (errors.category) ? errors.category?.message: '' }
 
                         fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             {categories.map((cat) => (
+                             <MenuItem value={''}>
+                                Please Select
+                            </MenuItem>
+                             {categories.categories && categories.categories.map((cat: any) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
                                 </MenuItem>

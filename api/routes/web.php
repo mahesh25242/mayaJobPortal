@@ -23,7 +23,7 @@ $router->get('/key', function() {
 
 $router->group(['prefix' => 'v1'], function () use ($router) {  
     $router->post('checkLogin','UserController@checkLogin');
-    $router->post('categories','CategoryController@categories');
+    $router->get('categories','CategoryController@categories');
     $router->group(['prefix' => 'employer'], function () use ($router) {
         $router->post('register','UserController@registerEmployer');
     });

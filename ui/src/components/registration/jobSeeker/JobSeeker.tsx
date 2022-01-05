@@ -6,9 +6,17 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import { useDispatch, useSelector } from 'react-redux'
 import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { RootState } from "../../../app/store";
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
+
+import {
+    fetchCategories,
+    categoryFetch
+  } from "../../../api/catgories/CategorySlice";
+  
+
+
 
 interface IFormValues {
     phone?: string;
@@ -39,21 +47,19 @@ interface IFormValues {
   
 const JobSeeker = forwardRef((props, seekRef) =>  {
     const formData = useSelector((state: RootState) => state.registerForm?.seeker)
-    const categories = [
-        {
-            id: 1,
-            name: 'category 1'
-        },
-        {
-            id: 2,
-            name: 'category 2'
-        }
-    ]
+    
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
         defaultValues: formData
     });
     
     const dispatch = useDispatch()
+
+    const { categories } = useSelector(categoryFetch);
+    
+    useEffect(() => {
+        dispatch(fetchCategories());    
+    }, []);
+
     const onSubmit = (data:any) => {        
         dispatch(setRegisterForm({seeker: data}))
         dispatch(setOtpPhone( {mobile: getValues('phone'),page: 'seeker' } ))        
@@ -112,22 +118,26 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                 >
                 <FormControl fullWidth>                    
                     <Controller
-                        name={"category"}
                         rules={{ required: { value: true, message: 'Category is required'} }}
+                        name={"category"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <TextField 
                         error={!!errors.category}
                         helperText={ (errors.category) ? errors.category?.message: '' }
+
                         fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             {categories.map((cat) => (
+                             <MenuItem value={''}>
+                                Please Select
+                            </MenuItem>
+                             {categories.categories && categories.categories.map((cat: any) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
                                 </MenuItem>
                             ))}
                         </TextField>
                         )}
-                    />                   
+                    />                          
                 </FormControl>
                 <FormControl fullWidth>                    
                     <Controller
@@ -209,7 +219,7 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                         rules={{ required: { value: true, message: 'Address is required'} }}                      
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField multiline
+                        <TextField 
                         inputRef={ref}
                         error={!!errors.address}
                         helperText={ (errors.address) ? errors.address?.message: '' }
