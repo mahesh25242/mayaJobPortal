@@ -14,7 +14,7 @@ const initialState: registerFormState = {
   
 }
 
-export const counterSlice = createSlice({
+export const RegisterFormSlice = createSlice({
   name: 'registerForm',
   initialState,
   reducers: {
@@ -31,6 +31,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setRegisterForm } = counterSlice.actions
+export const { setRegisterForm } = RegisterFormSlice.actions
 
-export default counterSlice.reducer
+export default RegisterFormSlice.reducer

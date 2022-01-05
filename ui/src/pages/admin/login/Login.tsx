@@ -4,11 +4,21 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Controller, useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    checkLogin,
+    getAuth
+  } from "../../../api/users/AuthenticationSlice";
+  
 
 export default function Login(){
     const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const dispatch = useDispatch();
+    const { user } = useSelector(getAuth);
 
-    const onSubmit = (data:any) => { console.log(data) };
+    const onSubmit = (data:any) => { 
+        dispatch(checkLogin(data));    
+    };
     return (<><h1>Login</h1>
         <Stack component="form"             
             sx={{ p: '2px 4px',  alignItems: 'center' }}

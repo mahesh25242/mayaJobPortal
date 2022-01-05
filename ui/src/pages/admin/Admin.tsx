@@ -29,8 +29,8 @@ function useAuth() {
 
 function DashboardLayout() {
     return (
-      <div>                   
-        <Outlet />
+      <div>  as                 
+        {/* <Outlet /> */}
       </div>
     );
   }

@@ -23,9 +23,10 @@ export default function SearchBar(){
     const onSubmit = (data:any) => console.log(data);
 
 
-    return(<Stack component="form" method='post' 
+    return(<Stack component="form" 
         direction={{ xs: 'column', md: 'row' }}
-        sx={{ p: '2px 4px',  alignItems: 'center' }}>  
+        sx={{ p: '2px 4px',  alignItems: 'center' }} 
+        onSubmit={handleSubmit(onSubmit)}>  
                 <FormControl fullWidth>                    
                     <Controller
                         name={"state"}

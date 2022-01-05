@@ -8,7 +8,7 @@ const initialState: OtpMobileState = {
     mobile: '',
 }
 
-export const counterSlice = createSlice({
+export const otpMobileSlice = createSlice({
   name: 'otpMobile',
   initialState,
   reducers: {
@@ -24,6 +24,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setOtpPhone } = counterSlice.actions
+export const { setOtpPhone } = otpMobileSlice.actions
 
-export default counterSlice.reducer
+export default otpMobileSlice.reducer
