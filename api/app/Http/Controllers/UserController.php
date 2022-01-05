@@ -28,7 +28,28 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-        return response(['message' => 'Successfully save', 'status' => false]);
+           
+        $oauthClient = \App\Models\OauthClient::where("password_client", 1)->get()->first();
+
+        $tokenRequest = $request->create(
+            url("v1/oauth/token"),
+            'POST'
+        );
+
+
+        $tokenRequest->request->add([
+            "grant_type" => "password",
+            "username" => $request->input("email", ''),
+            "password" => $request->input("password", ''),
+            "client_id" => $oauthClient->id,
+            "client_secret" => $oauthClient->secret,
+        ]);
+        try {
+           return $response= app()->handle($tokenRequest);
+        } catch (\Exception $e) {
+            return response(["success" => false, "message"=> "user not found"], 401);
+        }        
+
     }
 
     public function registerEmployer(Request $request){
