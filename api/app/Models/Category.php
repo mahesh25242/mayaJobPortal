@@ -11,7 +11,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 
-class SeekerPreference extends Model implements AuthenticatableContract, AuthorizableContract
+class Category extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use HasApiTokens, Authenticatable, Authorizable, HasFactory, SoftDeletes;
 
@@ -21,14 +21,15 @@ class SeekerPreference extends Model implements AuthenticatableContract, Authori
      * @var array
      */
     protected $fillable = [
-        'employer_id', 'gender', 'marital', 'food_accommodation',
-        'working_time', 'salary', 'experience', 'qualifications', 
-        'other_demands', 
-        'created_by', 'updated_by', 'deleted_by'
+        'name',  'description',
+        'status', 'created_by', 
+        'updated_by', 'deleted_by', 
     ];
 
-    protected $casts = [
-        'employer_id' => 'integer',        
+    
+
+    protected $casts = [        
+        'status' => 'boolean',
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'deleted_by' => 'integer'

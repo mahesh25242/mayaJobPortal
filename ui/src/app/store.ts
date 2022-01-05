@@ -3,6 +3,7 @@ import OtpMobileSlice from '../components/mobileOtp/OtpMobileSlice';
 import registerFormSlice from '../components/registration/registerFormSlice';
 import  AuthenticationSlice from '../api/users/AuthenticationSlice';
 import  RegistartionSlice from '../api/users/RegistartionSlice';
+import  CategorySlice from '../api/catgories/CategorySlice';
 
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     registerForm: registerFormSlice,
     auth: AuthenticationSlice,
     register: RegistartionSlice,
+    categories: CategorySlice,
   },
 })
 
