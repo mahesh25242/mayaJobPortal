@@ -7,6 +7,8 @@ import Stack from '@mui/material/Stack';
 import FormControl from '@mui/material/FormControl';
 import { Controller, useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
+import { useSaveCategoryMutation } from '../../../api/rtk/Categories'
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -23,20 +25,29 @@ const style = {
 export default function CreateCategory(props: any) {
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
-            name: "",
-            description: ""
+            name: props?.category?.name ?? '',
+            description: props?.category?.description ?? '',
+            id: props?.category?.id ?? 0
         }
     });
 
-  const handleOpen = () => props?.setOpen(true);
-  const handleClose = () => props?.setOpen(false);
+  
+  const handleClose = () => props?.setCategory(null);
+const [ saveCategory ] = useSaveCategoryMutation();
+// const [login] = useLoginMutation();
 
+  
+    console.log(props);
   const onSubmit = (data:any) => { 
-      console.log(data);
+    const loginResponse = saveCategory(data).unwrap().then(res=>{
+        console.log(res);        
+    }).catch(err=>{
+        console.log(err)
+    });
   };
   return (     
       <Modal
-        open={props?.open ?? false}
+        open={!!props?.category ?? false}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

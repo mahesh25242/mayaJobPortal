@@ -9,13 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
-
-import {
-    fetchCategories,
-    categoryFetch
-  } from "../../../api/catgories/CategorySlice";
-  
-
+import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
 
 // const categories = [
 //     {
@@ -68,11 +62,9 @@ const Employer = forwardRef((props, empRef) =>  {
     });
     const dispatch = useDispatch()
     
-    const { categories } = useSelector(categoryFetch);
+    const { data, error, isLoading } = useGetCategoriesQuery('categories');
     
-    useEffect(() => {
-        dispatch(fetchCategories());    
-    }, []);
+   
     useImperativeHandle(empRef, () => ({
 
         saveIt() {            
@@ -146,7 +138,7 @@ const Employer = forwardRef((props, empRef) =>  {
                              <MenuItem value={''}>
                                 Please Select
                             </MenuItem>
-                             {categories.categories && categories.categories.map((cat: any) => (
+                             {data && data.map((cat: any) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
                                 </MenuItem>

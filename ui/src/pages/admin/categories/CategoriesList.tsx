@@ -10,30 +10,38 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CreateCategory from './CreateCategory';
 import { useDispatch, useSelector } from 'react-redux';
-import { categoryFetch, fetchCategories } from '../../../api/catgories/CategorySlice';
+import { useGetCategoriesQuery, useDeleteCategoryMutation } from '../../../api/rtk/Categories'
+
 
 import Link from '@mui/material/Link';
 
 
 export default function CategoriesList() {
 
-    const [open, setOpen] = React.useState(false);
+    const [category, setCategory] = React.useState<any>(null);
 
-    const dispatch = useDispatch();
-    const { categories } = useSelector(categoryFetch);
+    const dispatch = useDispatch();    
+    const { data, error, isLoading } = useGetCategoriesQuery('categories')
+    const [ deleteCategory ] = useDeleteCategoryMutation();
     
     
-    React.useEffect(() => {
-      dispatch(fetchCategories());    
-  }, []);
-  
+  //   React.useEffect(() => {
+  //     dispatch(fetchCategories());    
+  // }, []);
+  const delCat = (category: any) =>{
+    deleteCategory(category).unwrap().then(res=>{
+      console.log(res);
+    }).catch(err=>{
+      console.log(err);
+    });
+  }
   return (
     <TableContainer component={Paper}>
-        <CreateCategory open={open} setOpen={setOpen}/>
+        <CreateCategory category={category} setCategory={setCategory}/>
        <Typography gutterBottom variant="h5" component="div">
           Categories
         </Typography>
-      <Button variant="contained" onClick={(e)=> setOpen(true)}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> setCategory({id: 0})}>Careate New</Button>
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -44,7 +52,7 @@ export default function CategoriesList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {categories.categories && categories.categories.map((row:any) => (
+          {data && data.map((row:any) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -53,11 +61,11 @@ export default function CategoriesList() {
                 {row.id}
               </TableCell>
               <TableCell align="right">
-                <Link href='#' onClick={() => setOpen(true)}>{row.name}</Link>
+                <Link href='#' onClick={() => setCategory(row)}>{row.name}</Link>
               </TableCell>
               <TableCell align="right">{row.status_text}</TableCell>              
               <TableCell align="right">                
-                <Button>Delete</Button>
+                <Button onClick={() => delCat(row)}>Delete</Button>
               </TableCell>
             </TableRow>
           ))}

@@ -9,12 +9,8 @@ import { RootState } from "../../../app/store";
 import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
+import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
 
-import {
-    fetchCategories,
-    categoryFetch
-  } from "../../../api/catgories/CategorySlice";
-  
 
 
 
@@ -53,12 +49,12 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
     });
     
     const dispatch = useDispatch()
+    const { data, error, isLoading } = useGetCategoriesQuery('categories');
 
-    const { categories } = useSelector(categoryFetch);
     
-    useEffect(() => {
-        dispatch(fetchCategories());    
-    }, []);
+    
+    
+    
 
     const onSubmit = (data:any) => {        
         dispatch(setRegisterForm({seeker: data}))
@@ -130,7 +126,7 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                              <MenuItem value={''}>
                                 Please Select
                             </MenuItem>
-                             {categories.categories && categories.categories.map((cat: any) => (
+                             {data && data.map((cat: any) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
                                 </MenuItem>
