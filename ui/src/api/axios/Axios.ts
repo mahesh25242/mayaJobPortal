@@ -3,8 +3,12 @@ import axios from "axios";
 const instance = axios.create({
 	baseURL: 'http://localhost:8000/v1/',
 });
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['Authorization'] = 'mahesh';
+// instance.defaults.withCredentials = true;
+const token = localStorage.getItem('token');
+if (token) {
+  let tkn = JSON.parse(token);
+  instance.defaults.headers.common['Authorization'] = `Bearer ${tkn.access_token}`;
+}
 
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent

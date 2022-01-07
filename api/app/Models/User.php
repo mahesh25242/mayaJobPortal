@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'avatar', 'status', 
+        'name', 'email', 'phone', 'avatar', 'status', 'role_id',
         'created_by', 'updated_by', 'deleted_by'
     ];
 
@@ -36,6 +36,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $casts = [
         'status' => 'boolean',
+        'role_id' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'deleted_by' => 'integer'

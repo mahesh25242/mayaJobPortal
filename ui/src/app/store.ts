@@ -10,7 +10,7 @@ export const store = configureStore({
   reducer: {
     otpMobile: OtpMobileSlice,
     registerForm: registerFormSlice,
-    auth: AuthenticationSlice,
+    token: AuthenticationSlice,
     register: RegistartionSlice,
     categories: CategorySlice,
   },

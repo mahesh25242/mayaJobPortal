@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('created_by')->default(0);
             $table->bigInteger('updated_by')->default(0);
             $table->bigInteger('deleted_by')->default(0);
-            
+            $table->tinyInteger('role_id')->default(2);  
 
             $table->timestamps();
             $table->softDeletes();

@@ -12,13 +12,20 @@ import {
   
 
 export default function Login(){
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const { register, handleSubmit, control, formState: { errors } } = useForm({
+        defaultValues: {
+            email: "admin@mayajobs.com",
+            password: "123456"
+        }
+    });
     const dispatch = useDispatch();
-    const { user } = useSelector(getAuth);
+    const { token } = useSelector(getAuth);
 
     const onSubmit = (data:any) => { 
         dispatch(checkLogin(data));    
+        
     };
+   
     return (<><h1>Login</h1>
         <Stack component="form"             
             sx={{ p: '2px 4px',  alignItems: 'center' }}

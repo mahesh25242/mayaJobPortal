@@ -52,6 +52,35 @@ class UserController extends Controller
 
     }
 
+    public function refreshToken(Request $request){
+        $validator = Validator::make($request->all(), [
+            'refresh_token' => ['required'],            
+        ]);
+
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+      
+        $oauthClient = \App\Models\OauthClient::where("password_client", 1)->get()->first();
+        $tokenRequest = $request->create(
+            url("v1/oauth/token"),
+            'POST'
+        );
+
+        $tokenRequest->request->add([
+            'grant_type' => 'refresh_token',
+            "client_id" => $oauthClient->id,
+            "client_secret" => $oauthClient->secret,
+            'refresh_token' => $request->input("refresh_token", ''),
+            'scope' => '',
+        ]);
+        try {
+           return $response= app()->handle($tokenRequest);
+        } catch (\Exception $e) {
+            return response(["success" => false, "message"=> "token expired"], 408);
+        }    
+    }
+
     public function registerEmployer(Request $request){
        
         $validator = Validator::make($request->all(), [            

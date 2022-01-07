@@ -1,36 +1,56 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Login from "./login/Login";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import {
+  checkLogin,
+  getAuth
+} from "../../api/users/AuthenticationSlice";
+import { AlternateEmailTwoTone } from "@mui/icons-material";
+import Home from "./home/Home";
 
-export default function Admin(){
-    return (
-        <Routes>
-            <Route path="/login" element={<Login />}>            
-            {/* <Route path="messages" element={<Messages />} /> */}
-          </Route>
-          <Route path="/*" element={
-            <PrivateRoute>
-              <DashboardLayout />
-            </PrivateRoute>}>
-            <Route index element={<Login />} />
-            {/* <Route path="messages" element={<Messages />} /> */}
-          </Route>
+
+export default function Admin(){ 
+  const dispatch = useDispatch();
+  const { token } = useSelector(getAuth);
+
+  useEffect(() => {     
+    dispatch(checkLogin(null));        
+  }, []);
+
+    return (<>    
+        <Routes>   
+        <Route path="login" element={<Login />} />        
+          {
+            token && token.loading === false &&  <Route path="/*" element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>}>
+             
+              {/* <Route path="messages" element={<Messages />} /> */}
+            </Route>
+          }
+         
         </Routes>
-      );
+      </>);
 }
 
-function PrivateRoute({ children }: any) {
-    const auth = useAuth();
-    return auth ? children : <Navigate to="/admin/login" />;
+function PrivateRoute({ children }: any) {    
+    const { token } = useSelector(getAuth);       
+    return !!token.token ? children :   <Navigate to="/admin/login" />;
 }
   
-function useAuth() {
-    return false;
-  }
 
 function DashboardLayout() {
+  
+   
     return (
-      <div>  as                 
-        {/* <Outlet /> */}
+      <div>   
+        <Routes>
+            <Route path="/" element={<Home />}>                        
+          </Route>
+        </Routes>                
+        <Outlet />
       </div>
     );
   }
