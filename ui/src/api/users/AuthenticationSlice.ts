@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import instance from '../axios/Axios';
 
 export interface AuthenticationState {
@@ -57,7 +57,7 @@ export const AuthenticationSlice = createSlice({
       state.token = payload;
       state.loading = false;
     });
-    builder.addCase(checkLogin.rejected,(state, action) => {
+    builder.addCase(checkLogin.rejected,(state, action) => {      
       state.loading = false;
       state.error = action.error.message;
     });

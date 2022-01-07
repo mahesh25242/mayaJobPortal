@@ -14,6 +14,7 @@ const AppRoutes = () => {
   const Contact = React.lazy(() => import("./pages/Contact/Contact"));
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
+  const SignOut = React.lazy(() => import("./pages/signOut/SignOut"));
 
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
 
@@ -49,6 +50,11 @@ const AppRoutes = () => {
     <Route path="admin/*" element={
         <React.Suspense fallback={<>...</>}>
           <Admin />
+        </React.Suspense>
+      } />
+    <Route path="SignOut" element={
+        <React.Suspense fallback={<>...</>}>
+          <SignOut />
         </React.Suspense>
       } />
     <Route path="*" element={

@@ -5,25 +5,32 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     checkLogin,
     getAuth
   } from "../../../api/users/AuthenticationSlice";
+import { useAppDispatch } from "../../../app/store";
   
 
 export default function Login(){
+    const navigate = useNavigate();
+
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
             email: "admin@mayajobs.com",
             password: "123456"
         }
     });
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { token } = useSelector(getAuth);
 
     const onSubmit = (data:any) => { 
-        dispatch(checkLogin(data));    
-        
+        dispatch(checkLogin(data)).then((res) => {
+            if(res?.payload)
+                navigate("/admin");
+        });                
+
     };
    
     return (<><h1>Login</h1>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +13,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 import { Link as RouterLink } from 'react-router-dom';
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  checkLogin,
+  getAuth
+} from "../../api/users/AuthenticationSlice";
 
 const pages = [    
     {
@@ -29,12 +33,20 @@ const pages = [
         url: '/terms'
     }
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
+  const [loggedMenu, setLoggedMenu] = useState<any>({
+    settings: [],
+    main: []
+  });
+
+  const dispatch = useDispatch();
+  const { token } = useSelector(getAuth);
+  
   const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -50,6 +62,34 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  useEffect(() => {     
+    dispatch(checkLogin(null));        
+  }, []);
+
+  useEffect(() => {
+    if(token && token.token) {
+      setLoggedMenu({
+        settings: [
+            {
+              title: 'Sign Out',
+              url: '/signOut'
+            }
+          ],
+        main: [
+          {
+            title: 'Dashboard',
+            url: '/admin'
+          },
+          {
+            title: 'Categories',
+            url: '/admin/categories'
+          }
+        ]
+      });
+    }
+  }, [token]);
+
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -91,7 +131,7 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page, idx) => (
+              {[...pages, ...loggedMenu?.main].map((page, idx) => (
                 <MenuItem key={idx} onClick={handleCloseNavMenu} component={RouterLink} to={page.url}  >
                   <Typography textAlign="center"   >{page.title}</Typography>
                 </MenuItem>
@@ -107,7 +147,7 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page, idx) => (
+            {[...pages, ...loggedMenu?.main].map((page, idx) => (
               <Button
                 key={idx}
                 onClick={handleCloseNavMenu}
@@ -118,8 +158,8 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
+          {
+            loggedMenu?.settings && loggedMenu?.settings.length > 0 && <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -141,13 +181,14 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              { loggedMenu?.settings.map((setting:any, idx:number) => (<MenuItem key={idx} onClick={handleCloseNavMenu} component={RouterLink} to={setting.url}>
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+          }
+          
         </Toolbar>
       </Container>
     </AppBar>

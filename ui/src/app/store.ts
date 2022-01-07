@@ -4,6 +4,7 @@ import registerFormSlice from '../components/registration/registerFormSlice';
 import  AuthenticationSlice from '../api/users/AuthenticationSlice';
 import  RegistartionSlice from '../api/users/RegistartionSlice';
 import  CategorySlice from '../api/catgories/CategorySlice';
+import { useDispatch } from 'react-redux';
 
 
 export const store = configureStore({
@@ -20,3 +21,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch = () => useDispatch<AppDispatch>() 

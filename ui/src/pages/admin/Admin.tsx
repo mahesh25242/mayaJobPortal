@@ -8,15 +8,14 @@ import {
 } from "../../api/users/AuthenticationSlice";
 import { AlternateEmailTwoTone } from "@mui/icons-material";
 import Home from "./home/Home";
+import CategoriesList from "./categories/CategoriesList";
 
 
 export default function Admin(){ 
   const dispatch = useDispatch();
   const { token } = useSelector(getAuth);
 
-  useEffect(() => {     
-    dispatch(checkLogin(null));        
-  }, []);
+  
 
     return (<>    
         <Routes>   
@@ -47,8 +46,9 @@ function DashboardLayout() {
     return (
       <div>   
         <Routes>
-            <Route path="/" element={<Home />}>                        
-          </Route>
+            <Route path="/" element={<Home />} />                        
+            <Route path="/categories" element={<CategoriesList />}>                   
+            </Route>               
         </Routes>                
         <Outlet />
       </div>
