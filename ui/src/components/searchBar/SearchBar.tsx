@@ -7,21 +7,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import { FormControl, MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, useForm } from "react-hook-form";
+import { useGetCategoriesQuery } from '../../api/rtk/Categories'
 
-const categories = [
-    {
-        id: 1,
-        name: 'category 1'
-    },
-    {
-        id: 2,
-        name: 'category 2'
-    }
-]
 export default function SearchBar(){
     const { register, handleSubmit, control, formState: { errors } } = useForm();
     const onSubmit = (data:any) => console.log(data);
-
+    const { data, error, isLoading } = useGetCategoriesQuery('categories')
 
     return(<Stack component="form" 
         direction={{ xs: 'column', md: 'row' }}
@@ -53,7 +44,7 @@ export default function SearchBar(){
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             {categories.map((cat) => (
+                             {data.map((cat:any) => (
                                 <MenuItem key={cat.id} value={cat.id}>
                                 {cat.name}
                                 </MenuItem>
