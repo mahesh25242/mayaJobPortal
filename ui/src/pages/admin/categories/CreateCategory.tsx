@@ -23,7 +23,7 @@ const style = {
 };
 
 export default function CreateCategory(props: any) {
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
         defaultValues: {
             name: props?.category?.name ?? '',
             description: props?.category?.description ?? '',
@@ -31,6 +31,11 @@ export default function CreateCategory(props: any) {
         }
     });
 
+    React.useEffect(() => {
+        setValue("name", props?.category?.name ?? '');
+        setValue("description", props?.category?.description ?? '');
+        setValue("id", props?.category?.id ?? 0);
+    }, [props]);
   
   const handleClose = () => props?.setCategory(null);
 const [ saveCategory ] = useSaveCategoryMutation();
@@ -39,6 +44,7 @@ const [ saveCategory ] = useSaveCategoryMutation();
   
     console.log(props);
   const onSubmit = (data:any) => { 
+      console.log(data)
     const loginResponse = saveCategory(data).unwrap().then(res=>{
         console.log(res);        
     }).catch(err=>{
