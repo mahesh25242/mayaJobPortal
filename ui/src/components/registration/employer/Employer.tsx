@@ -11,6 +11,7 @@ import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
 
+
 // const categories = [
 //     {
 //         id: 1,

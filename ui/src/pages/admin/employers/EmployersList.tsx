@@ -15,6 +15,7 @@ import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rt
 
 import Link from '@mui/material/Link';
 import Search from '../Search';
+import Alert from '@mui/material/Alert';
 
 export default function EmployersList() {
 
@@ -71,6 +72,9 @@ export default function EmployersList() {
               </TableCell>
             </TableRow>
           ))}
+          {
+            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          }
         </TableBody>
       </Table>
     </TableContainer>

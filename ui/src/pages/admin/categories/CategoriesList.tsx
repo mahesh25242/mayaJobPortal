@@ -14,6 +14,7 @@ import { useGetCategoriesQuery, useDeleteCategoryMutation } from '../../../api/r
 
 
 import Link from '@mui/material/Link';
+import Alert from '@mui/material/Alert';
 
 
 export default function CategoriesList() {
@@ -69,6 +70,9 @@ export default function CategoriesList() {
               </TableCell>
             </TableRow>
           ))}
+          {
+            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          }
         </TableBody>
       </Table>
     </TableContainer>

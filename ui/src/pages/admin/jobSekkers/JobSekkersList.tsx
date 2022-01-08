@@ -15,6 +15,7 @@ import { useGetSeekersQuery, useDeleteSeekerMutation } from '../../../api/rtk/jo
 
 import Link from '@mui/material/Link';
 import Search from '../Search';
+import Alert from '@mui/material/Alert';
 
 export default function JobSekkersList() {
 
@@ -72,6 +73,9 @@ export default function JobSekkersList() {
               </TableCell>
             </TableRow>
           ))}
+           {
+            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          }
         </TableBody>
       </Table>
     </TableContainer>

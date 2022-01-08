@@ -35,8 +35,11 @@ interface IFormValues {
     city?: string;
             
     experience?: string;
-    qualifications?: string;    
-
+    edu_qualification?: string;    
+    tech_qualification?: string;
+    academic_profile?: string;
+    expected_salary?: string;
+    
     lat?: string;
     lng?: string;
   }
@@ -379,10 +382,65 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                         )}
                     />                   
                 </FormControl> 
-
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"expected_salary"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField  fullWidth onChange={onChange} value={value} label={"Expected Salary"} />
+                        )}
+                    />                   
+                </FormControl> 
+                
             </Stack>
 
-         
+            <Stack direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+                mt={2}>
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"edu_qualification"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField multiline fullWidth onChange={onChange} value={value} label={"Eductional Qualifications"} />
+                        )}
+                    />                   
+                </FormControl> 
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"tech_qualification"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField multiline fullWidth onChange={onChange} value={value} label={"Technical Qualifications"} />
+                        )}
+                    />                   
+                </FormControl> 
+                
+            </Stack>   
+            <Stack direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+                mt={2}>
+                    <FormControl fullWidth>                    
+                    <Controller
+                        name={"experience"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField multiline fullWidth onChange={onChange} value={value} label={"Work Experience"} />
+                        )}
+                    />                   
+                </FormControl> 
+
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"academic_profile"}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                        <TextField multiline fullWidth onChange={onChange} value={value} label={"Academic Profile"} />
+                        )}
+                    />                   
+                </FormControl> 
+
+            </Stack>    
         </>
     );
 });

@@ -14,7 +14,7 @@ import { useGetSettingsQuery } from '../../../api/rtk/Setting'
 
 
 import Link from '@mui/material/Link';
-
+import Alert from '@mui/material/Alert';
 
 export default function SettingLists() {
 
@@ -58,6 +58,9 @@ export default function SettingLists() {
               <TableCell align="right">{row.value}</TableCell>                          
             </TableRow>
           ))}
+          { 
+            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          }
         </TableBody>
       </Table>
     </TableContainer>
