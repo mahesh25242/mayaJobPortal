@@ -8,6 +8,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 
 
+
 const AppRoutes = () => {
   const About = React.lazy(() => import("./pages/about/About"));
   const Home = React.lazy(() => import("./pages/Home/Home"));
@@ -15,7 +16,7 @@ const AppRoutes = () => {
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
   const SignOut = React.lazy(() => import("./pages/signOut/SignOut"));
-
+  const ChangePassword = React.lazy(() => import("./pages/admin/changePassword/ChangePassword"));
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
 
   return <Routes>
@@ -50,6 +51,11 @@ const AppRoutes = () => {
     <Route path="admin/*" element={
         <React.Suspense fallback={<>...</>}>
           <Admin />
+        </React.Suspense>
+      } />
+    <Route path="change-password" element={
+        <React.Suspense fallback={<>...</>}>
+          <ChangePassword />
         </React.Suspense>
       } />
     <Route path="SignOut" element={

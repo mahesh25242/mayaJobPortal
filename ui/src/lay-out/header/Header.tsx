@@ -71,6 +71,10 @@ const ResponsiveAppBar = () => {
       setLoggedMenu({
         settings: [
             {
+              title: 'Change Password',
+              url: '/change-password'
+            },
+            {
               title: 'Sign Out',
               url: '/signOut'
             }

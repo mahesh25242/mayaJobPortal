@@ -12,6 +12,7 @@ import CategoriesList from "./categories/CategoriesList";
 import SettingLists from "./settings/SettingLists";
 import EmployersList from "./employers/EmployersList";
 import JobSekkersList from "./jobSekkers/JobSekkersList";
+import ChangePassword from "./changePassword/ChangePassword";
 
 
 export default function Admin(){ 
@@ -53,7 +54,7 @@ function DashboardLayout() {
             <Route path="/categories" element={<CategoriesList />} />                               
             <Route path="/employers" element={<EmployersList />} />                               
             <Route path="/job-seekers" element={<JobSekkersList />} />                               
-            <Route path="/settings" element={<SettingLists />} />             
+            <Route path="/settings" element={<SettingLists />} />                                      
         </Routes>                
         <Outlet />
       </div>
