@@ -14,7 +14,7 @@ import { useGetSeekersQuery, useDeleteSeekerMutation } from '../../../api/rtk/jo
 
 
 import Link from '@mui/material/Link';
-
+import Search from '../Search';
 
 export default function JobSekkersList() {
 
@@ -37,11 +37,14 @@ export default function JobSekkersList() {
   }
   return (
     <TableContainer component={Paper}>
-        <CreateJobSekkers seeker={seeker} setSeeker={setSeeker}/>
-       <Typography gutterBottom variant="h5" component="div">
+      <Typography gutterBottom variant="h5" component="div">
           Job Sekkers
-        </Typography>
+        </Typography>      
+        <CreateJobSekkers seeker={seeker} setSeeker={setSeeker}/>       
+        
       <Button variant="contained" onClick={(e)=> setSeeker({id: 0})}>Careate New</Button>
+      <Search />
+      
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>

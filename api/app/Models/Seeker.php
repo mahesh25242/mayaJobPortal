@@ -22,10 +22,12 @@ class Seeker extends Model implements AuthenticatableContract, AuthorizableContr
      */
     protected $fillable = [
         'user_id', 'phone', 'address', 'country',
-        'state', 'city', 'district', 'status', 'pin',
+        'state', 'city', 'district',  'pin',
         'dob', 'gender', 'religion', 'marital', 'languages',
-        'lat', 'lng',
-        'created_by', 'updated_by', 'deleted_by'
+        'status', 'edu_qualification', 'tech_qualification',
+        'experience', 'academic_profile', 'expected_salary',
+        'admin_note', 'lat', 'lng', 'created_by',
+        'updated_by', 'deleted_by'
     ];
 
     protected $casts = [

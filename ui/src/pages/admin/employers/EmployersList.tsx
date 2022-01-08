@@ -14,7 +14,7 @@ import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rt
 
 
 import Link from '@mui/material/Link';
-
+import Search from '../Search';
 
 export default function EmployersList() {
 
@@ -37,11 +37,13 @@ export default function EmployersList() {
   }
   return (
     <TableContainer component={Paper}>
+        
         <CreateJobSekkers employer={employer} setEmployer={setEmployer}/>
        <Typography gutterBottom variant="h5" component="div">
           Employers
         </Typography>
       <Button variant="contained" onClick={(e)=> setEmployer({id: 0})}>Careate New</Button>
+      <Search /> 
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>

@@ -24,6 +24,7 @@ class CreateEmployersTable extends Migration
             $table->string('city')->nullable();                 
             $table->string('district')->nullable();                 
             $table->boolean('status')->default(0);    
+            $table->longText('admin_note')->nullable();    
             $table->string('lat')->nullable(); 
             $table->string('lng')->nullable();    
             $table->bigInteger('created_by')->default(0);

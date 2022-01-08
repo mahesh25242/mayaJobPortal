@@ -23,7 +23,7 @@ class Employer extends Model implements AuthenticatableContract, AuthorizableCon
     protected $fillable = [
         'user_id','name',  'phone', 'address',
         'country', 'state', 'city', 'district',
-        'status','lat', 'lng', 'created_by', 
+        'status', 'admin_note', 'lat', 'lng', 'created_by', 
         'updated_by', 'deleted_by', 
     ];
 

@@ -28,7 +28,13 @@ class CreateSeekersTable extends Migration
             $table->string('religion')->nullable();                 
             $table->string('marital')->nullable();                 
             $table->string('languages')->nullable();                 
-            $table->boolean('status')->default(0);   
+            $table->boolean('status')->default(0);  
+            $table->longText('edu_qualification')->nullable();     
+            $table->longText('tech_qualification')->nullable();     
+            $table->longText('experience')->nullable();     
+            $table->longText('academic_profile')->nullable();     
+            $table->string('expected_salary')->nullable();     
+            $table->longText('admin_note')->nullable();     
             $table->string('lat')->nullable(); 
             $table->string('lng')->nullable();        
             $table->bigInteger('created_by')->default(0);

@@ -22,8 +22,8 @@ class CreateSeekerPreferencesTable extends Migration
             $table->string('working_time')->nullable();                 
             $table->string('salary')->nullable();
             $table->string('experience')->nullable();
-            $table->string('qualifications')->nullable();
-            $table->string('other_demands')->nullable();
+            $table->longText('qualifications')->nullable();
+            $table->longText('other_demands')->nullable();
             $table->bigInteger('created_by')->default(0);
             $table->bigInteger('updated_by')->default(0);
             $table->bigInteger('deleted_by')->default(0);
