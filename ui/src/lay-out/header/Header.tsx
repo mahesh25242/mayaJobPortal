@@ -79,10 +79,22 @@ const ResponsiveAppBar = () => {
           {
             title: 'Dashboard',
             url: '/admin'
-          },
+          },         
           {
             title: 'Categories',
             url: '/admin/categories'
+          },
+          {
+            title: 'Employers',
+            url: '/admin/employers'
+          },
+          {
+            title: 'Job Seekers',
+            url: '/admin/job-seekers'
+          },
+          {
+            title: 'Settings',
+            url: '/admin/settings'
           }
         ]
       });

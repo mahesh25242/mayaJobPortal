@@ -9,6 +9,9 @@ import {
 import { AlternateEmailTwoTone } from "@mui/icons-material";
 import Home from "./home/Home";
 import CategoriesList from "./categories/CategoriesList";
+import SettingLists from "./settings/SettingLists";
+import EmployersList from "./employers/EmployersList";
+import JobSekkersList from "./jobSekkers/JobSekkersList";
 
 
 export default function Admin(){ 
@@ -47,8 +50,10 @@ function DashboardLayout() {
       <div>   
         <Routes>
             <Route path="/" element={<Home />} />                        
-            <Route path="/categories" element={<CategoriesList />}>                   
-            </Route>               
+            <Route path="/categories" element={<CategoriesList />} />                               
+            <Route path="/employers" element={<EmployersList />} />                               
+            <Route path="/job-seekers" element={<JobSekkersList />} />                               
+            <Route path="/settings" element={<SettingLists />} />             
         </Routes>                
         <Outlet />
       </div>

@@ -37,22 +37,25 @@ export default function SearchBar(){
                         )}
                     />                   
                 </FormControl> 
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                 <FormControl fullWidth>                    
-                    <Controller
-                        name={"category"}
-                        control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             {data.map((cat:any) => (
-                                <MenuItem key={cat.id} value={cat.id}>
-                                {cat.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        )}
-                    />                   
-                </FormControl>
+                {
+                    data && <><Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    <FormControl fullWidth>                    
+                       <Controller
+                           name={"category"}
+                           control={control}
+                           render={({ field: { onChange, value = '' } }) => (
+                           <TextField fullWidth onChange={onChange} value={value} label={"Job Category"} select>
+                                { data.map((cat:any) => (
+                                   <MenuItem key={cat.id} value={cat.id}>
+                                   {cat.name}
+                                   </MenuItem>
+                               ))}
+                           </TextField>
+                           )}
+                       />                   
+                   </FormControl></>
+                }
+                
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <FormControl fullWidth>                    
                     <Controller

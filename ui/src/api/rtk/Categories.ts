@@ -1,25 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../../app/store";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQry } from './baseQry';
 
 // Create your service using a base URL and expected endpoints
 export const categoriesApi = createApi({
   reducerPath: "categoriesApi",
-  baseQuery: fetchBaseQuery(
-      {
-        baseUrl: "http://localhost:8000/",
-        prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).token.token;
-        
-            // If we have a token set in state, let's assume that we should be passing it.
-            if (token) {
-              headers.set('authorization', `${token?.token_type} ${token?.access_token}`);
-            }
-        
-            return headers
-          },
-         
-    }
-      ),
+  baseQuery: baseQry(),
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: (name: string) => ({

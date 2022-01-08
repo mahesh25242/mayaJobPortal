@@ -2,11 +2,11 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQry } from "./baseQry";
 
 // Create your service using a base URL and expected endpoints
-export const employerApi = createApi({
-  reducerPath: "employerApi",
+export const jobSeekerApi = createApi({
+  reducerPath: "jobSeekerApi",
   baseQuery: baseQry(),
   endpoints: (builder) => ({
-    getEmployers: builder.query({
+    getSeekers: builder.query({
       query: () => ({
           url: `v1/employer`,
         //   headers: {
@@ -15,7 +15,7 @@ export const employerApi = createApi({
 
       }) ,     
     }),
-    saveEmployer: builder.mutation({
+    saveSeeker: builder.mutation({
         query: (employer) => ({
             url: `v1/employer/${employer.id }`,
             method: 'POST',
@@ -26,7 +26,7 @@ export const employerApi = createApi({
 
         }) ,     
     }),
-    deleteEmployer: builder.mutation({
+    deleteSeeker: builder.mutation({
       query: (employer) => ({
           url: `v1/categories/${employer.id }`,
           method: 'DELETE',
@@ -41,5 +41,5 @@ export const employerApi = createApi({
 });
 
 
-export const { useGetEmployersQuery, useSaveEmployerMutation, useDeleteEmployerMutation } = employerApi;
+export const { useGetSeekersQuery, useSaveSeekerMutation, useDeleteSeekerMutation } = jobSeekerApi;
 

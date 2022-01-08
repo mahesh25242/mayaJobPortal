@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 
 import { categoriesApi } from '../api/rtk/Categories';
 import { employerApi } from '../api/rtk/Employer';
+import { SettingApi } from '../api/rtk/Setting';
+import { jobSeekerApi } from '../api/rtk/jobSeeker';
+
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
@@ -17,10 +20,12 @@ export const store = configureStore({
     token: AuthenticationSlice,
     register: RegistartionSlice,    
     [categoriesApi.reducerPath]: categoriesApi.reducer,
-    [employerApi.reducerPath]: employerApi.reducer
+    [employerApi.reducerPath]: employerApi.reducer,
+    [SettingApi.reducerPath]: SettingApi.reducer,
+    [jobSeekerApi.reducerPath]: jobSeekerApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat(categoriesApi.middleware,employerApi.middleware),
+  getDefaultMiddleware().concat(categoriesApi.middleware,employerApi.middleware, SettingApi.middleware, jobSeekerApi.middleware),
 })
 
 
