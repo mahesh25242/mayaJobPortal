@@ -24,13 +24,24 @@ $router->get('/key', function() {
 $router->group(['prefix' => 'v1'], function () use ($router) {  
     $router->post('checkLogin','UserController@checkLogin');
     $router->post('refreshToken','UserController@refreshToken');
-    $router->get('categories','CategoryController@categories');
     
     
+    $router->group(['prefix' => 'categories'], function () use ($router) {
+        $router->get('/','CategoryController@categories');
+        $router->post('/{id}','CategoryController@save');
+        $router->delete('/{id}','CategoryController@delete');
+    });
+
     $router->group(['prefix' => 'blogs'], function () use ($router) {
         $router->get('/','BlogController@blogs');
         $router->get('infos','BlogController@blogsInfo');
         $router->get('/{id}','BlogController@viewDetails');
+        
+    });
+
+    $router->group(['prefix' => 'settings'], function () use ($router) {
+        $router->get('/','SettingController@settings');        
+        $router->put('/{id}','SettingController@save');
         
     });
 

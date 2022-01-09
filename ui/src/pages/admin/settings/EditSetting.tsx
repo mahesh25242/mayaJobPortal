@@ -41,12 +41,11 @@ export default function EditSetting(props: any) {
 const [ saveSetting ] = useSaveSettingMutation();
 // const [login] = useLoginMutation();
 
-  
-    console.log(props);
-  const onSubmit = (data:any) => { 
-      console.log(data)
-    const loginResponse = saveSetting(data).unwrap().then(res=>{
-        console.log(res);        
+      
+  const onSubmit = (data:any) => {       
+    const loginResponse = saveSetting(data).unwrap().then(res=>{        
+        props.setSnakMessage(res.message);
+        handleClose();       
     }).catch(err=>{
         console.log(err)
     });

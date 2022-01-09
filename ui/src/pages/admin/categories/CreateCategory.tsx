@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import { Controller, useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { useSaveCategoryMutation } from '../../../api/rtk/Categories'
+import MenuItem from '@mui/material/MenuItem';
 
 
 const style = {
@@ -27,7 +28,8 @@ export default function CreateCategory(props: any) {
         defaultValues: {
             name: props?.category?.name ?? '',
             description: props?.category?.description ?? '',
-            id: props?.category?.id ?? 0
+            id: props?.category?.id ?? 0,
+            status: props?.category?.status ?? 1,
         }
     });
 
@@ -41,12 +43,13 @@ export default function CreateCategory(props: any) {
 const [ saveCategory ] = useSaveCategoryMutation();
 // const [login] = useLoginMutation();
 
-  
-    console.log(props);
+      
   const onSubmit = (data:any) => { 
       console.log(data)
     const loginResponse = saveCategory(data).unwrap().then(res=>{
-        console.log(res);        
+        console.log(res); 
+        props.setSnakMessage(res.message);   
+        handleClose();    
     }).catch(err=>{
         console.log(err)
     });
@@ -90,6 +93,27 @@ const [ saveCategory ] = useSaveCategoryMutation();
                             placeholder='Enter your Description'                            
                             sx={{ m: 1,  }}                            
                           />
+                        )}
+                    />                   
+                </FormControl> 
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"status"}                        
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                            <TextField  select                           
+                            label="Description"
+                            onChange={onChange} value={value} 
+                            placeholder='Enter your Description'                            
+                            sx={{ m: 1,  }}                            
+                          >
+                            <MenuItem value={1}>
+                                Active
+                            </MenuItem>
+                              <MenuItem value={0}>
+                                In Active
+                            </MenuItem>
+                        </TextField>
                         )}
                     />                   
                 </FormControl> 

@@ -15,11 +15,13 @@ import { useGetCategoriesQuery, useDeleteCategoryMutation } from '../../../api/r
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
+import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
 
 export default function CategoriesList() {
 
     const [category, setCategory] = React.useState<any>(null);
+    const [snakMessage, setSnakMessage] = React.useState<string>('');
 
     const dispatch = useDispatch();    
     const { data, error, isLoading } = useGetCategoriesQuery('categories')
@@ -32,13 +34,14 @@ export default function CategoriesList() {
   const delCat = (category: any) =>{
     deleteCategory(category).unwrap().then(res=>{
       console.log(res);
+      setSnakMessage('Category deleted successfully');
     }).catch(err=>{
       console.log(err);
     });
   }
   return (
     <TableContainer component={Paper}>
-        <CreateCategory category={category} setCategory={setCategory}/>
+        <CreateCategory category={category} setCategory={setCategory} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Categories
         </Typography>
@@ -75,6 +78,9 @@ export default function CategoriesList() {
           }
         </TableBody>
       </Table>
+      {
+        snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
+      }      
     </TableContainer>
   );
 }

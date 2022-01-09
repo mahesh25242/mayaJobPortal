@@ -5,6 +5,7 @@ import { baseQry } from "./baseQry";
 export const SettingApi = createApi({
   reducerPath: "SettingApi",
   baseQuery: baseQry(),
+  tagTypes:["Settings"],
   endpoints: (builder) => ({
     getSettings: builder.query({
       query: () => ({
@@ -13,18 +14,21 @@ export const SettingApi = createApi({
         //     'content-type': 'text/plain',
         //  },
 
-      }) ,     
+      }) ,
+      providesTags: ["Settings"],
+     
     }),
     saveSetting: builder.mutation({
         query: (setting) => ({
             url: `v1/settings/${setting.id }`,
-            method: 'POST',
+            method: 'PUT',
             body: setting
             //   headers: {
             //     'content-type': 'text/plain',
             //  },
 
-        }) ,     
+        }) ,  
+        invalidatesTags: ["Settings"],       
     })   
   })
 });

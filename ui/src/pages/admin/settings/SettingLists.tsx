@@ -15,11 +15,12 @@ import { useGetSettingsQuery } from '../../../api/rtk/Setting'
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
+import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
 export default function SettingLists() {
 
     const [setting, setSetting] = React.useState<any>(null);
-
+    const [snakMessage, setSnakMessage] = React.useState<string>('');
     const dispatch = useDispatch();    
     const { data, error, isLoading } = useGetSettingsQuery('')
     
@@ -31,7 +32,7 @@ export default function SettingLists() {
 
   return (
     <TableContainer component={Paper}>
-        <EditSetting setting={setting} setSetting={setSetting}/>
+        <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Settings
         </Typography>      
@@ -63,6 +64,9 @@ export default function SettingLists() {
           }
         </TableBody>
       </Table>
+      {
+        snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
+      }  
     </TableContainer>
   );
 }

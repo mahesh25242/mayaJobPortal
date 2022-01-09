@@ -5,6 +5,7 @@ import { baseQry } from './baseQry';
 export const categoriesApi = createApi({
   reducerPath: "categoriesApi",
   baseQuery: baseQry(),
+  tagTypes:["Categories"],
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: (name: string) => ({
@@ -13,7 +14,8 @@ export const categoriesApi = createApi({
         //     'content-type': 'text/plain',
         //  },
 
-      }) ,     
+      }) ,
+      providesTags: ["Categories"],     
     }),
     saveCategory: builder.mutation({
         query: (category) => ({
@@ -24,7 +26,8 @@ export const categoriesApi = createApi({
             //     'content-type': 'text/plain',
             //  },
 
-        }) ,     
+        }) ,  
+        invalidatesTags: ["Categories"],   
     }),
     deleteCategory: builder.mutation({
       query: (category) => ({
@@ -35,7 +38,8 @@ export const categoriesApi = createApi({
           //     'content-type': 'text/plain',
           //  },
 
-      }) ,     
+      }) , 
+      invalidatesTags: ["Categories"],    
     })
   })
 });
