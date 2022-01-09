@@ -32,12 +32,15 @@ export default function CategoriesList() {
   //     dispatch(fetchCategories());    
   // }, []);
   const delCat = (category: any) =>{
-    deleteCategory(category).unwrap().then(res=>{
-      console.log(res);
-      setSnakMessage('Category deleted successfully');
-    }).catch(err=>{
-      console.log(err);
-    });
+    const isDelete = window.confirm('Are you sure you want to delete this category?');
+    if(isDelete){
+      deleteCategory(category).unwrap().then(res=>{
+        console.log(res);
+        setSnakMessage('Category deleted successfully');
+      }).catch(err=>{
+        console.log(err);
+      });
+    }    
   }
   return (
     <TableContainer component={Paper}>
