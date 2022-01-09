@@ -28,7 +28,7 @@ export const employerApi = createApi({
     }),
     deleteEmployer: builder.mutation({
       query: (employer) => ({
-          url: `v1/categories/${employer.id }`,
+          url: `v1/employer/${employer.id }`,
           method: 'DELETE',
           body: employer
           //   headers: {
@@ -36,7 +36,7 @@ export const employerApi = createApi({
           //  },
 
       }) ,     
-    })
+    }),    
   })
 });
 

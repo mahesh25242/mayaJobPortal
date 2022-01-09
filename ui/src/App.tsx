@@ -16,7 +16,7 @@ const AppRoutes = () => {
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
   const SignOut = React.lazy(() => import("./pages/signOut/SignOut"));
-  const ChangePassword = React.lazy(() => import("./pages/admin/changePassword/ChangePassword"));
+  const ChangePassword = React.lazy(() => import("./pages/changePassword/ChangePassword"));
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
 
   return <Routes>

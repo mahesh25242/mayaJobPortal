@@ -8,7 +8,7 @@ export const jobSeekerApi = createApi({
   endpoints: (builder) => ({
     getSeekers: builder.query({
       query: () => ({
-          url: `v1/employer`,
+          url: `v1/seeker`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -17,7 +17,7 @@ export const jobSeekerApi = createApi({
     }),
     saveSeeker: builder.mutation({
         query: (employer) => ({
-            url: `v1/employer/${employer.id }`,
+            url: `v1/seeker/${employer.id }`,
             method: 'POST',
             body: employer
             //   headers: {
@@ -28,7 +28,7 @@ export const jobSeekerApi = createApi({
     }),
     deleteSeeker: builder.mutation({
       query: (employer) => ({
-          url: `v1/categories/${employer.id }`,
+          url: `v1/seeker/${employer.id }`,
           method: 'DELETE',
           body: employer
           //   headers: {
@@ -36,7 +36,7 @@ export const jobSeekerApi = createApi({
           //  },
 
       }) ,     
-    })
+    })    
   })
 });
 

@@ -25,6 +25,15 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->post('checkLogin','UserController@checkLogin');
     $router->post('refreshToken','UserController@refreshToken');
     $router->get('categories','CategoryController@categories');
+    
+    
+    $router->group(['prefix' => 'blogs'], function () use ($router) {
+        $router->get('/','BlogController@blogs');
+        $router->get('infos','BlogController@blogsInfo');
+        $router->get('/{id}','BlogController@viewDetails');
+        
+    });
+
     $router->group(['prefix' => 'employer'], function () use ($router) {
         $router->post('register','UserController@registerEmployer');
     });

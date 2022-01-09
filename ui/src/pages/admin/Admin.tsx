@@ -12,7 +12,7 @@ import CategoriesList from "./categories/CategoriesList";
 import SettingLists from "./settings/SettingLists";
 import EmployersList from "./employers/EmployersList";
 import JobSekkersList from "./jobSekkers/JobSekkersList";
-import ChangePassword from "./changePassword/ChangePassword";
+import ChangePassword from "../changePassword/ChangePassword";
 
 
 export default function Admin(){ 
