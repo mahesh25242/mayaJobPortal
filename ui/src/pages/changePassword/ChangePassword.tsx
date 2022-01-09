@@ -6,10 +6,25 @@ import Typography from "@mui/material/Typography";
 import { Controller, useForm } from "react-hook-form";
 import { useChangePasswordMutation } from '../../api/rtk/user'
 
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
 
 
 export default function ChangePassword(){
+
+    const formSchema = Yup.object().shape({
+        old_password: Yup.string()
+          .required('Old Password is required'),
+        new_password: Yup.string()
+          .required('New Password is required')
+          .min(4, 'New Password length should be at least 4 characters'),
+        confirm_password: Yup.string()
+          .required('Confirm Password is required')
+          .oneOf([Yup.ref('new_password')], 'Passwords must and should match'),
+      })
+
     const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
+        resolver: yupResolver(formSchema),
         defaultValues: {
             old_password:  '',
             new_password:  '',
@@ -37,8 +52,7 @@ export default function ChangePassword(){
             onSubmit={handleSubmit(onSubmit)}>
                 <FormControl fullWidth>                    
                     <Controller
-                        name={"old_password"}
-                        rules={{ required: { value: true, message: 'Old Password is required'} }}
+                        name={"old_password"}                        
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                             <TextField
@@ -55,8 +69,7 @@ export default function ChangePassword(){
 
                 <FormControl fullWidth>
                     <Controller
-                        name={"new_password"}
-                        rules={{ required: { value: true, message: 'New Password is required'} }}
+                        name={"new_password"}                        
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                             <TextField
@@ -73,8 +86,7 @@ export default function ChangePassword(){
 
                 <FormControl fullWidth>
                     <Controller
-                        name={"confirm_password"}
-                        rules={{ required: { value: true, message: 'Confirm Password is required'} }}
+                        name={"confirm_password"}                        
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                             <TextField

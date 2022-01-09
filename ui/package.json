@@ -6,6 +6,7 @@
     "@date-io/date-fns": "^2.11.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@hookform/resolvers": "^2.8.5",
     "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.62",
@@ -30,7 +31,8 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "typescript": "^4.5.4",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^2.1.2",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
