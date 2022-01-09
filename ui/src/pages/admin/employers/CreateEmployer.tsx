@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useSaveEmployerMutation } from '../../../api/rtk/Employer'
 import Employer from '../../../components/registration/employer/Employer';
 import Button from '@mui/material/Button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -36,6 +39,11 @@ export default function CreateEmployer(props: any) {
         setValue("id", props?.employer?.id ?? 0);
     }, [props]);
   
+    const { otpMobile, registerForm } = useSelector((state: RootState) => state)
+    const {  page } = otpMobile;
+    const formData = registerForm[page as keyof typeof registerForm];
+    
+
   const handleClose = () => props?.setEmployer(null);
 const [ saveEmployer ] = useSaveEmployerMutation();
 // const [login] = useLoginMutation();
@@ -46,7 +54,7 @@ const [ saveEmployer ] = useSaveEmployerMutation();
       console.log(childRef?.current)
     childRef?.current?.saveIt()().then((res:any)=>{
         console.log(res)
-        return saveEmployer(data).unwrap();
+        return saveEmployer(formData).unwrap();
       }).catch((err:any)=>{
         console.log(err)
       });

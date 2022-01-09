@@ -17,7 +17,7 @@ export const jobSeekerApi = createApi({
     }),
     saveSeeker: builder.mutation({
         query: (employer) => ({
-            url: `v1/seeker/${employer.id }`,
+            url: `v1/seeker/${employer?.id ?? 0 }`,
             method: 'POST',
             body: employer
             //   headers: {

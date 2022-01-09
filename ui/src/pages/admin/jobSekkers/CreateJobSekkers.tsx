@@ -9,6 +9,8 @@ import { Controller, useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { useSaveSeekerMutation } from '../../../api/rtk/jobSeeker'
 import JobSeeker from '../../../components/registration/jobSeeker/JobSeeker';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -34,6 +36,10 @@ export default function CreateJobSekkers(props: any) {
         }
     });
 
+    const { otpMobile, registerForm } = useSelector((state: RootState) => state)
+    const {  page } = otpMobile;
+    const formData = registerForm[page as keyof typeof registerForm];
+    
     React.useEffect(() => {
         setValue("name", props?.seeker?.name ?? '');
         setValue("description", props?.seeker?.description ?? '');
@@ -48,7 +54,7 @@ const [ saveSeeker ] = useSaveSeekerMutation();
   const onSubmit = (data:any) => { 
     childRef?.current?.saveIt()().then((res:any)=>{
         console.log(res)
-        return saveSeeker(data).unwrap();
+        return saveSeeker(formData).unwrap();
       }).catch((err:any)=>{
         console.log(err)
       });
