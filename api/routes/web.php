@@ -46,10 +46,10 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'employer'], function () use ($router) {
-        $router->post('register','UserController@registerEmployer');
+        $router->post('register[/{id}]','UserController@registerEmployer');
     });
     $router->group(['prefix' => 'seeker'], function () use ($router) {
-        $router->post('register','UserController@registerSeeker');
+        $router->post('register[/{id}]','UserController@registerSeeker');
         
     });
 });

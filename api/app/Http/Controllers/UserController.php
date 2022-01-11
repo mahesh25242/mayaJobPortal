@@ -81,7 +81,7 @@ class UserController extends Controller
         }    
     }
 
-    public function registerEmployer(Request $request){
+    public function registerEmployer(Request $request, $id=0){
        
         $validator = Validator::make($request->all(), [            
             'category' => ['required'],
@@ -96,16 +96,14 @@ class UserController extends Controller
             'city' => ['required', 'string'],                                                
         ]);
         
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
-        }
+        
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
         return response(['message' => 'Successfully save', 'status' => false]);
     }
 
-    public function registerSeeker(Request $request){
+    public function registerSeeker(Request $request, $id=0){
         $validator = Validator::make($request->all(), [
             'category' => ['required'],
             'name' => ['required'],
