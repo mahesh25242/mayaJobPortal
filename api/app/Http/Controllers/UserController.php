@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -87,7 +87,8 @@ class UserController extends Controller
             'category' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],            
+            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],    
+            'password' => ['required', 'min:6'],    
             'contact_name' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
@@ -100,7 +101,79 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
+      
+        if(Auth::check() && Auth::user()->role_id){
+            //create user
+            $user = \App\Models\User::updateOrCreate(
+                [
+                    'id'   => $id,
+                ],
+                [
+                    'name' => $request->input('name', ''),
+                    'email' => $request->input('email', ''),
+                    'phone' => $request->input('phone', ''),
+                    'status' => $request->input('status', 1),
+                    'password' =>  Hash::make($request->input('password', '')),
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ],
+            );
+
+            //create employer
+            $employer = \App\Models\Employer::updateOrCreate(
+                [
+                    'user_id'   => $user->id,
+                ],
+                [
+                    'name' => $request->input('name', ''),
+                    'phone' => $request->input('phone', ''),
+                    'address' => $request->input('address', ''),
+                    'country' => $request->input('country', ''),
+                    'state' => $request->input('state', ''),
+                    'district' => $request->input('district', ''),
+                    'city' => $request->input('city', ''),
+                    'category' => $request->input('category', ''),
+                    'status' => $request->input('status', 1),
+                    'lat' => $request->input('lat', ''),
+                    'lng' => $request->input('lng', ''),
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ],
+            );
+
+            //create employer SeekerPreference
+            $employerSeekerPreference = \App\Models\EmployerSeekerPreference::updateOrCreate(
+                [
+                    'employer_id'   => $employer->id,
+                ],
+                [
+                    'employer_id' => $employer->id,
+                    'gender' => $request->input('gender', ''),
+                    'marital' => $request->input('marital', ''),
+                    'food_accommodation' => $request->input('food_accommodation', ''),
+                    'working_time' => $request->input('working_time', ''),
+                    'salary' => $request->input('salary', ''),
+                    'experience' => $request->input('experience', ''),
+                    'qualifications' => $request->input('qualifications', ''),
+                    'other_demands' => $request->input('other_demands', ''),
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ],
+            );
+        }
         return response(['message' => 'Successfully save', 'status' => false]);
+    }
+
+    public  function employers(Request $request){
+        $validator = Validator::make($request->all(), [
+            'page' => ['required', 'integer'],
+            'per_page' => ['required', 'integer'],
+        ]);
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        $employers = \App\Models\Employer::with('user')->paginate($request->input('per_page', 10));
+        return response(['message' => 'Successfully get', 'data' => $employers, 'status' => true]);
     }
 
     public function registerSeeker(Request $request, $id=0){
@@ -108,7 +181,8 @@ class UserController extends Controller
             'category' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],            
+            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],  
+            'password' => ['required', 'min:6'],            
             'nationality' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            

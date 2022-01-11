@@ -16,6 +16,7 @@ class CreateSeekersTable extends Migration
         Schema::create('seekers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->default(0);
+            $table->bigInteger('category_id')->default(0);
             $table->string('phone')->nullable(); 
             $table->string('address')->nullable();                 
             $table->string('country')->nullable();                 

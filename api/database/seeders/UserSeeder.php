@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
                 'status' => 1,
                 'email' => 'admin@mayajobs.com',
                 'password' => Hash::make('123456'),
-                'phone' => '123456'
+                'phone' => '123456',
+                'role_id' => 1
             ];
             $user = \App\Models\User::create($input);
         }

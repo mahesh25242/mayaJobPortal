@@ -46,6 +46,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     });
 
     $router->group(['prefix' => 'employer'], function () use ($router) {
+        $router->get('/','UserController@employers');   
         $router->post('register[/{id}]','UserController@registerEmployer');
     });
     $router->group(['prefix' => 'seeker'], function () use ($router) {

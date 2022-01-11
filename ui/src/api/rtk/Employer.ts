@@ -8,7 +8,7 @@ export const employerApi = createApi({
   endpoints: (builder) => ({
     getEmployers: builder.query({
       query: () => ({
-          url: `v1/employer`,
+          url: `v1/employer?page=1&per_page=20`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },

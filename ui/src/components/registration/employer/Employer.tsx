@@ -46,7 +46,7 @@ interface IFormValues {
     experience?: string;
     qualifications?: string;
     other_demands?: string,
-
+    password?: string;
     lat?: string;
     lng?: string;
     
@@ -185,6 +185,20 @@ const Employer = forwardRef((props, empRef) =>  {
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 mt={2}>
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"password"}   
+                        rules={{ required: { value: true, message: 'Passord is required'} }}             
+                        control={control}
+                        render={({ field: { onChange, value =  '' } }) => (
+                        <TextField 
+                        error={!!errors.password}
+                        helperText={ (errors.password) ? errors.password?.message: '' }
+                        type="password" fullWidth onChange={onChange} value={value} label={"Password"} />
+                        )}
+                    />                   
+                </FormControl>
+
                 <FormControl fullWidth>                    
                     <Controller
                         name={"phone"}   

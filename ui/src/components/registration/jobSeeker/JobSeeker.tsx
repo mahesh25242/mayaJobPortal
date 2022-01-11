@@ -27,7 +27,7 @@ interface IFormValues {
     marital?: string;
     languages?: string;
     religion?: string;
-    
+    password?: string;
     country?: string;
     pin?: string;
     state?: string;
@@ -174,6 +174,20 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 mt={2}>
+                     <FormControl fullWidth>                    
+                    <Controller
+                        name={"password"}   
+                        rules={{ required: { value: true, message: 'Passord is required'} }}             
+                        control={control}
+                        render={({ field: { onChange, value =  '' } }) => (
+                        <TextField 
+                        error={!!errors.password}
+                        helperText={ (errors.password) ? errors.password?.message: '' }
+                        type="password" fullWidth onChange={onChange} value={value} label={"Password"} />
+                        )}
+                    />                   
+                </FormControl>
+                
                 <FormControl fullWidth>                    
                     <Controller
                         name={"phone"}
