@@ -50,5 +50,14 @@ class Category extends Model implements AuthenticatableContract, AuthorizableCon
         return  $billedText;
     }
 
-    
+    public function employer()
+    {
+        return $this->hasMany('App\Models\Employer');
+    }
+
+    public function seeker()
+    {
+        return $this->hasMany('App\Models\Seeker');
+    }
+
 }

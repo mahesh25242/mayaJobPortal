@@ -34,4 +34,8 @@ class SeekerPreference extends Model implements AuthenticatableContract, Authori
         'deleted_by' => 'integer'
     ];
 
+    public function employer()
+    {
+        return $this->belongsTo('App\Models\Employer');
+    }
 }

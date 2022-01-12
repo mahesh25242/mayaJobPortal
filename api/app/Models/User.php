@@ -42,4 +42,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'deleted_by' => 'integer'
     ];
 
+    public function seeker()
+    {
+        return $this->hasOne('App\Models\Seeker');
+    }
+
+    public function employer()
+    {
+        return $this->hasOne('App\Models\Employer');
+    }
 }

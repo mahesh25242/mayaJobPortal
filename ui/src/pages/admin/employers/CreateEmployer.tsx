@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 
-
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -25,20 +24,9 @@ const style = {
 
 export default function CreateEmployer(props: any) {
     const childRef: null | {current: any} = React.useRef();  
-    const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
-        defaultValues: {
-            name: props?.employer?.name ?? '',
-            description: props?.employer?.description ?? '',
-            id: props?.employer?.id ?? 0
-        }
-    });
-
-    React.useEffect(() => {
-        setValue("name", props?.employer?.name ?? '');
-        setValue("description", props?.employer?.description ?? '');
-        setValue("id", props?.employer?.id ?? 0);
-    }, [props]);
-  
+    
+    
+        
     const { otpMobile, registerForm } = useSelector((state: RootState) => state)
     const {  page } = otpMobile;
     const formData = registerForm[page as keyof typeof registerForm];

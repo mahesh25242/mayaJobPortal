@@ -21,7 +21,7 @@ class Seeker extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $fillable = [
-        'user_id', 'phone', 'address', 'country',
+        'user_id', 'category_id', 'phone', 'address', 'country',
         'state', 'city', 'district',  'pin',
         'dob', 'gender', 'religion', 'marital', 'languages',
         'status', 'edu_qualification', 'tech_qualification',
@@ -37,5 +37,15 @@ class Seeker extends Model implements AuthenticatableContract, AuthorizableContr
         'updated_by' => 'integer',
         'deleted_by' => 'integer'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
 
 }

@@ -21,7 +21,7 @@ class Employer extends Model implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'user_id','name',  'phone', 'address',
+        'user_id', 'category_id','name',  'phone', 'address',
         'country', 'state', 'city', 'district',
         'status', 'admin_note', 'lat', 'lng', 'created_by', 
         'updated_by', 'deleted_by', 
@@ -36,5 +36,20 @@ class Employer extends Model implements AuthenticatableContract, AuthorizableCon
         'updated_by' => 'integer',
         'deleted_by' => 'integer'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
+
+    public function seekerPreference()
+    {
+        return $this->hasOne('App\Models\SeekerPreference');
+    }
 
 }

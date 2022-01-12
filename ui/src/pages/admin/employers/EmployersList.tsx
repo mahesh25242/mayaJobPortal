@@ -12,6 +12,7 @@ import CreateJobSekkers from './CreateEmployer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rtk/Employer'
 
+import { setRegisterForm } from '../../../components/registration/registerFormSlice'
 
 import Link from '@mui/material/Link';
 import Search from '../Search';
@@ -26,6 +27,7 @@ export default function EmployersList() {
     const [ deleteEmployer ] = useDeleteEmployerMutation();
     
     
+    
   //   React.useEffect(() => {
   //     dispatch(fetchCategories());    
   // }, []);
@@ -36,6 +38,11 @@ export default function EmployersList() {
       console.log(err);
     });
   }
+
+  const editEMployer = (employer: any) =>{
+    dispatch(setRegisterForm({employer: employer}));
+    setEmployer(employer); 
+  };
   return (
     <TableContainer component={Paper}>
         
@@ -55,7 +62,7 @@ export default function EmployersList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((row:any) => (
+          { data && data?.data && data?.data?.data && data?.data?.data.map((row:any) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -64,7 +71,7 @@ export default function EmployersList() {
                 {row.id}
               </TableCell>
               <TableCell align="right">
-                <Link href='#' onClick={() => setEmployer(row)}>{row.name}</Link>
+                <Link href='#' onClick={() => editEMployer(row) }>{row.name}</Link>
               </TableCell>
               <TableCell align="right">{row.status_text}</TableCell>              
               <TableCell align="right">                
@@ -73,7 +80,7 @@ export default function EmployersList() {
             </TableRow>
           ))}
           {
-            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+            (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
           }
         </TableBody>
       </Table>
