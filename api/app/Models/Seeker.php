@@ -38,6 +38,20 @@ class Seeker extends Model implements AuthenticatableContract, AuthorizableContr
         'deleted_by' => 'integer'
     ];
 
+    protected $appends = array('status_text');
+
+    public function getStatusTextAttribute()
+    {        
+        switch($this->status){
+            case 1:
+                return 'Active';
+            break;
+            default:
+            return 'In-Active';
+            break;
+        }        
+    }
+    
     public function user()
     {
         return $this->belongsTo('App\Models\User');

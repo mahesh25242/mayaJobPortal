@@ -11,23 +11,12 @@ import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
 
-
-// const categories = [
-//     {
-//         id: 1,
-//         name: 'category 1'
-//     },
-//     {
-//         id: 2,
-//         name: 'category 2'
-//     }
-// ]
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
 
 interface IFormValues {
     phone?: string;
-    category?: string;
+    category_id?: number;
     name?: string;
     email?: string;
     secondry_phone?: string;
@@ -56,10 +45,9 @@ interface IFormValues {
   
 const Employer = forwardRef((props, empRef) =>  {
     // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
-    const formData = useSelector((state: RootState) => state.registerForm?.employer)
-    
+    const formData = useSelector((state: RootState) => state.registerForm?.employer)    
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
-        defaultValues: formData
+        defaultValues: {...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
     const dispatch = useDispatch()
     
@@ -70,14 +58,17 @@ const Employer = forwardRef((props, empRef) =>  {
 
         saveIt() {            
             return handleSubmit(onSubmit, onError);                        
+        },
+        formAllData(){
+            return getValues();
         }
     
       }));
     
 
-    const onSubmit = (data:any) => {
-        dispatch(setOtpPhone( {mobile: getValues('phone'),page: 'employer' } ))        
-        dispatch(setRegisterForm({employer: data}))        
+    const onSubmit = (data:any) => {        
+        dispatch(setOtpPhone( {mobile: getValues('phone'),page: 'employer' } ))          
+        dispatch(setRegisterForm({employer: data}))         
     };
 
     const onError  = (errors:any) => {
@@ -85,9 +76,8 @@ const Employer = forwardRef((props, empRef) =>  {
     };
  
     const { ref, autocompleteRef } = usePlacesWidget({
-        apiKey:process.env.REACT_APP_GOOGLE_MAP_API,
-        onPlaceSelected: (place) => {
-            
+        apiKey:process.env.REACT_APP_GOOGLE_MAP_API,        
+        onPlaceSelected: (place) => {            
             place.address_components.forEach((element:any) => {
                 if(element.types.includes("locality")){
                     setValue("city", element.long_name)
@@ -128,15 +118,15 @@ const Employer = forwardRef((props, empRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         rules={{ required: { value: true, message: 'Category is required'} }}
-                        name={"category"}
+                        name={"category_id"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <TextField 
-                        error={!!errors.category}
-                        helperText={ (errors.category) ? errors.category?.message: '' }
+                        error={!!errors.category_id}
+                        helperText={ (errors.category_id) ? errors.category_id?.message: '' }
 
                         fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             <MenuItem value={''}>
+                             <MenuItem value={0}>
                                 Please Select
                             </MenuItem>
                              {data && data.map((cat: any) => (
@@ -188,7 +178,7 @@ const Employer = forwardRef((props, empRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"password"}   
-                        rules={{ required: { value: true, message: 'Passord is required'} }}             
+                        rules={{ required: { value: (!formData?.id) ? true : false, message: 'Passord is required'} }}             
                         control={control}
                         render={({ field: { onChange, value =  '' } }) => (
                         <TextField 

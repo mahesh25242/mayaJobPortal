@@ -16,7 +16,7 @@ import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
 
 interface IFormValues {
     phone?: string;
-    category?: string;
+    category_id?: number;
     name?: string;
     email?: string;
     secondry_phone?: string;    
@@ -48,7 +48,7 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
     const formData = useSelector((state: RootState) => state.registerForm?.seeker)
     
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
-        defaultValues: formData
+        defaultValues: {...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
     
     const dispatch = useDispatch()
@@ -74,6 +74,9 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
         saveIt() {
             return handleSubmit(onSubmit, onError);
 
+        },
+        formAllData(){
+            return getValues();
         }
 
     }));
@@ -118,15 +121,15 @@ const JobSeeker = forwardRef((props, seekRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         rules={{ required: { value: true, message: 'Category is required'} }}
-                        name={"category"}
+                        name={"category_id"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <TextField 
-                        error={!!errors.category}
-                        helperText={ (errors.category) ? errors.category?.message: '' }
+                        error={!!errors.category_id}
+                        helperText={ (errors.category_id) ? errors.category_id?.message: '' }
 
                         fullWidth onChange={onChange} value={value} label={"Job Category"} select>
-                             <MenuItem value={''}>
+                             <MenuItem value={0}>
                                 Please Select
                             </MenuItem>
                              {data && data.map((cat: any) => (

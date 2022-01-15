@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rtk/Employer'
 
 import { setRegisterForm } from '../../../components/registration/registerFormSlice'
-
+import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice'
 import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
@@ -32,15 +32,30 @@ export default function EmployersList() {
   //     dispatch(fetchCategories());    
   // }, []);
   const delEmployer = (employer: any) =>{
-    deleteEmployer(employer).unwrap().then(res=>{
-      console.log(res);
-    }).catch(err=>{
-      console.log(err);
-    });
+    const conf =  window.confirm(`Are you sure you want to delete ${employer.name}?`);
+    if(conf){
+      deleteEmployer(employer).unwrap().then(res=>{
+        console.log(res);
+      }).catch(err=>{
+        console.log(err);
+      });
+    }
+    
   }
 
   const editEMployer = (employer: any) =>{
-    dispatch(setRegisterForm({employer: employer}));
+    let empData = employer;
+    if(employer){
+      empData = {...employer, ...{
+        email: employer?.user?.email,
+        phone: employer?.user?.phone,                
+        contact_name: employer?.user?.name,
+        id: employer?.user?.id,
+      }}
+    }
+    
+    dispatch(setOtpPhone( {page: 'employer' } ))    
+    dispatch(setRegisterForm({employer: empData}));
     setEmployer(employer); 
   };
   return (

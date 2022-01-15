@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface registerFormState {
   employer?: any;
@@ -13,7 +13,7 @@ export const RegisterFormSlice = createSlice({
   name: 'registerForm',
   initialState,
   reducers: {
-    setRegisterForm: (state, regForm) => {
+    setRegisterForm: (state, regForm) => {      
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -24,6 +24,15 @@ export const RegisterFormSlice = createSlice({
     
   },
 })
+
+export const getRegForm = createSelector(
+  (state:any) => {       
+    return {
+      registerForm: state.registerForm,      
+     };
+  }, (state) =>  state
+);
+
 
 // Action creators are generated for each case reducer function
 export const { setRegisterForm } = RegisterFormSlice.actions

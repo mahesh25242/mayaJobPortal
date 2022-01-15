@@ -46,8 +46,7 @@ class Category extends Model implements AuthenticatableContract, AuthorizableCon
             default:
             return 'In-Active';
             break;
-        }
-        return  $billedText;
+        }        
     }
 
     public function employer()

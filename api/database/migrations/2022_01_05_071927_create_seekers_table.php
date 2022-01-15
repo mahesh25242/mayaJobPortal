@@ -24,7 +24,7 @@ class CreateSeekersTable extends Migration
             $table->string('city')->nullable();                 
             $table->string('district')->nullable();                 
             $table->string('pin')->nullable();                 
-            $table->dateTime('dob')->nullable();                 
+            $table->date('dob')->nullable();                 
             $table->string('gender')->nullable();                 
             $table->string('religion')->nullable();                 
             $table->string('marital')->nullable();                 

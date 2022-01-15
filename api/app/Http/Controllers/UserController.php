@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -83,19 +84,22 @@ class UserController extends Controller
 
     public function registerEmployer(Request $request, $id=0){
        
-        $validator = Validator::make($request->all(), [            
-            'category' => ['required'],
+        $validationArr = [            
+            'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],    
-            'password' => ['required', 'min:6'],    
+            'email' => ['required', 'email', 'unique:users,email,'.$id],
+            'phone' => ['required', 'unique:users,phone,'.$id, 'integer'],                
             'contact_name' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
             'state' => ['string'],
             'district' => ['required', 'string'],
             'city' => ['required', 'string'],                                                
-        ]);
+        ];
+        if(!$id && Auth::check()){
+            $validationArr["password"] = ['required', 'min:6'];
+        }
+        $validator = Validator::make($request->all(), $validationArr);
         
         
         if($validator->fails()){
@@ -109,7 +113,7 @@ class UserController extends Controller
                     'id'   => $id,
                 ],
                 [
-                    'name' => $request->input('name', ''),
+                    'name' => $request->input('contact_name', ''),
                     'email' => $request->input('email', ''),
                     'phone' => $request->input('phone', ''),
                     'status' => $request->input('status', 1),
@@ -126,13 +130,13 @@ class UserController extends Controller
                 ],
                 [
                     'name' => $request->input('name', ''),
-                    'phone' => $request->input('phone', ''),
+                    'phone' => $request->input('secondry_phone', ''),
                     'address' => $request->input('address', ''),
                     'country' => $request->input('country', ''),
                     'state' => $request->input('state', ''),
                     'district' => $request->input('district', ''),
                     'city' => $request->input('city', ''),
-                    'category' => $request->input('category', ''),
+                    'category_id' => $request->input('category_id', ''),
                     'status' => $request->input('status', 1),
                     'lat' => $request->input('lat', ''),
                     'lng' => $request->input('lng', ''),
@@ -141,8 +145,8 @@ class UserController extends Controller
                 ],
             );
 
-            //create employer SeekerPreference
-            $employerSeekerPreference = \App\Models\EmployerSeekerPreference::updateOrCreate(
+            //create SeekerPreference
+            $seekerPreference = \App\Models\SeekerPreference::updateOrCreate(
                 [
                     'employer_id'   => $employer->id,
                 ],
@@ -172,13 +176,13 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-        $employers = \App\Models\Employer::with('user')->paginate($request->input('per_page', 10));
+        $employers = \App\Models\Employer::with(['user', 'seekerPreference'])->paginate($request->input('per_page', 10));
         return response(['message' => 'Successfully get', 'data' => $employers, 'status' => true]);
     }
 
     public function registerSeeker(Request $request, $id=0){
         $validator = Validator::make($request->all(), [
-            'category' => ['required'],
+            'category_id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
             'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],  
@@ -197,7 +201,96 @@ class UserController extends Controller
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
 
+        if(Auth::check() && Auth::user()->role_id){
+            //create user
+            $user = \App\Models\User::updateOrCreate(
+                [
+                    'id'   => $id,
+                ],
+                [
+                    'name' => $request->input('contact_name', ''),
+                    'email' => $request->input('email', ''),
+                    'phone' => $request->input('phone', ''),
+                    'status' => $request->input('status', 1),
+                    'password' =>  Hash::make($request->input('password', '')),
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ],
+            );
+
+            $dob = '';
+            if($request->input('dob', '')){
+                $dob = Carbon::parse($request->input('dob', ''));
+                $dob = $dob->format('Y-m-d');
+            }            
+
+            //create employer
+            $employer = \App\Models\Seeker::updateOrCreate(
+                [
+                    'user_id'   => $user->id,
+                ],
+                [
+                    'name' => $request->input('name', ''),
+                    'phone' => $request->input('secondry_phone', ''),
+                    'address' => $request->input('address', ''),
+                    'country' => $request->input('country', ''),
+                    'state' => $request->input('state', ''),
+                    'district' => $request->input('district', ''),
+                    'city' => $request->input('city', ''),
+                    'pin' => $request->input('pin', ''),
+                    'dob' => $dob,
+                    'gender' => $request->input('gender', ''),
+                    'religion' => $request->input('religion', ''),
+                    'marital' => $request->input('marital', ''),
+                    'languages' => $request->input('languages', ''),
+                    'languages' => $request->input('languages', ''),
+                    'status' => $request->input('status', 1),
+                    'edu_qualification' => $request->input('edu_qualification', 1),
+                    'tech_qualification' => $request->input('tech_qualification', 1),
+                    'experience' => $request->input('experience', 1),
+                    'academic_profile' => $request->input('academic_profile', 1),
+                    'expected_salary' => $request->input('expected_salary', 1),
+                    'lat' => $request->input('lat', ''),
+                    'lng' => $request->input('lng', ''),
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ],
+            );
+
+            
+        }
+
         return response(['message' => 'Successfully save', 'status' => false]);
+    }
+
+    public function seeker(Request $request){
+        $validator = Validator::make($request->all(), [
+            'page' => ['required', 'integer'],
+            'per_page' => ['required', 'integer'],
+        ]);
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        $seekers = \App\Models\Seeker::with(['user'])->paginate($request->input('per_page', 10));
+        return response(['message' => 'Successfully get', 'data' => $seekers, 'status' => true]);
+    }
+    /* delete a user */
+    public function delete(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'id' => ['required', 'integer'],
+        ]);
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        $user = \App\Models\User::find($id);
+        if(!$user){
+            return response(['message' => 'User not found', 'status' => false], 404);
+        }
+        
+        event(new \App\Events\UserDeleteEvent($user));
+        
+
+        return response(['message' => 'Successfully deleted', 'status' => true]);
     }
     //
 }

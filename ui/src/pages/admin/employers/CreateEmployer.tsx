@@ -1,12 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useForm } from 'react-hook-form';
 import { useSaveEmployerMutation } from '../../../api/rtk/Employer'
 import Employer from '../../../components/registration/employer/Employer';
 import Button from '@mui/material/Button';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,24 +23,25 @@ export default function CreateEmployer(props: any) {
     const childRef: null | {current: any} = React.useRef();  
     
     
-        
-    const { otpMobile, registerForm } = useSelector((state: RootState) => state)
-    const {  page } = otpMobile;
-    const formData = registerForm[page as keyof typeof registerForm];
     
 
   const handleClose = () => props?.setEmployer(null);
 const [ saveEmployer ] = useSaveEmployerMutation();
 // const [login] = useLoginMutation();
 
+
   
-    console.log(props);
-  const onSubmit = (data:any) => { 
-      console.log(childRef?.current)
-    childRef?.current?.saveIt()().then((res:any)=>{
-        console.log(res)
-        return saveEmployer(formData).unwrap();
-      }).catch((err:any)=>{
+    // console.log(registerForm, page);
+  const onSubmit = () => {       
+    childRef?.current?.saveIt()().then(()=>{
+      
+        return saveEmployer(childRef?.current?.formAllData()).unwrap();
+      })
+      .then((res:any)=>{        
+        console.log(res);
+        handleClose();
+      })
+      .catch((err:any)=>{
         console.log(err)
       });
 

@@ -5,6 +5,7 @@ import { baseQry } from "./baseQry";
 export const employerApi = createApi({
   reducerPath: "employerApi",
   baseQuery: baseQry(),
+  tagTypes:["Employers"],
   endpoints: (builder) => ({
     getEmployers: builder.query({
       query: () => ({
@@ -13,7 +14,8 @@ export const employerApi = createApi({
         //     'content-type': 'text/plain',
         //  },
 
-      }) ,     
+      }) ,
+      providesTags: ["Employers"],     
     }),
     saveEmployer: builder.mutation({
         query: (employer) => ({
@@ -24,18 +26,20 @@ export const employerApi = createApi({
             //     'content-type': 'text/plain',
             //  },
 
-        }) ,     
+        }) ,  
+        invalidatesTags: ["Employers"],        
     }),
     deleteEmployer: builder.mutation({
       query: (employer) => ({
-          url: `v1/employer/${employer.id }`,
+          url: `v1/employer/delete/${employer.user_id }`,
           method: 'DELETE',
           body: employer
           //   headers: {
           //     'content-type': 'text/plain',
           //  },
 
-      }) ,     
+      }) ,   
+      invalidatesTags: ["Employers"],      
     }),    
   })
 });

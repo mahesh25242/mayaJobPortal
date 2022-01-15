@@ -42,6 +42,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'deleted_by' => 'integer'
     ];
 
+    protected $appends = array('status_text');
+
+    public function getStatusTextAttribute()
+    {        
+        switch($this->status){
+            case 1:
+                return 'Active';
+            break;
+            default:
+            return 'In-Active';
+            break;
+        }        
+    }
+
+    
     public function seeker()
     {
         return $this->hasOne('App\Models\Seeker');

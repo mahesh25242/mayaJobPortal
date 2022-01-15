@@ -54,7 +54,7 @@ const [ saveSeeker ] = useSaveSeekerMutation();
   const onSubmit = (data:any) => { 
     childRef?.current?.saveIt()().then((res:any)=>{
         console.log(res)
-        return saveSeeker(formData).unwrap();
+        return saveSeeker(childRef?.current?.formAllData()).unwrap();
       }).catch((err:any)=>{
         console.log(err)
       });

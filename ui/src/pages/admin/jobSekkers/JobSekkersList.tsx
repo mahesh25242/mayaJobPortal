@@ -56,16 +56,16 @@ export default function JobSekkersList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((row:any) => (
+        { data && data?.data && data?.data?.data && data?.data?.data.map((row:any) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
               <TableCell align="right">
-                <Link href='#' onClick={() => setSeeker(row)}>{row.name}</Link>
+                <Link href='#' onClick={() => setSeeker(row)}>{row.user.name}</Link>
               </TableCell>
               <TableCell align="right">{row.status_text}</TableCell>              
               <TableCell align="right">                
@@ -73,8 +73,8 @@ export default function JobSekkersList() {
               </TableCell>
             </TableRow>
           ))}
-           {
-            (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          {
+            (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
           }
         </TableBody>
       </Table>

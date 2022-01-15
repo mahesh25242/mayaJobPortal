@@ -8,7 +8,6 @@ import React from "react";
 
 export default function Search(props: any){
     const [val, setVal] = React.useState<DateRange<Date>>([null, null]);
-console.log(val)
     const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
         defaultValues: {
             name: '',
