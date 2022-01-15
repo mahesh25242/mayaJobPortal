@@ -53,6 +53,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->group(['prefix' => 'seeker'], function () use ($router) {
         $router->get('/','UserController@seeker');   
         $router->post('register[/{id}]','UserController@registerSeeker');
+        $router->delete('delete/{id}','UserController@delete');
         
     });
 });
