@@ -46,7 +46,7 @@ export default function CreateBlog(props: any) {
         setValue("meta_description", props?.blog?.meta_description ?? '');
         setValue("meta_keywords", props?.blog?.meta_keywords ?? '');
         setValue("id", props?.blog?.id ?? 0);
-        setValue("status", props?.blog?.status ?? 1);
+        setValue("status", +props?.blog?.status ?? 1);
     }, [props]);
   
     
@@ -156,8 +156,7 @@ const [ saveBlog ] = useSaveBlogMutation();
                           />
                         )}
                     />                   
-                </FormControl> 
-
+                </FormControl>                             
                 <FormControl fullWidth>                    
                     <Controller
                         name={"status"}                        

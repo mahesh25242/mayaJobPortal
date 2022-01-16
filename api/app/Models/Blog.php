@@ -35,7 +35,7 @@ class Blog extends Model implements AuthenticatableContract, AuthorizableContrac
         'deleted_by' => 'integer'
     ];
 
-    protected $appends = array('status_text');
+    protected $appends = array('status_text', 'image_path');
 
     public function getStatusTextAttribute()
     {        
@@ -51,4 +51,17 @@ class Blog extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     
+
+    public function getImagePathAttribute()
+    {
+        if($this->image){
+            if(file_exists("assets/blog/{$this->image}")){
+                return url("assets/blog/{$this->image}");
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
 }

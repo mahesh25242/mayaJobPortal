@@ -43,7 +43,7 @@ export const blogsApi = createApi({
     }),
     deleteBlog: builder.mutation({
       query: (blog) => ({
-          url: `v1/categories/${blog.id }`,
+          url: `v1/blogs/${blog.id }`,
           method: 'DELETE',
           body: blog
           //   headers: {
