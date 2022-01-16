@@ -8,12 +8,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 
 class Blog extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use HasApiTokens, Authenticatable, Authorizable, HasFactory, SoftDeletes;
+    use HasApiTokens, Authenticatable, Authorizable, HasFactory;
 
     /**
      * The attributes that are mass assignable.

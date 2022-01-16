@@ -11,6 +11,7 @@ import { employerApi } from '../api/rtk/Employer';
 import { SettingApi } from '../api/rtk/Setting';
 import { jobSeekerApi } from '../api/rtk/jobSeeker';
 import { UserApi } from '../api/rtk/user';
+import { blogsApi } from '../api/rtk/blog';
 
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
@@ -25,6 +26,7 @@ export const store = configureStore({
     [SettingApi.reducerPath]: SettingApi.reducer,
     [jobSeekerApi.reducerPath]: jobSeekerApi.reducer,
     [UserApi.reducerPath]: UserApi.reducer,
+    [blogsApi.reducerPath]: blogsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
   getDefaultMiddleware().concat(
@@ -33,6 +35,7 @@ export const store = configureStore({
     SettingApi.middleware, 
     jobSeekerApi.middleware,
     UserApi.middleware,
+    blogsApi.middleware,
   ),
 })
 

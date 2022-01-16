@@ -97,6 +97,10 @@ const ResponsiveAppBar = () => {
             url: '/admin/job-seekers'
           },
           {
+            title: 'Blogs',
+            url: '/admin/blogs'
+          },
+          {
             title: 'Settings',
             url: '/admin/settings'
           }

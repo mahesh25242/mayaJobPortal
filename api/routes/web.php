@@ -34,6 +34,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
 
     $router->group(['prefix' => 'blogs'], function () use ($router) {
         $router->get('/','BlogController@blogs');
+        $router->post('/{id}','BlogController@save');
         $router->get('infos','BlogController@blogsInfo');
         $router->get('/{id}','BlogController@viewDetails');
         

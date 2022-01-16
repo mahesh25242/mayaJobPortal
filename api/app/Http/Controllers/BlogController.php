@@ -18,7 +18,7 @@ class BlogController extends Controller
         //
     }
 
-    public function save(Request $request){
+    public function save(Request $request, $id=0){
         $validator = Validator::make($request->all(), [                       
             'name' => ['required'],
             'description' => ['required'],
@@ -31,7 +31,7 @@ class BlogController extends Controller
         }
            
              
-        $category = \App\Models\Blog::updateOrCreate(
+        $blog = \App\Models\Blog::updateOrCreate(
             [
                'id'   => $request->input("id", 0),
             ],
@@ -46,14 +46,14 @@ class BlogController extends Controller
         return response(['message' => 'Successfully saved', 'status' => true]);
     }
 
-    public function categories(Request $request){       
-        $categories = \App\Models\Category::all();
-        return response($categories);
+    public function blogs(Request $request){       
+        $blogs = \App\Models\Blog::all();
+        return response($blogs);
     }
 
     public function delete($id=0){
-        $category = \App\Models\Category::find($id);
-        $category->delete();
+        $blog = \App\Models\Blog::find($id);
+        $blog->delete();
         return response(['message' => 'Successfully deleted', 'status' => true]);
     }
 
