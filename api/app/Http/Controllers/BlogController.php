@@ -29,19 +29,31 @@ class BlogController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-           
-             
+
+        
+        $fileName = null;
+        if ($request->hasFile('image')) {
+            $destinationPath = "assets/blog";
+            $extension = $request->file('image')->extension();
+            $fileName = sprintf("%s.%s", uniqid('blog_'),$extension);
+            $request->file('image')->move($destinationPath, $fileName);            
+        }
+         
+        $updateArr = [            
+            'name'     => $request->input('name', ''),
+            'description' => $request->input('description', ''),
+            'meta_description' => $request->input('meta_description', ''),
+            'meta_keywords' => $request->input('meta_keywords', ''),               
+            'status'    => $request->input("status", '')              
+         ];
+        if($fileName){
+            $updateArr["image"] = $fileName;
+        }
         $blog = \App\Models\Blog::updateOrCreate(
             [
                'id'   => $request->input("id", 0),
             ],
-            [
-               'name'     => $request->input('name', ''),
-               'description' => $request->input('description', ''),
-               'meta_description' => $request->input('meta_description', ''),
-               'meta_keywords' => $request->input('meta_keywords', ''),               
-               'status'    => $request->input("status", '')              
-            ],
+            $updateArr 
         );
         return response(['message' => 'Successfully saved', 'status' => true]);
     }

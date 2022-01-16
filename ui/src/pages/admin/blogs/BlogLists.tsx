@@ -64,7 +64,7 @@ export default function CategoriesList() {
         <TableBody>
           {data && data.map((row:any) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">

@@ -29,26 +29,27 @@ export default function CreateBlog(props: any) {
     
 
     const { register, handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
-        // defaultValues: {
-        //     name: props?.blog?.name ?? '',
-        //     image: null,
-        //     description: props?.blog?.description ?? '',
-        //     meta_description: props?.blog?.meta_description ?? '',
-        //     meta_keywords: props?.blog?.meta_keywords ?? '',
-        //     id: props?.blog?.id ?? 0,
-        //     status: props?.blog?.status ?? 1,
-        // }
+        defaultValues: {
+            name: props?.blog?.name ?? '',
+            image: null,
+            description: props?.blog?.description ?? '',
+            meta_description: props?.blog?.meta_description ?? '',
+            meta_keywords: props?.blog?.meta_keywords ?? '',
+            id: props?.blog?.id ?? 0,
+            status: props?.blog?.status ?? 1,
+        }
     });
 
-    // React.useEffect(() => {
-    //     setValue("name", props?.blog?.name ?? '');
-    //     setValue("description", props?.blog?.description ?? '');
-    //     setValue("meta_description", props?.blog?.meta_description ?? '');
-    //     setValue("meta_keywords", props?.blog?.meta_keywords ?? '');
-    //     setValue("id", props?.blog?.id ?? 0);
-    //     setValue("status", props?.blog?.status ?? 1);
-    // }, [props]);
+    React.useEffect(() => {
+        setValue("name", props?.blog?.name ?? '');
+        setValue("description", props?.blog?.description ?? '');
+        setValue("meta_description", props?.blog?.meta_description ?? '');
+        setValue("meta_keywords", props?.blog?.meta_keywords ?? '');
+        setValue("id", props?.blog?.id ?? 0);
+        setValue("status", props?.blog?.status ?? 1);
+    }, [props]);
   
+    
   const handleClose = () => props?.setBlog(null);
 const [ saveBlog ] = useSaveBlogMutation();
 // const [login] = useLoginMutation();
@@ -101,12 +102,12 @@ const [ saveBlog ] = useSaveBlogMutation();
                             variant="contained"
                             component="label"
                             >                                
-                            {  getValues("image")?.name ? getValues("image")?.name : 'Choose Image' }                            
+                            {  (getValues("image") as any)?.name ? (getValues("image") as any)?.name : 'Choose Image' }                            
                             <input
                                 type="file"
                                 accept="image/*"
                                 hidden
-                                onChange={(e) => setValue("image", e?.target?.files?.[0])}
+                                onChange={(e) => setValue("image", (e as any)?.target?.files?.[0])}
                             />
                             </Button>
 

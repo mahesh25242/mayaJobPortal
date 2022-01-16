@@ -27,7 +27,7 @@ export const blogsApi = createApi({
             blog.meta_description && formData.append("meta_description", blog.meta_description); 
             blog.meta_keywords && formData.append("meta_keywords", blog.meta_keywords); 
             blog.name && formData.append("name", blog.name); 
-            blog.status && formData.append("status", blog.status); 
+            formData.append("status", `${blog.status ?? 0}`); 
 
             return {            
                 url: `v1/blogs/${blog?.id ?? 0 }`,
