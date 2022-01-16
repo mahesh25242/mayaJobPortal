@@ -33,17 +33,17 @@ const [ saveEmployer ] = useSaveEmployerMutation();
   
     // console.log(registerForm, page);
   const onSubmit = () => {       
-    childRef?.current?.saveIt()().then(()=>{
-      
-        return saveEmployer(childRef?.current?.formAllData()).unwrap();
-      })
-      .then((res:any)=>{        
-        console.log(res);
-        handleClose();
-      })
-      .catch((err:any)=>{
-        console.log(err)
-      });
+    childRef?.current?.saveIt()().then(()=>{      
+      return saveEmployer(childRef?.current?.formAllData()).unwrap();
+    })
+    .then((res:any)=>{        
+      console.log(res);
+      props.setSnakMessage('employer created successfully');
+      handleClose();
+    })
+    .catch((err:any)=>{
+      console.log(err)
+    });
 
     // const loginResponse = saveEmployer(data).unwrap().then(res=>{
     //     console.log(res);        

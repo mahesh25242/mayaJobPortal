@@ -56,6 +56,8 @@ const [ saveSeeker ] = useSaveSeekerMutation();
         console.log(res)
         return saveSeeker(childRef?.current?.formAllData()).unwrap();
       }).catch((err:any)=>{
+        props.setSnakMessage('seeker created successfully');
+        handleClose();
         console.log(err)
       });
 

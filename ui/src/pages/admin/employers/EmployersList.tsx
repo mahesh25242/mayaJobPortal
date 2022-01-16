@@ -17,9 +17,10 @@ import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice'
 import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
+import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
 export default function EmployersList() {
-
+  const [snakMessage, setSnakMessage] = React.useState<string>('');
     const [employer, setEmployer] = React.useState<any>(null);
 
     const dispatch = useDispatch();    
@@ -36,6 +37,7 @@ export default function EmployersList() {
     if(conf){
       deleteEmployer(employer).unwrap().then(res=>{
         console.log(res);
+        setSnakMessage('employer deleted successfully');
       }).catch(err=>{
         console.log(err);
       });
@@ -61,7 +63,7 @@ export default function EmployersList() {
   return (
     <TableContainer component={Paper}>
         
-        <CreateJobSekkers employer={employer} setEmployer={setEmployer}/>
+        <CreateJobSekkers employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Employers
         </Typography>
@@ -99,6 +101,10 @@ export default function EmployersList() {
           }
         </TableBody>
       </Table>
+      {
+        snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
+      }  
+
     </TableContainer>
   );
 }
