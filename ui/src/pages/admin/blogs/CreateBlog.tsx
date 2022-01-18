@@ -47,8 +47,7 @@ export default function CreateBlog(props: any) {
         setValue("meta_keywords", props?.blog?.meta_keywords ?? '');
         setValue("id", props?.blog?.id ?? 0);
         setValue("status", +props?.blog?.status ?? 1);
-    }, [props]);
-  
+    }, [props]);  
     
   const handleClose = () => props?.setBlog(null);
 const [ saveBlog ] = useSaveBlogMutation();
@@ -161,7 +160,7 @@ const [ saveBlog ] = useSaveBlogMutation();
                     <Controller
                         name={"status"}                        
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
+                        render={({ field: { onChange, value = 1 } }) => (
                             <TextField  select                           
                             label="Status"
                             onChange={onChange} value={value} 
