@@ -17,6 +17,15 @@ export const blogsApi = createApi({
       }) ,
       providesTags: ["Blogs"],     
     }),
+    getABlog: builder.query({
+      query: (id: string) => ({
+          url: `v1/blogs/${id}`,
+        //   headers: {
+        //     'content-type': 'text/plain',
+        //  },
+
+      }) ,      
+    }),
     saveBlog: builder.mutation({
         query: (blog) => {
             console.log(blog);
@@ -57,5 +66,5 @@ export const blogsApi = createApi({
 });
 
 
-export const { useGetBlogsQuery, useSaveBlogMutation, useDeleteBlogMutation } = blogsApi;
+export const { useGetBlogsQuery, useSaveBlogMutation, useDeleteBlogMutation, useGetABlogQuery } = blogsApi;
 

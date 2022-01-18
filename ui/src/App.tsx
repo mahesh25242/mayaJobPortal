@@ -4,7 +4,7 @@ import LayOut from './lay-out/Lay-out';
 import { Route, BrowserRouter,  Routes } from 'react-router-dom';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-
+import {  HelmetProvider } from 'react-helmet-async';
 
 
 
@@ -18,7 +18,7 @@ const AppRoutes = () => {
   const SignOut = React.lazy(() => import("./pages/signOut/SignOut"));
   const ChangePassword = React.lazy(() => import("./pages/changePassword/ChangePassword"));
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
-
+  const BlogDetails = React.lazy(() => import("./pages/blog/BlogDetails"));
   return <Routes>
   <Route path="/" element={<LayOut />}>
     <Route index 
@@ -46,6 +46,11 @@ const AppRoutes = () => {
     <Route path="terms" element={
         <React.Suspense fallback={<>...</>}>
           <Terms />
+        </React.Suspense>
+      } />
+    <Route path="blog/:id" element={
+        <React.Suspense fallback={<>...</>}>
+          <BlogDetails />
         </React.Suspense>
       } />
     <Route path="admin/*" element={
@@ -76,14 +81,16 @@ function App() {
 
   return (
     <div className="App">
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <BrowserRouter>
-          {/* <LayOut>           */}
-            <AppRoutes />
-          {/* </LayOut> */}
-        
-        </BrowserRouter> 
-       </LocalizationProvider>     
+       <HelmetProvider>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <BrowserRouter>
+              {/* <LayOut>           */}
+                <AppRoutes />
+              {/* </LayOut> */}
+            
+            </BrowserRouter> 
+          </LocalizationProvider>  
+       </HelmetProvider>   
     </div>
   );
 }

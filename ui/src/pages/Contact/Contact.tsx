@@ -1,3 +1,11 @@
-const Contact = () => <div>Contact</div>
+import { Helmet } from 'react-helmet-async';
 
-export default Contact;
+export default function Contact(){
+    return (<>
+        <Helmet>
+            <title>Contact Us</title>
+        </Helmet>
+        <div>Contact</div>
+    </>);
+
+}

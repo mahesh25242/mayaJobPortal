@@ -11,7 +11,7 @@ import {
     getAuth
   } from "../../../api/users/AuthenticationSlice";
 import { useAppDispatch } from "../../../app/store";
-  
+import { Helmet } from 'react-helmet-async';
 
 export default function Login(){
     const navigate = useNavigate();
@@ -33,7 +33,11 @@ export default function Login(){
 
     };
    
-    return (<><h1>Login</h1>
+    return (<>
+    <Helmet>
+        <title>Login</title>
+    </Helmet>
+    <h1>Login</h1>
         <Stack component="form"             
             sx={{ p: '2px 4px',  alignItems: 'center' }}
             onSubmit={handleSubmit(onSubmit)}>

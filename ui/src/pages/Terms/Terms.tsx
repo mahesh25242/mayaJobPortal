@@ -1,3 +1,11 @@
-const Terms = () => <div>Terms</div>
+import { Helmet } from 'react-helmet-async';
 
-export default Terms;
+export default function Terms(){
+
+    return (<>
+    <Helmet>
+        <title>Terms</title>
+    </Helmet>
+    <div>Terms</div>
+    </>);
+};

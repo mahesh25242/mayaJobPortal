@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 
+import { Link as RouterLink } from 'react-router-dom';
 
 export function BlogHome(){
     const { data, error, isLoading } = useGetBlogsQuery('')
@@ -16,7 +17,7 @@ export function BlogHome(){
             <Typography gutterBottom variant="h5" component="div">
                 Blog Home
             </Typography>
-            {data && data.map((row:any) => <BlogCard blog={row}/>)}
+            {data && data.map((row:any, idx:number) => <BlogCard key={idx} blog={row}/>)}
         </div>
     );
 }
@@ -43,7 +44,9 @@ function BlogCard(props: any) {
         </Typography>
       </CardContent>
       <CardActions>        
-        <Button size="small">Detail</Button>
+        <Button size="small" 
+        component={RouterLink} to={`blog/${props.blog?.id}`}      
+        >Detail</Button>
       </CardActions>
     </Card>
   );

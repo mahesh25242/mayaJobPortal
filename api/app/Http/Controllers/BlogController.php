@@ -63,6 +63,11 @@ class BlogController extends Controller
         return response($blogs);
     }
 
+    public function viewDetails($id=0){       
+        $blog = \App\Models\Blog::find($id);
+        return response($blog);
+    }
+
     public function delete($id=0){
         $blog = \App\Models\Blog::find($id);
         $blog->delete();
