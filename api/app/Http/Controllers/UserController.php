@@ -45,14 +45,18 @@ class UserController extends Controller
             "client_id" => $oauthClient->id,
             "client_secret" => $oauthClient->secret,
         ]);
+       
         try {
-           return $response= app()->handle($tokenRequest);           
+            return $response= app()->handle($tokenRequest);           
         //    $content = $response->getContent();
         //    $content = json_decode($content, true); 
-        //    $content["role"]       = Auth::user()->id;
+           
+        //    $content["role_id"]       = \App\Models\User::where([
+        //     "email" => $request->input("email", '')            
+        //    ])->first()->role_id;
         //    return response($content);
         //    $rr = $response->getBody();
-        } catch (\Exception $e) {            
+        } catch (\Exception $e) {             
             return response(["success" => false, "message"=> "user not found"], 401);
         }        
 
@@ -81,7 +85,12 @@ class UserController extends Controller
             'scope' => '',
         ]);
         try {
-           return $response= app()->handle($tokenRequest);
+          return $response= app()->handle($tokenRequest);
+
+        //    $content = $response->getContent();
+        //    $content = json_decode($content, true); 
+        // //    $content["role_id"] = Auth::user()->role_id;
+        //    return response($content);
         } catch (\Exception $e) {
             return response(["success" => false, "message"=> "token expired"], 408);
         }    

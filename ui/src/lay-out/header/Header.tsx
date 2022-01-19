@@ -68,44 +68,66 @@ const ResponsiveAppBar = () => {
 
   useEffect(() => {
     if(token && token.token) {
-      setLoggedMenu({
-        settings: [
+      if(token.token?.role_id == 1){
+        setLoggedMenu({
+          settings: [
+              {
+                title: 'Change Password',
+                url: '/change-password'
+              },
+              {
+                title: 'Sign Out',
+                url: '/signOut'
+              }
+            ],
+          main: [
             {
-              title: 'Change Password',
-              url: '/change-password'
+              title: 'Dashboard',
+              url: '/admin'
+            },         
+            {
+              title: 'Categories',
+              url: '/admin/categories'
             },
             {
-              title: 'Sign Out',
-              url: '/signOut'
+              title: 'Employers',
+              url: '/admin/employers'
+            },
+            {
+              title: 'Job Seekers',
+              url: '/admin/job-seekers'
+            },
+            {
+              title: 'Blogs',
+              url: '/admin/blogs'
+            },
+            {
+              title: 'Settings',
+              url: '/admin/settings'
             }
-          ],
-        main: [
-          {
-            title: 'Dashboard',
-            url: '/admin'
-          },         
-          {
-            title: 'Categories',
-            url: '/admin/categories'
-          },
-          {
-            title: 'Employers',
-            url: '/admin/employers'
-          },
-          {
-            title: 'Job Seekers',
-            url: '/admin/job-seekers'
-          },
-          {
-            title: 'Blogs',
-            url: '/admin/blogs'
-          },
-          {
-            title: 'Settings',
-            url: '/admin/settings'
-          }
-        ]
-      });
+          ]
+        });
+      }else{
+        setLoggedMenu({
+          settings: [
+              {
+                title: 'Change Password',
+                url: '/change-password'
+              },
+              {
+                title: 'Sign Out',
+                url: '/signOut'
+              }
+            ],
+          main: [
+            {
+              title: 'Dashboard',
+              url: '/admin'
+            },                    
+          ]
+        });
+      }
+      
     }else{
       setLoggedMenu({
         settings: [],
