@@ -17,6 +17,7 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
+import { Helmet } from 'react-helmet-async';
 
 export default function CategoriesList() {  
     
@@ -45,6 +46,10 @@ export default function CategoriesList() {
   }
   return (
     <TableContainer component={Paper}>
+       <Helmet>
+            <title>Blogs</title>
+        </Helmet>
+
         <CreateBlog blog={blog} setBlog={setBlog} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Blogs

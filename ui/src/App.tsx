@@ -19,6 +19,8 @@ const AppRoutes = () => {
   const ChangePassword = React.lazy(() => import("./pages/changePassword/ChangePassword"));
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
   const BlogDetails = React.lazy(() => import("./pages/blog/BlogDetails"));
+  const Login = React.lazy(() => import("./pages/admin/login/Login"));
+
   return <Routes>
   <Route path="/" element={<LayOut />}>
     <Route index 
@@ -46,6 +48,11 @@ const AppRoutes = () => {
     <Route path="terms" element={
         <React.Suspense fallback={<>...</>}>
           <Terms />
+        </React.Suspense>
+      } />
+       <Route path="sign-in" element={
+        <React.Suspense fallback={<>...</>}>
+          <Login />
         </React.Suspense>
       } />
     <Route path="blog/:id" element={

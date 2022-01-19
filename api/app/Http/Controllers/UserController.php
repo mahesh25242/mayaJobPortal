@@ -46,8 +46,13 @@ class UserController extends Controller
             "client_secret" => $oauthClient->secret,
         ]);
         try {
-           return $response= app()->handle($tokenRequest);
-        } catch (\Exception $e) {
+           return $response= app()->handle($tokenRequest);           
+        //    $content = $response->getContent();
+        //    $content = json_decode($content, true); 
+        //    $content["role"]       = Auth::user()->id;
+        //    return response($content);
+        //    $rr = $response->getBody();
+        } catch (\Exception $e) {            
             return response(["success" => false, "message"=> "user not found"], 401);
         }        
 
@@ -108,21 +113,18 @@ class UserController extends Controller
       
         if(Auth::check() && Auth::user()->role_id){
             //create user
-            $user = \App\Models\User::updateOrCreate(
-                [
-                    'id'   => $id,
-                ],
-                [
-                    'name' => $request->input('contact_name', ''),
-                    'email' => $request->input('email', ''),
-                    'phone' => $request->input('phone', ''),
-                    'status' => $request->input('status', 1),
-                    'password' =>  Hash::make($request->input('password', '')),
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ],
-            );
+            $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
+            $user->name = $request->input("contact_name", '');
+            $user->email = $request->input("email", '');
+            $user->phone = $request->input("phone", '');
+            $user->status = $request->input("status", '');            
+            $user->password = Hash::make($request->input("password", ''));
+            if(!$id)
+                $user->created_by = Auth::user()->id;
 
+            $user->updated_by = Auth::user()->id;
+            $user->save();
+            
             //create employer
             $employer = \App\Models\Employer::updateOrCreate(
                 [
@@ -202,22 +204,18 @@ class UserController extends Controller
         }
 
         if(Auth::check() && Auth::user()->role_id){
-            //create user
-            $user = \App\Models\User::updateOrCreate(
-                [
-                    'id'   => $id,
-                ],
-                [
-                    'name' => $request->input('contact_name', ''),
-                    'email' => $request->input('email', ''),
-                    'phone' => $request->input('phone', ''),
-                    'status' => $request->input('status', 1),
-                    'password' =>  Hash::make($request->input('password', '')),
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ],
-            );
-
+            $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
+            $user->name = $request->input("contact_name", '');
+            $user->email = $request->input("email", '');
+            $user->phone = $request->input("phone", '');
+            $user->status = $request->input("status", '');
+            $user->password = Hash::make($request->input("password", ''));
+            if(!$id)
+                $user->created_by = Auth::user()->id;
+            $user->updated_by = Auth::user()->id;
+            $user->save();
+            
+           
             $dob = '';
             if($request->input('dob', '')){
                 $dob = Carbon::parse($request->input('dob', ''));

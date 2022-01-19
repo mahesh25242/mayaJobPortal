@@ -46,6 +46,12 @@ export const AuthenticationSlice = createSlice({
   name: 'token',
   initialState,
   reducers: {        
+    signOut: (state: AuthenticationState) => {   
+      state.token = null;
+      state.loading = null;
+      state.error = null;         
+      // return {...state, token: null, loading: null, error: null};
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(checkLogin.pending, (state) => {
@@ -74,5 +80,8 @@ export const getAuth = createSelector(
      };
   }, (state) =>  state
 );
+
+export const { signOut } = AuthenticationSlice.actions
+
 export default AuthenticationSlice.reducer;
 

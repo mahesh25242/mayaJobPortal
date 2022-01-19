@@ -31,7 +31,7 @@ const pages = [
     {
         title: 'Terms',
         url: '/terms'
-    }
+    }    
 ];
 
 
@@ -103,6 +103,16 @@ const ResponsiveAppBar = () => {
           {
             title: 'Settings',
             url: '/admin/settings'
+          }
+        ]
+      });
+    }else{
+      setLoggedMenu({
+        settings: [],
+        main: [
+          {
+            title: 'Sign In',
+            url: '/sign-in'
           }
         ]
       });

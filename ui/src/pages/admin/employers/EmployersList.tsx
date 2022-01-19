@@ -18,6 +18,7 @@ import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
+import { Helmet } from 'react-helmet-async';
 
 export default function EmployersList() {
   const [snakMessage, setSnakMessage] = React.useState<string>('');
@@ -45,7 +46,7 @@ export default function EmployersList() {
     
   }
 
-  const editEMployer = (employer: any) =>{
+  const editEMployer = (employer: any) =>{    
     let empData = employer;
     if(employer){
       empData = {...employer, ...{
@@ -62,12 +63,14 @@ export default function EmployersList() {
   };
   return (
     <TableContainer component={Paper}>
-        
+        <Helmet>
+          <title>Employers</title>
+        </Helmet>
         <CreateJobSekkers employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Employers
         </Typography>
-      <Button variant="contained" onClick={(e)=> setEmployer({id: 0})}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> editEMployer({id: 0})}>Careate New</Button>
       <Search /> 
       <Table  aria-label="simple table">
         <TableHead>

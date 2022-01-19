@@ -12,10 +12,14 @@ import CreateJobSekkers from './CreateJobSekkers';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetSeekersQuery, useDeleteSeekerMutation } from '../../../api/rtk/jobSeeker'
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
+import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice'
+import { setRegisterForm } from '../../../components/registration/registerFormSlice'
 
 import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
+
+import { Helmet } from 'react-helmet-async';
 
 export default function JobSekkersList() {
     const [snakMessage, setSnakMessage] = React.useState<string>('');
@@ -41,14 +45,34 @@ export default function JobSekkersList() {
     }
     
   }
+
+  const editSeeker = (seeker: any) =>{    
+    let seekData = seeker;
+    if(seeker){
+      seekData = {...seeker, ...{
+        email: seeker?.user?.email,
+        phone: seeker?.user?.phone,                
+        contact_name: seeker?.user?.name,
+        id: seeker?.user?.id,
+      }}
+    }
+    
+    dispatch(setOtpPhone( {page: 'seeker' } ))    
+    dispatch(setRegisterForm({seeker: seekData}));
+    setSeeker(seeker); 
+  };
+
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Job Seekers</title>
+      </Helmet>
       <Typography gutterBottom variant="h5" component="div">
           Job Sekkers
         </Typography>      
         <CreateJobSekkers seeker={seeker} setSeeker={setSeeker} setSnakMessage={setSnakMessage} />       
         
-      <Button variant="contained" onClick={(e)=> setSeeker({id: 0})}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> editSeeker({id: 0})}>Careate New</Button>
       <Search />
       
       <Table  aria-label="simple table">

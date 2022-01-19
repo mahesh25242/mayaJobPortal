@@ -16,6 +16,7 @@ import { useGetSettingsQuery } from '../../../api/rtk/Setting'
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
+import { Helmet } from 'react-helmet-async';
 
 export default function SettingLists() {
 
@@ -32,6 +33,9 @@ export default function SettingLists() {
 
   return (
     <TableContainer component={Paper}>
+      <Helmet>
+        <title>Settings</title>
+      </Helmet>
         <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage}/>
        <Typography gutterBottom variant="h5" component="div">
           Settings
