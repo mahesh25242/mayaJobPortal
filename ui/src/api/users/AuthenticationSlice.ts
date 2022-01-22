@@ -22,8 +22,17 @@ export const checkLogin = createAsyncThunk(
         let response;
         if(postData){
           instance.defaults.headers.common['Authorization'] = '';
-          response = await instance.post(`checkLogin`, postData);//where you want to fetch data
-          return await response.data;
+
+          let token: any;
+          response = await instance.post(`checkLogin`, postData).then(res =>{
+            token = res.data;
+            instance.defaults.headers.common['Authorization'] = `Bearer ${token.access_token}`;
+
+            return instance.get(`user`);
+          }).then(res=>{
+            return {...token, ...{role_id: res?.data?.role_id}};
+          });//where you want to fetch data
+          return await response;
         }else{
           let token:any = localStorage.getItem('token');
           token = JSON.parse(token);

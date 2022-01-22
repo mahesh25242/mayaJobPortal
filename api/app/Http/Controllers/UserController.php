@@ -299,5 +299,9 @@ class UserController extends Controller
 
         return response(['message' => 'Successfully deleted', 'status' => true]);
     }
+
+    public function getUser(){
+        return response(Auth::user());
+    }
     //
 }
