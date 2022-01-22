@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8000/v1/',
+	baseURL: 'https://fiya.in/api/public/v1/' //'http://localhost:8000/v1/',
 });
 // instance.defaults.withCredentials = true;
 const token = localStorage.getItem('token');
