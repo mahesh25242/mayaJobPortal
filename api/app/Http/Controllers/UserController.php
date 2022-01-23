@@ -127,9 +127,13 @@ class UserController extends Controller
             $user->email = $request->input("email", '');
             $user->phone = $request->input("phone", '');
             $user->status = $request->input("status", '');            
-            $user->password = Hash::make($request->input("password", ''));
+            
+            if($request->input("password", null)){
+                $user->password = Hash::make($request->input("password", ''));
+            }
             if(!$id)
                 $user->created_by = Auth::user()->id;
+            
 
             $user->updated_by = Auth::user()->id;
             $user->save();
@@ -192,12 +196,12 @@ class UserController extends Controller
     }
 
     public function registerSeeker(Request $request, $id=0){
-        $validator = Validator::make($request->all(), [
+
+        $validationArr = [
             'category_id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],  
-            'password' => ['required', 'min:6'],            
+            'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],              
             'nationality' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
@@ -205,7 +209,13 @@ class UserController extends Controller
             'district' => ['required', 'string'],
             'city' => ['required', 'string'],                                                
             'pin' => ['required', 'string'],                                                
-        ]);
+        ];
+
+        if(!$id && Auth::check()){
+            $validationArr["password"] = ['required', 'min:6'];
+        }
+
+        $validator = Validator::make($request->all(), $validationArr);
 
 
         if($validator->fails()){
@@ -218,9 +228,14 @@ class UserController extends Controller
             $user->email = $request->input("email", '');
             $user->phone = $request->input("phone", '');
             $user->status = $request->input("status", '');
-            $user->password = Hash::make($request->input("password", ''));
+            
+            if($request->input("password", null)){
+                $user->password = Hash::make($request->input("password", ''));
+            }
+
             if(!$id)
                 $user->created_by = Auth::user()->id;
+            
             $user->updated_by = Auth::user()->id;
             $user->save();
             
