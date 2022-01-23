@@ -27,11 +27,13 @@ const Banner = () => {
     ]
 
     return (
-        <Carousel>
+        <div>
+            <Carousel>
             {
                 items.map( (item, i) => <Item key={i} item={item} /> )
             }
-        </Carousel>
+            </Carousel>
+        </div>
     )
 
 }

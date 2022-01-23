@@ -6,12 +6,13 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {  HelmetProvider } from 'react-helmet-async';
 
-
+import { Container } from '@mui/material';
 
 
 const AppRoutes = () => {
   const About = React.lazy(() => import("./pages/about/About"));
   const Home = React.lazy(() => import("./pages/Home/Home"));
+  const Banner = React.lazy(() => import("./pages/Home/Banner"));
   const Contact = React.lazy(() => import("./pages/Contact/Contact"));
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
@@ -26,14 +27,19 @@ const AppRoutes = () => {
     <Route index 
     element={
         <React.Suspense fallback={<>...</>}>
-          <Home />
+          <Banner />
+          <Container>
+            <Home />
+          </Container>
         </React.Suspense>
       } />
     <Route
       path="about"
       element={
         <React.Suspense fallback={<>...</>}>
-          <About />
+          <Container>
+            <About />
+          </Container>          
         </React.Suspense>
       }
     />
@@ -41,48 +47,65 @@ const AppRoutes = () => {
       path="contact/"
       element={
         <React.Suspense fallback={<>...</>}>
-          <Contact />
+          <Container>
+            <Contact />
+          </Container>
         </React.Suspense>
       }
     />
     <Route path="terms" element={
         <React.Suspense fallback={<>...</>}>
-          <Terms />
+          <Container>
+            <Terms />
+          </Container>
         </React.Suspense>
       } />
        <Route path="sign-in" element={
         <React.Suspense fallback={<>...</>}>
-          <Login />
+          <Container>
+            <Login />
+          </Container>
         </React.Suspense>
       } />
     <Route path="blog/:id" element={
         <React.Suspense fallback={<>...</>}>
-          <BlogDetails />
+          <Container>
+            <BlogDetails />
+          </Container>
         </React.Suspense>
       } />
     <Route path="admin/*" element={
         <React.Suspense fallback={<>...</>}>
-          <Admin />
+          <Container>
+            <Admin />
+          </Container>
         </React.Suspense>
       } />
     <Route path="change-password" element={
         <React.Suspense fallback={<>...</>}>
-          <ChangePassword />
+          <Container>
+            <ChangePassword />
+          </Container>
         </React.Suspense>
       } />
     <Route path="SignOut" element={
         <React.Suspense fallback={<>...</>}>
-          <SignOut />
+          <Container>
+            <SignOut />
+          </Container>
         </React.Suspense>
       } />
     <Route path="*" element={
         <React.Suspense fallback={<>...</>}>
-          <NotFound />
+          <Container>
+            <NotFound />
+          </Container>
         </React.Suspense>
       } />
   </Route>
 </Routes>;
 }
+
 function App() {
   
 
