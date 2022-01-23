@@ -25,7 +25,7 @@ export default function Admin(){
         <Routes>   
         <Route path="login" element={<Login />} />        
           {
-            token && token.loading === false &&  <Route path="/*" element={
+            token &&   <Route path="/*" element={
               <PrivateRoute>
                 <DashboardLayout />
               </PrivateRoute>}>
@@ -39,6 +39,7 @@ export default function Admin(){
 }
 
 function PrivateRoute({ children }: any) {    
+  
     const { token } = useSelector(getAuth);       
     return !!token.token ? children :   <Navigate to="/admin/login" />;
 }

@@ -15,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import {
-  checkLogin,
+  checkAuth,
   getAuth
 } from "../../api/users/AuthenticationSlice";
 
@@ -63,7 +63,7 @@ const ResponsiveAppBar = () => {
   };
 
   useEffect(() => {     
-    dispatch(checkLogin(null));        
+    dispatch(checkAuth());        
   }, []);
 
   useEffect(() => {

@@ -33,16 +33,23 @@ export const checkLogin = createAsyncThunk(
             return {...token, ...{role_id: res?.data?.role_id}};
           });//where you want to fetch data
           return await response;
-        }else{
-          let token:any = localStorage.getItem('token');
-          token = JSON.parse(token);
-          const postData = {
-            'grant_type' : 'refresh_token',
-            'refresh_token' : `${token.refresh_token}`,
-          }
-          response = await instance.post(`refreshToken`, postData);//where you want to fetch data
-          return await response.data;
         }
+        // else{
+        //   let token:any = localStorage.getItem('token');
+        //   token = JSON.parse(token);
+        //   const postData = {
+        //     'grant_type' : 'refresh_token',
+        //     'refresh_token' : `${token.refresh_token}`,
+        //   }
+        //   response = await instance.post(`refreshToken`, postData).then(res=>{            
+        //     instance.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
+
+        //     return instance.get(`user`);
+        //   }).then(res=>{
+        //     return {...token, ...{role_id: res?.data?.role_id}};
+        //   });//where you want to fetch data
+        //   return await response;
+        // }
         
         
       } catch (error:any) {
@@ -60,6 +67,11 @@ export const AuthenticationSlice = createSlice({
       state.loading = null;
       state.error = null;         
       // return {...state, token: null, loading: null, error: null};
+    },
+    checkAuth: (state: AuthenticationState) => {   
+      let token:any = localStorage.getItem('token');
+      token = JSON.parse(token);
+      state.token = token;      
     }
   },
   extraReducers: (builder) => {
@@ -90,7 +102,7 @@ export const getAuth = createSelector(
   }, (state) =>  state
 );
 
-export const { signOut } = AuthenticationSlice.actions
+export const { signOut, checkAuth } = AuthenticationSlice.actions
 
 export default AuthenticationSlice.reducer;
 

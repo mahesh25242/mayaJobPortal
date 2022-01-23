@@ -19,7 +19,7 @@ import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 import { Helmet } from 'react-helmet-async';
 
 export default function CategoriesList() {
-
+  
     const [category, setCategory] = React.useState<any>(null);
     const [snakMessage, setSnakMessage] = React.useState<string>('');
 

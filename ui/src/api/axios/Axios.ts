@@ -23,7 +23,40 @@ instance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
-  }, function (error) {
+  }, async (error) => {
+    const originalRequest = error.config;
+    if(error.response.status == 401 && originalRequest.url != "refreshToken"){ //403
+
+      console.log(originalRequest)
+      let token:any = localStorage.getItem('token');
+      if(token){
+        token = JSON.parse(token);
+      }
+
+      if(token){
+        const postData = {
+          'grant_type' : 'refresh_token',
+          'refresh_token' : `${token.refresh_token}`,
+        }
+
+        const tokenResponse =  instance.post(`refreshToken`, postData);
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + 'as';
+alert(1)
+        return instance(originalRequest);
+
+        // try{
+        //   const tokenResponse =  instance.post(`refreshToken`, postData);
+        // }catch(e){
+        // console.log(1)
+        // }
+        
+       
+
+       
+      }
+        
+
+    }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);
