@@ -110,9 +110,12 @@ class UserController extends Controller
             'district' => ['required', 'string'],
             'city' => ['required', 'string'],                                                
         ];
-        if(!$id && Auth::check()){
+        if(!$id && Auth::check() && Auth::user()->role_id){
+            $validationArr["password"] = ['required', 'min:6'];
+        }else if(!Auth::check()){
             $validationArr["password"] = ['required', 'min:6'];
         }
+
         $validator = Validator::make($request->all(), $validationArr);
         
         
@@ -121,65 +124,73 @@ class UserController extends Controller
         }
       
         if(Auth::check() && Auth::user()->role_id){
-            //create user
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
-            $user->name = $request->input("contact_name", '');
-            $user->email = $request->input("email", '');
-            $user->phone = $request->input("phone", '');
-            $user->status = $request->input("status", '');            
-            
+            if($request->input("status", null))
+                $user->status = $request->input("status", 1);
             if($request->input("password", null)){
                 $user->password = Hash::make($request->input("password", ''));
             }
-            if(!$id)
-                $user->created_by = Auth::user()->id;
-            
-
-            $user->updated_by = Auth::user()->id;
-            $user->save();
-            
-            //create employer
-            $employer = \App\Models\Employer::updateOrCreate(
-                [
-                    'user_id'   => $user->id,
-                ],
-                [
-                    'name' => $request->input('name', ''),
-                    'phone' => $request->input('secondry_phone', ''),
-                    'address' => $request->input('address', ''),
-                    'country' => $request->input('country', ''),
-                    'state' => $request->input('state', ''),
-                    'district' => $request->input('district', ''),
-                    'city' => $request->input('city', ''),
-                    'category_id' => $request->input('category_id', ''),
-                    'status' => $request->input('status', 1),
-                    'lat' => $request->input('lat', ''),
-                    'lng' => $request->input('lng', ''),
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ],
-            );
-
-            //create SeekerPreference
-            $seekerPreference = \App\Models\SeekerPreference::updateOrCreate(
-                [
-                    'employer_id'   => $employer->id,
-                ],
-                [
-                    'employer_id' => $employer->id,
-                    'gender' => $request->input('gender', ''),
-                    'marital' => $request->input('marital', ''),
-                    'food_accommodation' => $request->input('food_accommodation', ''),
-                    'working_time' => $request->input('working_time', ''),
-                    'salary' => $request->input('salary', ''),
-                    'experience' => $request->input('experience', ''),
-                    'qualifications' => $request->input('qualifications', ''),
-                    'other_demands' => $request->input('other_demands', ''),
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ],
-            );
+        }else{
+            $user =  new \App\Models\User();
+            $user->status = 1;
+            $user->password = Hash::make($request->input("password", ''));
         }
+            //create user
+           
+        $user->name = $request->input("contact_name", '');
+        $user->email = $request->input("email", '');
+        $user->phone = $request->input("phone", '');
+        
+
+        if(!$id && Auth::check())
+            $user->created_by = Auth::user()->id;
+        
+
+        $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
+        $user->save();
+        
+        //create employer
+        $employer = \App\Models\Employer::updateOrCreate(
+            [
+                'user_id'   => $user->id,
+            ],
+            [
+                'name' => $request->input('name', ''),
+                'phone' => $request->input('secondry_phone', ''),
+                'address' => $request->input('address', ''),
+                'country' => $request->input('country', ''),
+                'state' => $request->input('state', ''),
+                'district' => $request->input('district', ''),
+                'city' => $request->input('city', ''),
+                'category_id' => $request->input('category_id', ''),
+                'status' => $request->input('status', 1),
+                'lat' => $request->input('lat', ''),
+                'lng' => $request->input('lng', ''),
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ],
+        );
+
+        //create SeekerPreference
+        $seekerPreference = \App\Models\SeekerPreference::updateOrCreate(
+            [
+                'employer_id'   => $employer->id,
+            ],
+            [
+                'employer_id' => $employer->id,
+                'gender' => $request->input('gender', ''),
+                'marital' => $request->input('marital', ''),
+                'food_accommodation' => $request->input('food_accommodation', ''),
+                'working_time' => $request->input('working_time', ''),
+                'salary' => $request->input('salary', ''),
+                'experience' => $request->input('experience', ''),
+                'qualifications' => $request->input('qualifications', ''),
+                'other_demands' => $request->input('other_demands', ''),
+                'created_by' => (Auth::check()) ? Auth::user()->id : 0,
+                'updated_by' => (Auth::check()) ? Auth::user()->id : 0,
+            ],
+        );
+        
         return response(['message' => 'Successfully save', 'status' => false]);
     }
 
@@ -226,7 +237,8 @@ class UserController extends Controller
 
         if(Auth::check() && Auth::user()->role_id){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
-            $user->status = $request->input("status", '');
+            if($request->input("status", null))
+                $user->status = $request->input("status", 1);
             if($request->input("password", null)){
                 $user->password = Hash::make($request->input("password", ''));
             }
@@ -240,10 +252,10 @@ class UserController extends Controller
         $user->email = $request->input("email", '');
         $user->phone = $request->input("phone", '');
 
-        if(!$id)
+        if(!$id && Auth::check())
             $user->created_by = Auth::user()->id;
             
-        $user->updated_by = Auth::user()->id;
+        $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
         $user->save();
 
         $dob = '';
