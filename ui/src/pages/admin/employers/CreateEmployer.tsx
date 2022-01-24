@@ -4,6 +4,9 @@ import Modal from '@mui/material/Modal';
 import { useSaveEmployerMutation } from '../../../api/rtk/Employer'
 import Employer from '../../../components/registration/employer/Employer';
 import Button from '@mui/material/Button';
+import { setRegisterForm } from '../../../components/registration/registerFormSlice'
+import { useDispatch } from 'react-redux';
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,11 +24,14 @@ const style = {
 
 export default function CreateEmployer(props: any) {
     const childRef: null | {current: any} = React.useRef();  
-    
+    const dispatch = useDispatch();    
     
     
 
-  const handleClose = () => props?.setEmployer(null);
+  const handleClose = () => {
+    dispatch(setRegisterForm({employer: {} }));
+    props?.setEmployer(null)
+  };
 const [ saveEmployer ] = useSaveEmployerMutation();
 // const [login] = useLoginMutation();
 
@@ -38,6 +44,10 @@ const [ saveEmployer ] = useSaveEmployerMutation();
     })
     .then((res:any)=>{        
       console.log(res);
+
+      
+      dispatch(setRegisterForm({employer: {} }));
+
       props.setSnakMessage('employer created successfully');
       handleClose();
     })

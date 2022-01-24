@@ -211,7 +211,9 @@ class UserController extends Controller
             'pin' => ['required', 'string'],                                                
         ];
 
-        if(!$id && Auth::check()){
+        if(!$id && Auth::check() && Auth::user()->role_id){
+            $validationArr["password"] = ['required', 'min:6'];
+        }else if(!Auth::check()){
             $validationArr["password"] = ['required', 'min:6'];
         }
 
@@ -224,63 +226,67 @@ class UserController extends Controller
 
         if(Auth::check() && Auth::user()->role_id){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
-            $user->name = $request->input("contact_name", '');
-            $user->email = $request->input("email", '');
-            $user->phone = $request->input("phone", '');
             $user->status = $request->input("status", '');
-            
             if($request->input("password", null)){
                 $user->password = Hash::make($request->input("password", ''));
             }
 
-            if(!$id)
-                $user->created_by = Auth::user()->id;
-            
-            $user->updated_by = Auth::user()->id;
-            $user->save();
-            
-           
-            $dob = '';
-            if($request->input('dob', '')){
-                $dob = Carbon::parse($request->input('dob', ''));
-                $dob = $dob->format('Y-m-d');
-            }            
+        }else{
+            $user = new \App\Models\User();
+            $user->status = 1;
+            $user->password = Hash::make($request->input("password", ''));
+        }            
+        $user->name = $request->input("contact_name", '');
+        $user->email = $request->input("email", '');
+        $user->phone = $request->input("phone", '');
 
-            //create employer
-            $employer = \App\Models\Seeker::updateOrCreate(
-                [
-                    'user_id'   => $user->id,
-                ],
-                [
-                    'name' => $request->input('name', ''),
-                    'phone' => $request->input('secondry_phone', ''),
-                    'address' => $request->input('address', ''),
-                    'country' => $request->input('country', ''),
-                    'state' => $request->input('state', ''),
-                    'district' => $request->input('district', ''),
-                    'city' => $request->input('city', ''),
-                    'pin' => $request->input('pin', ''),
-                    'dob' => $dob,
-                    'gender' => $request->input('gender', ''),
-                    'religion' => $request->input('religion', ''),
-                    'marital' => $request->input('marital', ''),
-                    'languages' => $request->input('languages', ''),
-                    'languages' => $request->input('languages', ''),
-                    'status' => $request->input('status', 1),
-                    'edu_qualification' => $request->input('edu_qualification', 1),
-                    'tech_qualification' => $request->input('tech_qualification', 1),
-                    'experience' => $request->input('experience', 1),
-                    'academic_profile' => $request->input('academic_profile', 1),
-                    'expected_salary' => $request->input('expected_salary', 1),
-                    'lat' => $request->input('lat', ''),
-                    'lng' => $request->input('lng', ''),
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ],
-            );
+        if(!$id)
+            $user->created_by = Auth::user()->id;
+            
+        $user->updated_by = Auth::user()->id;
+        $user->save();
+
+        $dob = '';
+        if($request->input('dob', '')){
+            $dob = Carbon::parse($request->input('dob', ''));
+            $dob = $dob->format('Y-m-d');
+        }            
+
+        //create employer
+        $employer = \App\Models\Seeker::updateOrCreate(
+            [
+                'user_id'   => $user->id,
+            ],
+            [
+                'name' => $request->input('name', ''),
+                'phone' => $request->input('secondry_phone', ''),
+                'address' => $request->input('address', ''),
+                'country' => $request->input('country', ''),
+                'state' => $request->input('state', ''),
+                'district' => $request->input('district', ''),
+                'city' => $request->input('city', ''),
+                'pin' => $request->input('pin', ''),
+                'dob' => $dob,
+                'gender' => $request->input('gender', ''),
+                'religion' => $request->input('religion', ''),
+                'marital' => $request->input('marital', ''),
+                'languages' => $request->input('languages', ''),
+                'languages' => $request->input('languages', ''),
+                'status' => $request->input('status', 1),
+                'edu_qualification' => $request->input('edu_qualification', 1),
+                'tech_qualification' => $request->input('tech_qualification', 1),
+                'experience' => $request->input('experience', 1),
+                'academic_profile' => $request->input('academic_profile', 1),
+                'expected_salary' => $request->input('expected_salary', 1),
+                'lat' => $request->input('lat', ''),
+                'lng' => $request->input('lng', ''),
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ],
+        );
 
             
-        }
+        
 
         return response(['message' => 'Successfully save', 'status' => false]);
     }

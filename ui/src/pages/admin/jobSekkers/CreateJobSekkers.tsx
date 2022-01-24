@@ -11,6 +11,8 @@ import { useSaveSeekerMutation } from '../../../api/rtk/jobSeeker'
 import JobSeeker from '../../../components/registration/jobSeeker/JobSeeker';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
+import { useDispatch } from 'react-redux';
+import { setRegisterForm } from '../../../components/registration/registerFormSlice'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -27,7 +29,9 @@ const style = {
   };
 
 export default function CreateJobSekkers(props: any) {
-    const childRef: null | {current: any} = React.useRef();  
+    const childRef: null | {current: any} = React.useRef(); 
+    const dispatch = useDispatch();    
+
     const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
         defaultValues: {
             name: props?.seeker?.name ?? '',
@@ -46,7 +50,10 @@ export default function CreateJobSekkers(props: any) {
         setValue("id", props?.seeker?.id ?? 0);
     }, [props]);
   
-  const handleClose = () => props?.setSeeker(null);
+  const handleClose = () => {
+    dispatch(setRegisterForm({employer: {} }));
+    props?.setSeeker(null)
+  };
 const [ saveSeeker ] = useSaveSeekerMutation();
 // const [login] = useLoginMutation();
 
@@ -57,6 +64,7 @@ const [ saveSeeker ] = useSaveSeekerMutation();
         return saveSeeker(childRef?.current?.formAllData()).unwrap();
       }).catch((err:any)=>{
         props.setSnakMessage('seeker created successfully');
+        dispatch(setRegisterForm({employer: {} }));
         handleClose();
         console.log(err)
       });
