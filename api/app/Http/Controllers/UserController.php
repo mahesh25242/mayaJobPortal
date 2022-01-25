@@ -166,8 +166,8 @@ class UserController extends Controller
                 'status' => $request->input('status', 1),
                 'lat' => $request->input('lat', ''),
                 'lng' => $request->input('lng', ''),
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
+                'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
             ],
         );
 
@@ -186,8 +186,8 @@ class UserController extends Controller
                 'experience' => $request->input('experience', ''),
                 'qualifications' => $request->input('qualifications', ''),
                 'other_demands' => $request->input('other_demands', ''),
-                'created_by' => (Auth::check()) ? Auth::user()->id : 0,
-                'updated_by' => (Auth::check()) ? Auth::user()->id : 0,
+                'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
             ],
         );
         
