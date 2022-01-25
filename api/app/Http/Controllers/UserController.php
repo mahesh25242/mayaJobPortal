@@ -110,7 +110,7 @@ class UserController extends Controller
             'district' => ['required', 'string'],
             'city' => ['required', 'string'],                                                
         ];
-        if(!$id && Auth::check() && Auth::user()->role_id){
+        if(!$id && Auth::check() && Auth::user()->role_id == 1){
             $validationArr["password"] = ['required', 'min:6'];
         }else if(!Auth::check()){
             $validationArr["password"] = ['required', 'min:6'];
@@ -122,8 +122,9 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-      
-        if(Auth::check() && Auth::user()->role_id){
+        
+        
+        if(Auth::check() && Auth::user()->role_id == 1){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($request->input("status", null))
                 $user->status = $request->input("status", 1);
@@ -131,10 +132,26 @@ class UserController extends Controller
                 $user->password = Hash::make($request->input("password", ''));
             }
         }else{
+            if(!Auth::check() && $request->input("accessToken", null)){
+                $auth = app('firebase.auth');
+                try {
+                    $verifiedIdToken = $auth->verifyIdToken($request->input("accessToken", null));
+                    // $uid = $verifiedIdToken->claims()->get('sub');
+                    // $user = $auth->getUser($uid);                    
+                } catch (FailedToVerifyToken $e) {
+                    return response(['message' => 'Validation errors', 'errors' =>  [
+                        "accessToken" => ["Invalid access token"]
+                    ], 'status' => false], 422);                    
+                }
+                
+            }
+
             $user =  new \App\Models\User();
             $user->status = 1;
             $user->password = Hash::make($request->input("password", ''));
+           
         }
+        
             //create user
            
         $user->name = $request->input("contact_name", '');
@@ -222,7 +239,7 @@ class UserController extends Controller
             'pin' => ['required', 'string'],                                                
         ];
 
-        if(!$id && Auth::check() && Auth::user()->role_id){
+        if(!$id && Auth::check() && Auth::user()->role_id == 1){
             $validationArr["password"] = ['required', 'min:6'];
         }else if(!Auth::check()){
             $validationArr["password"] = ['required', 'min:6'];
@@ -235,7 +252,7 @@ class UserController extends Controller
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
 
-        if(Auth::check() && Auth::user()->role_id){
+        if(Auth::check() && Auth::user()->role_id == 1){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($request->input("status", null))
                 $user->status = $request->input("status", 1);
@@ -244,6 +261,20 @@ class UserController extends Controller
             }
 
         }else{
+            if(!Auth::check() && $request->input("accessToken", null)){
+                $auth = app('firebase.auth');
+                try {
+                    $verifiedIdToken = $auth->verifyIdToken($request->input("accessToken", null));
+                    // $uid = $verifiedIdToken->claims()->get('sub');
+                    // $user = $auth->getUser($uid);                    
+                } catch (FailedToVerifyToken $e) {
+                    return response(['message' => 'Validation errors', 'errors' =>  [
+                        "accessToken" => ["Invalid access token"]
+                    ], 'status' => false], 422);                    
+                }
+                
+            }
+            
             $user = new \App\Models\User();
             $user->status = 1;
             $user->password = Hash::make($request->input("password", ''));

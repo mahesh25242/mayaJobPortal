@@ -15,11 +15,12 @@ const initialState: RegisterationState = {
 
 
 export const triggerRegister = createAsyncThunk(
-  "user/register", async (data:any, thunkAPI) => {    
+  "user/register", async (data:any, thunkAPI) => {   
+    console.log(data) 
      try {
         //const response = await fetch(`url`); //where you want to fetch data
         //Your Axios code part.
-        const response = await instance.post(`${data.page}/register`, data?.postData);//where you want to fetch data
+        const response = await instance.post(`${data.page}/register`, data);//where you want to fetch data
         return await response;
       } catch (error:any) {
          return thunkAPI.rejectWithValue({ error: error.message });

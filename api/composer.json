@@ -7,6 +7,8 @@
     "require": {
         "php": "^7.3|^8.0",
         "dusterio/lumen-passport": "^0.3.4",
+        "kreait/firebase-php": "^6.0",
+        "kreait/laravel-firebase": "^4.0",
         "laravel/lumen-framework": "^8.3.1"
     },
     "require-dev": {

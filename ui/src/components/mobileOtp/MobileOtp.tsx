@@ -43,10 +43,10 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
       
     const verify = (data:any) =>{  
       console.log({...formData, ...{page: page}})
-      dispatch(triggerRegister({postData: formData, page: page}));      
+      // dispatch(triggerRegister({postData: formData, page: page}));      
         if(data?.code && confirmationResult){
           confirmationResult?.confirm(data?.code).then((result:any) => {
-              dispatch(triggerRegister({...formData, ...{page: page}}));    
+              dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));    
                 console.log(result)
                 // User signed in successfully.
                 const user = result.user;
