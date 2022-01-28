@@ -25,6 +25,10 @@ class UserController extends Controller
             'password' => ['required'],                        
         ]);
         
+        
+         
+  
+     
        
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
@@ -32,33 +36,56 @@ class UserController extends Controller
            
         $oauthClient = \App\Models\OauthClient::where("password_client", 1)->get()->first();
 
-        $tokenRequest = $request->create(
-            url("v1/oauth/token"),
-            'POST'
-        );
 
 
-        $tokenRequest->request->add([
-            "grant_type" => "password",
-            "username" => $request->input("email", ''),
-            "password" => $request->input("password", ''),
-            "client_id" => $oauthClient->id,
-            "client_secret" => $oauthClient->secret,
-        ]);
-       
-        try {
-            return $response= app()->handle($tokenRequest);           
-        //    $content = $response->getContent();
-        //    $content = json_decode($content, true); 
-           
-        //    $content["role_id"]       = \App\Models\User::where([
-        //     "email" => $request->input("email", '')            
-        //    ])->first()->role_id;
-        //    return response($content);
-        //    $rr = $response->getBody();
-        } catch (\Exception $e) {             
-            return response(["success" => false, "message"=> "user not found"], 401);
-        }        
+        if(env('APP_ENV') != "staging"){
+            $tokenRequest = $request->create(
+                url("key"),
+                'POST'
+            );
+
+        
+        
+        
+            $tokenRequest->request->add([
+                "grant_type" => "password",
+                "username" => $request->input("email", ''),
+                "password" => $request->input("password", ''),
+                "client_id" => $oauthClient->id,
+                "client_secret" => $oauthClient->secret,
+            ]);
+        
+            try {
+                return $response= app()->handle($tokenRequest);           
+            //    $content = $response->getContent();
+            //    $content = json_decode($content, true); 
+            
+            //    $content["role_id"]       = \App\Models\User::where([
+            //     "email" => $request->input("email", '')            
+            //    ])->first()->role_id;
+            //    return response($content);
+            //    $rr = $response->getBody();
+            } catch (\Exception $e) {             
+                return response(["success" => false, "message"=> "user not found"], 401);
+            }
+        }else{
+            $url = url("v1/oauth/token");
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,
+                "grant_type=password&username=".$request->input("email", '')."&password=".$request->input("password", '')."&client_id=".$oauthClient->id."&client_secret=".$oauthClient->secret);
+            
+            $response = curl_exec ($ch);
+            $err = curl_error($ch);  //if you need
+            curl_close ($ch);
+            return $response;
+        }
+    
+     
+                
 
     }
 
@@ -72,28 +99,46 @@ class UserController extends Controller
         }
       
         $oauthClient = \App\Models\OauthClient::where("password_client", 1)->get()->first();
-        $tokenRequest = $request->create(
-            url("v1/oauth/token"),
-            'POST'
-        );
 
-        $tokenRequest->request->add([
-            'grant_type' => 'refresh_token',
-            "client_id" => $oauthClient->id,
-            "client_secret" => $oauthClient->secret,
-            'refresh_token' => $request->input("refresh_token", ''),
-            'scope' => '',
-        ]);
-        try {
-          return $response= app()->handle($tokenRequest);
+        if(env('APP_ENV') != "staging"){
+            $tokenRequest = $request->create(
+                url("v1/oauth/token"),
+                'POST'
+            );
+    
+            $tokenRequest->request->add([
+                'grant_type' => 'refresh_token',
+                "client_id" => $oauthClient->id,
+                "client_secret" => $oauthClient->secret,
+                'refresh_token' => $request->input("refresh_token", ''),
+                'scope' => '',
+            ]);
+            try {
+              return $response= app()->handle($tokenRequest);
+    
+            //    $content = $response->getContent();
+            //    $content = json_decode($content, true); 
+            // //    $content["role_id"] = Auth::user()->role_id;
+            //    return response($content);
+            } catch (\Exception $e) {
+                return response(["success" => false, "message"=> "token expired"], 408);
+            }
+        }else{
+            $url = url("v1/oauth/token");
 
-        //    $content = $response->getContent();
-        //    $content = json_decode($content, true); 
-        // //    $content["role_id"] = Auth::user()->role_id;
-        //    return response($content);
-        } catch (\Exception $e) {
-            return response(["success" => false, "message"=> "token expired"], 408);
-        }    
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,
+                "grant_type=refresh_token&scope=&refresh_token=".$request->input("refresh_token", '')."&client_id=".$oauthClient->id."&client_secret=".$oauthClient->secret);
+            
+            $response = curl_exec ($ch);
+            $err = curl_error($ch);  //if you need
+            curl_close ($ch);
+            return $response;
+        }
+           
     }
 
     public function registerEmployer(Request $request, $id=0){
