@@ -5,11 +5,11 @@ import { baseQry } from "./baseQry";
 export const SettingApi = createApi({
   reducerPath: "SettingApi",
   baseQuery: baseQry(),
-  tagTypes:["Settings"],
+  tagTypes:["Settings", "Banners"],
   endpoints: (builder) => ({
     getSettings: builder.query({
       query: () => ({
-          url: `v1/settings`,
+          url: `settings`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -18,21 +18,38 @@ export const SettingApi = createApi({
       providesTags: ["Settings"],
      
     }),
+    banners: builder.query({
+      query: () => ({
+          url: `banners`,
+        //   headers: {
+        //     'content-type': 'text/plain',
+        //  },
+
+      }) ,
+      providesTags: ["Banners"],
+     
+    }),
     saveSetting: builder.mutation({
-        query: (setting) => ({
-            url: `v1/settings/${setting.id }`,
-            method: 'PUT',
-            body: setting
+      query: (setting) => {
+        console.log(setting);
+        const formData = new FormData();
+        setting.value && formData.append("value", setting.value); 
+        setting.id && formData.append("id", setting.id);                 
+        return {            
+            url: `settings/${setting.id }`,
+            method: 'POST',
+            body: formData
             //   headers: {
             //     'content-type': 'text/plain',
             //  },
 
-        }) ,  
-        invalidatesTags: ["Settings"],       
+        }
+      },    
+        invalidatesTags: ["Settings", "Banners"],       
     })   
   })
 });
 
 
-export const { useGetSettingsQuery, useSaveSettingMutation } = SettingApi;
+export const { useGetSettingsQuery, useSaveSettingMutation, useBannersQuery } = SettingApi;
 

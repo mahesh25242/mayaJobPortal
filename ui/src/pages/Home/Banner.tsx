@@ -1,36 +1,28 @@
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
+import { useBannersQuery } from '../../api/rtk/Setting';
+
 
 const Item = (props: any) =>{
+    console.log(props)
     return (
-        <Paper>
-            <h2>{props.item.name}</h2>
-            <p>{props.item.description}</p>
-
-            <Button className="CheckButton">
-                Check it out!
-            </Button>
+        <Paper style={{height: '200px'}}>
+            <img src={props.item.image_path} />      
         </Paper>
     )
 };
 
 const Banner = () => {
-    var items = [
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!"
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!"
-        }
-    ]
+    const { data, error, isLoading } = useBannersQuery('')
+    
+
+    
 
     return (
         <div>
             <Carousel>
             {
-                items.map( (item, i) => <Item key={i} item={item} /> )
+               data &&  data.map( (item:any, i:number) => item.image_path && <Item key={i} item={item} /> )
             }
             </Carousel>
         </div>

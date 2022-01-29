@@ -39,8 +39,9 @@ class UserController extends Controller
 
 
         if(env('APP_ENV') != "staging"){
+          
             $tokenRequest = $request->create(
-                url("key"),
+                url("v1/oauth/token"),
                 'POST'
             );
 
@@ -56,7 +57,8 @@ class UserController extends Controller
             ]);
         
             try {
-                return $response= app()->handle($tokenRequest);           
+                return $response= app()->handle($tokenRequest);  
+                
             //    $content = $response->getContent();
             //    $content = json_decode($content, true); 
             

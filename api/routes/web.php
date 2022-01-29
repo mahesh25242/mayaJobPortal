@@ -27,8 +27,11 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     
     $router->get('categories','CategoryController@categories');
     $router->get('blogs','BlogController@blogs');
+    $router->get('blogs/{id}','BlogController@viewDetails');        
     $router->post('employer/register[/{id}]','UserController@registerEmployer');
     $router->post('seeker/register[/{id}]','UserController@registerSeeker');
+    
+    $router->get('banners','SettingController@getBanners');
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/user', 'UserController@getUser');    
@@ -42,13 +45,13 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
         $router->group(['prefix' => 'blogs'], function () use ($router) {            
             $router->post('/{id}','BlogController@save');        
             $router->delete('/{id}','BlogController@delete');
-            $router->get('infos','BlogController@blogsInfo');
-            $router->get('/{id}','BlogController@viewDetails');            
+            // $router->get('infos','BlogController@blogsInfo');
+                
         });
 
         $router->group(['prefix' => 'settings'], function () use ($router) {
             $router->get('/','SettingController@settings');        
-            $router->put('/{id}','SettingController@save');
+            $router->post('/{id}','SettingController@save');
             
         });
 

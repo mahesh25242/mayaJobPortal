@@ -23,26 +23,23 @@ const style = {
 };
 
 export default function EditSetting(props: any) {
-    const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
-        defaultValues: {
-            name: props?.setting?.name ?? '',
+    const { register, handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
+        defaultValues: {            
             value: props?.setting?.value ?? '',
             id: props?.setting?.id ?? 0
         }
     });
 
-    React.useEffect(() => {
-        setValue("name", props?.setting?.name ?? '');
-        setValue("value", props?.setting?.value ?? '');
-        setValue("id", props?.setting?.id ?? 0);
-    }, [props]);
+   
   
   const handleClose = () => props?.setSetting(null);
 const [ saveSetting ] = useSaveSettingMutation();
 // const [login] = useLoginMutation();
 
       
-  const onSubmit = (data:any) => {       
+  const onSubmit = (data:any) => {   
+    
+    
     const loginResponse = saveSetting(data).unwrap().then(res=>{        
         props.setSnakMessage(res.message);
         handleClose();       
@@ -50,6 +47,39 @@ const [ saveSetting ] = useSaveSettingMutation();
         console.log(err)
     });
   };
+
+  console.log(getValues())
+  const ValueComponents = (props:any) =>{
+    if(props?.setting?.type == 'file'){
+        return <Button
+              variant="contained"
+              component="label"
+              >                                
+              {  (getValues("value") as any)?.name ? (getValues("value") as any)?.name : 'Choose Image' }                            
+              <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => setValue("value", (e as any)?.target?.files?.[0])}
+              />
+              </Button>
+    }else{
+      return <FormControl fullWidth>                    
+                <Controller
+                    name={"value"}                        
+                    control={control}
+                    render={({ field: { onChange, value = '' } }) => (
+                        <TextField  multiline                           
+                        label="Value"
+                        onChange={onChange} value={value} 
+                        placeholder='Enter Value'                            
+                        sx={{ m: 1,  }}                            
+                      />
+                    )}
+                />                   
+            </FormControl>
+    }
+  }
   return (     
       <Modal
         open={!!props?.setting ?? false}
@@ -60,38 +90,15 @@ const [ saveSetting ] = useSaveSettingMutation();
         <Box sx={style}>
             <Stack component="form"                         
             onSubmit={handleSubmit(onSubmit)}>
-                <FormControl fullWidth>                    
-                    <Controller
-                        name={"name"}
-                        rules={{ required: { value: true, message: 'Name is required'} }}
-                        control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                            <TextField
-                            error={!!errors.name}
-                            helperText={ (errors.name) ? errors.name?.message: '' }
-                            label="Name"
-                            onChange={onChange} value={value} 
-                            placeholder='Enter your Name'                            
-                            sx={{ m: 1,  }}                            
-                          />
-                        )}
-                    />                   
-                </FormControl>
+               <h2>
+                { props?.setting?.name }
+               </h2>
+                
+               
+                <ValueComponents setting={props?.setting}/>
 
-                <FormControl fullWidth>                    
-                    <Controller
-                        name={"value"}                        
-                        control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                            <TextField  multiline                           
-                            label="Value"
-                            onChange={onChange} value={value} 
-                            placeholder='Enter Value'                            
-                            sx={{ m: 1,  }}                            
-                          />
-                        )}
-                    />                   
-                </FormControl> 
+
+                 <br/>
                 <div>
                     <Button type="button" variant="outlined" onClick={handleClose}>
                         Cancel

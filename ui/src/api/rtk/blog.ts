@@ -9,7 +9,7 @@ export const blogsApi = createApi({
   endpoints: (builder) => ({
     getBlogs: builder.query({
       query: (name: string) => ({
-          url: `v1/blogs`,
+          url: `blogs`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -19,7 +19,7 @@ export const blogsApi = createApi({
     }),
     getABlog: builder.query({
       query: (id: string) => ({
-          url: `v1/blogs/${id}`,
+          url: `blogs/${id}`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -39,7 +39,7 @@ export const blogsApi = createApi({
             formData.append("status", `${blog.status ?? 0}`); 
 
             return {            
-                url: `v1/blogs/${blog?.id ?? 0 }`,
+                url: `blogs/${blog?.id ?? 0 }`,
                 method: 'POST',
                 body: formData
                 //   headers: {
@@ -52,7 +52,7 @@ export const blogsApi = createApi({
     }),
     deleteBlog: builder.mutation({
       query: (blog) => ({
-          url: `v1/blogs/${blog.id }`,
+          url: `blogs/${blog.id }`,
           method: 'DELETE',
           body: blog
           //   headers: {

@@ -3,7 +3,7 @@ import { RootState } from "../../app/store";
 
 export const baseQry = () => fetchBaseQuery(
     {
-      baseUrl: "http://localhost:8000/",
+      baseUrl: "http://localhost:8000/v1/", //https://fiya.in/api/public
       prepareHeaders: (headers, { getState }) => {
           const token = (getState() as RootState).token.token;
       

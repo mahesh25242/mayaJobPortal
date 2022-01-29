@@ -20,12 +20,27 @@ class Setting extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'name','value'                 
+        'name','value', 'type'                 
     ];
 
     
 
-    
+    protected $appends = array('image_path');
+
+    public function getImagePathAttribute()
+    {        
+        switch($this->type){
+            case 'file':
+                if(file_exists("assets/banner/{$this->value}")){
+                    return url("assets/banner/{$this->value}");
+                }else{
+                    return null;
+                }
+                return 'Active';
+            break;            
+        }        
+    }
+
 
     
 }

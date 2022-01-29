@@ -9,7 +9,7 @@ export const categoriesApi = createApi({
   endpoints: (builder) => ({
     getCategories: builder.query({
       query: (name: string) => ({
-          url: `v1/${name}`,
+          url: `${name}`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -19,7 +19,7 @@ export const categoriesApi = createApi({
     }),
     saveCategory: builder.mutation({
         query: (category) => ({
-            url: `v1/categories/${category.id }`,
+            url: `categories/${category.id }`,
             method: 'POST',
             body: category
             //   headers: {
@@ -31,7 +31,7 @@ export const categoriesApi = createApi({
     }),
     deleteCategory: builder.mutation({
       query: (category) => ({
-          url: `v1/categories/${category.id }`,
+          url: `categories/${category.id }`,
           method: 'DELETE',
           body: category
           //   headers: {

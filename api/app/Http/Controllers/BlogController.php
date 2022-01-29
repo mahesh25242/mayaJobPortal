@@ -19,6 +19,7 @@ class BlogController extends Controller
     }
 
     public function save(Request $request, $id=0){
+        
         $validator = Validator::make($request->all(), [                       
             'name' => ['required'],
             'description' => ['required'],

@@ -8,7 +8,7 @@ export const UserApi = createApi({
   endpoints: (builder) => ({
     changePassword: builder.mutation({
       query: (user) => ({
-          url: `v1/changePassword/`,
+          url: `changePassword/`,
           method: 'PUT',
           body: user
           //   headers: {

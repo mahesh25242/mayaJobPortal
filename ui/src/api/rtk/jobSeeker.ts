@@ -9,7 +9,7 @@ export const jobSeekerApi = createApi({
   endpoints: (builder) => ({
     getSeekers: builder.query({
       query: () => ({
-          url: `v1/seeker/?page=1&per_page=20`,
+          url: `seeker/?page=1&per_page=20`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
@@ -19,7 +19,7 @@ export const jobSeekerApi = createApi({
     }),
     saveSeeker: builder.mutation({
         query: (employer) => ({
-            url: `v1/seeker/register/${employer?.user_id ?? 0 }`,
+            url: `seeker/register/${employer?.user_id ?? 0 }`,
             method: 'POST',
             body: employer
             //   headers: {
@@ -31,7 +31,7 @@ export const jobSeekerApi = createApi({
     }),
     deleteSeeker: builder.mutation({
       query: (employer) => ({
-          url: `v1/seeker/delete/${employer.user_id }`,
+          url: `seeker/delete/${employer.user_id }`,
           method: 'DELETE',
           body: employer
           //   headers: {

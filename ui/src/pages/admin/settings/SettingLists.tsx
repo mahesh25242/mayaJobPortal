@@ -36,7 +36,10 @@ export default function SettingLists() {
       <Helmet>
         <title>Settings</title>
       </Helmet>
-        <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage}/>
+      {
+        setting && <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage}/>
+      }
+        
        <Typography gutterBottom variant="h5" component="div">
           Settings
         </Typography>      
@@ -51,7 +54,7 @@ export default function SettingLists() {
         <TableBody>
           {data && data.map((row:any) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
