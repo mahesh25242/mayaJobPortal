@@ -14,7 +14,7 @@ export function BlogHome(){
 
     return (
         <div>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center'}}>
                 Blog Home
             </Typography>
             {data && data.map((row:any, idx:number) => <BlogCard key={idx} blog={row}/>)}
@@ -46,7 +46,7 @@ function BlogCard(props: any) {
       <CardActions>        
         <Button size="small" 
         component={RouterLink} to={`blog/${props.blog?.id}`}      
-        >Detail</Button>
+        >Click To Read</Button>
       </CardActions>
     </Card>
   );
