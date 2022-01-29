@@ -8,9 +8,17 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import { FormControl, MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, useForm } from "react-hook-form";
 import { useGetCategoriesQuery } from '../../api/rtk/Categories'
+import Button from '@mui/material/Button';
 
 export default function SearchBar(){
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const { register, handleSubmit, control, formState: { errors } } = useForm({
+        defaultValues: {
+            type: 'employee',
+            state: '',
+            category: '',
+            district: ''
+        }
+    });
     const onSubmit = (data:any) => console.log(data);
     const { data, error, isLoading } = useGetCategoriesQuery('categories')
 
@@ -18,7 +26,7 @@ export default function SearchBar(){
         direction={{ xs: 'column', md: 'row' }}
         sx={{ p: '2px 4px',  alignItems: 'center' }} 
         onSubmit={handleSubmit(onSubmit)}>  
-                <FormControl fullWidth>                    
+                <FormControl fullWidth sx={{ marginBottom: { xs: "20px", md: "0" } }}>                    
                     <Controller
                         name={"state"}
                         control={control}
@@ -26,9 +34,10 @@ export default function SearchBar(){
                         <TextField fullWidth onChange={onChange} value={value} label={"State"} />                                                    
                         )}
                     />                   
-                </FormControl> 
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <FormControl fullWidth>                    
+                </FormControl>                 
+                <Divider sx={{ height: 28, m: 0.5, display: { xs: "none", md: "block" }
+ }} orientation="vertical" />
+                <FormControl fullWidth sx={{ marginBottom: { xs: "20px", md: "0" } }}>                    
                     <Controller
                         name={"district"}
                         control={control}
@@ -38,8 +47,10 @@ export default function SearchBar(){
                     />                   
                 </FormControl> 
                 {
-                    data && <><Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                    <FormControl fullWidth>                    
+                    data && <>
+                     <Divider sx={{ height: 28, m: 0.5, display: { xs: "none", md: "block" }
+ }} orientation="vertical" />
+                    <FormControl fullWidth sx={{ marginBottom: { xs: "20px", md: "0" } }}>                    
                        <Controller
                            name={"category"}
                            control={control}
@@ -56,21 +67,25 @@ export default function SearchBar(){
                    </FormControl></>
                 }
                 
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <Divider sx={{ height: 28, m: 0.5, display: { xs: "none", md: "block" }
+ }} orientation="vertical" />
                 <FormControl fullWidth>                    
                     <Controller
                         name={"type"}
                         control={control}
-                        render={({ field: { onChange, value = 'employee' } }) => (
+                        render={({ field: { onChange, value = '' } }) => (
                         <ToggleButtonGroup fullWidth onChange={onChange} value={value} exclusive>                                                    
                             <ToggleButton value="employee">Employee</ToggleButton>
                             <ToggleButton value="employeer">Employeer</ToggleButton>                            
                         </ToggleButtonGroup>
                         )}
                     />                   
-                </FormControl> 
-
-                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                </FormControl>                 
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{
+                    marginTop: '10px',
+                    display: { xs: "block", md: "none" }
+                    }}>Search</Button>
+                <IconButton type="submit" sx={{ p: '10px', display: { xs: "none", md: "block" } }} aria-label="search">
                     <SearchIcon />
                 </IconButton>                
     </Stack>);
