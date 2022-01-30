@@ -110,20 +110,20 @@ export default function SearchBar(){
                 </LoadingButton>                
     </Stack>
     {
-        getValues("type")=="employee" && filter &&  <SearchEmployerResult filter={filter} setLoading={setLoading}/>
+        getValues("type")=="employee" && filter &&  <SearchEmployerResult loading={loading} filter={filter} setLoading={setLoading}/>
     }    
     {
-         getValues("type")!=="employee" && filter &&  <SearchJobSeekerResult filter={filter} setLoading={setLoading}/>
+         getValues("type")!=="employee" && filter &&  <SearchJobSeekerResult loading={loading} filter={filter} setLoading={setLoading}/>
     }
     </>);
 };
 
 function SearchEmployerResult(props: any){    
     const { data, error, isLoading } = useGetEmployersQuery(props.filter);        
-  
-    if(!isLoading){
-        props.setLoading(false);
-    }
+      
+    useEffect(() => {           
+        props.setLoading(!!isLoading);
+    }, [isLoading, props.loading]);
     let total = 0;
     if(data?.data?.total >= 0){
         total = data?.data?.total;
@@ -133,15 +133,18 @@ function SearchEmployerResult(props: any){
     return (<div style={{marginTop: '20px'}}>
         {
             total > 0 && <Alert severity="info">We found {total} job seeker(s) registered!</Alert>
-        }       
+        }  
+        {
+            total === 0 && <Alert severity="info">No job seeker found!</Alert>
+        }     
     </div>);
 }
 
 function SearchJobSeekerResult(props: any){
     const { data, error, isLoading } = useGetSeekersQuery(props.filter);
-    if(!isLoading){
-        props.setLoading(false);
-    }
+    useEffect(() => {           
+        props.setLoading(!!isLoading);
+    }, [isLoading, props.loading]);
     let total = 0;
     
     if(data?.data?.total >= 0){
@@ -153,6 +156,9 @@ function SearchJobSeekerResult(props: any){
     return (<div style={{marginTop: '20px'}}>
         {
             total > 0 && <Alert severity="info">We found {total} employer(s) registered!</Alert>
-        }        
+        }    
+        {
+            total === 0 && <Alert severity="info">No employer found!</Alert>
+        }    
     </div>);
 }

@@ -48,40 +48,10 @@ const pages = [
 
 
 
-function SiteDrawer() {
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-
-  const toggleDrawer = (anchor:any, open:any) => (event: any) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
-  
-
-  return (
-    <div>
-       <Button onClick={toggleDrawer("left", true)}>left</Button>
-      <Drawer
-            anchor="left"
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-          >
-            asas
-          </Drawer>     
-    </div>
-  );
-}
 
 
 const ResponsiveAppBar = () => {
+  const [drawerState, setDrawerState] = useState(false);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -89,6 +59,13 @@ const ResponsiveAppBar = () => {
     settings: [],
     main: []
   });
+
+  const toggleDrawer = (open:boolean) => (event: any) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerState(open);    
+  };
 
   const dispatch = useDispatch();
   const { token } = useSelector(getAuth);
@@ -150,7 +127,7 @@ const ResponsiveAppBar = () => {
             {
               title: 'Settings',
               url: '/admin/settings'
-            }
+            },
           ]
         });
       }else{
@@ -190,7 +167,9 @@ const ResponsiveAppBar = () => {
   
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl">
+       
+
+      <Container maxWidth="xl">        
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -206,35 +185,27 @@ const ResponsiveAppBar = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={toggleDrawer(true)}
+              // onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {[...pages, ...loggedMenu?.main].map((page, idx) => (
-                <MenuItem key={idx} onClick={handleCloseNavMenu} component={RouterLink} to={page.url}  >
-                  <Typography textAlign="center"   >{page.title}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            <Drawer
+                  anchor="left"
+                  open={drawerState}
+                  onClose={toggleDrawer(false)}
+                >
+                  <List sx={{ minWidth: '120px'}}>
+                  {[...pages, ...loggedMenu?.main].map((page, idx) => (
+                    <ListItem key={idx} onClick={toggleDrawer(false)} component={RouterLink} to={page.url}  >                      
+                      <ListItemText primary={page.title} />
+                    </ListItem>
+                  ))}
+                  </List>
+            </Drawer> 
+            
+            
           </Box>
           <Typography
             variant="h6"

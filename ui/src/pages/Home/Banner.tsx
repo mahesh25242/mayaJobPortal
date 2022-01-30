@@ -5,8 +5,7 @@ import { useBannersQuery } from '../../api/rtk/Setting';
 
 const Item = (props: any) =>{    
     return (
-        <Paper style={{height: '200px'}}>
-            <img src={props.item.image_path} />      
+        <Paper style={{height: '250px', background: `url(${props.item.image_path})`, backgroundSize:' cover'}}>            
         </Paper>
     )
 };
