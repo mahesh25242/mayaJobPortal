@@ -13,15 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 
-import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
@@ -197,6 +192,10 @@ const ResponsiveAppBar = () => {
                   onClose={toggleDrawer(false)}
                 >
                   <List sx={{ minWidth: '120px'}}>
+                  <ListItem onClick={toggleDrawer(false)} component={RouterLink} to='/'  >                      
+                      <ListItemText primary="Home" />
+                    </ListItem>
+
                   {[...pages, ...loggedMenu?.main].map((page, idx) => (
                     <ListItem key={idx} onClick={toggleDrawer(false)} component={RouterLink} to={page.url}  >                      
                       <ListItemText primary={page.title} />
