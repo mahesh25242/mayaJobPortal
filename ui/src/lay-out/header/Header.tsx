@@ -12,6 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
+
+import * as React from 'react';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -33,6 +44,41 @@ const pages = [
         url: '/terms'
     }    
 ];
+
+
+
+
+function SiteDrawer() {
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor:any, open:any) => (event: any) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  
+
+  return (
+    <div>
+       <Button onClick={toggleDrawer("left", true)}>left</Button>
+      <Drawer
+            anchor="left"
+            open={state["left"]}
+            onClose={toggleDrawer("left", false)}
+          >
+            asas
+          </Drawer>     
+    </div>
+  );
+}
 
 
 const ResponsiveAppBar = () => {
@@ -143,7 +189,7 @@ const ResponsiveAppBar = () => {
 
   
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -192,11 +238,10 @@ const ResponsiveAppBar = () => {
           </Box>
           <Typography
             variant="h6"
-            noWrap
-            component="div"
+            noWrap            
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            LOGO
+            component={RouterLink} to='/' >
+            Job Protal
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {[...pages, ...loggedMenu?.main].map((page, idx) => (

@@ -16,6 +16,7 @@ const Home = () => {
       <SearchBar />
     </Paper>  
     <RegisterButtons />  
+    
     <br/>
     {/* <Registration/>     */}
     <BlogHome />
