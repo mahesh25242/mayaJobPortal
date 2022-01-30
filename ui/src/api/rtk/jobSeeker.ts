@@ -8,13 +8,18 @@ export const jobSeekerApi = createApi({
   tagTypes:["Seekers"],
   endpoints: (builder) => ({
     getSeekers: builder.query({
-      query: () => ({
-          url: `seeker/?page=1&per_page=20`,
+      query: (filters:any = null) => {
+        const params = {...{page: 1, per_page: 20},...filters}
+        const queryString = new URLSearchParams(params).toString();
+        
+        return {
+          url: `seeker?${queryString}`,
         //   headers: {
         //     'content-type': 'text/plain',
         //  },
 
-      }) ,  
+        };
+      } ,  
       providesTags: ["Seekers"],        
     }),
     saveSeeker: builder.mutation({

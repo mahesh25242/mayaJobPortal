@@ -8,13 +8,18 @@ export const employerApi = createApi({
   tagTypes:["Employers"],
   endpoints: (builder) => ({
     getEmployers: builder.query({
-      query: () => ({
-          url: `employer?page=1&per_page=20`,
-        //   headers: {
-        //     'content-type': 'text/plain',
-        //  },
+      query: (filters:any = null) => {
+        const params = {...{page: 1, per_page: 20},...filters}
+        const queryString = new URLSearchParams(params).toString();
+        
+        return {
+            url: `employer?${queryString}`,
+          //   headers: {
+          //     'content-type': 'text/plain',
+          //  },
 
-      }) ,
+        };
+      } ,
       providesTags: ["Employers"],     
     }),
     saveEmployer: builder.mutation({

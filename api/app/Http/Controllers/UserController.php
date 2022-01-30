@@ -266,8 +266,25 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-        $employers = \App\Models\Employer::with(['user', 'seekerPreference'])->paginate($request->input('per_page', 10));
-        return response(['message' => 'Successfully get', 'data' => $employers, 'status' => true]);
+
+        if(Auth::check() && Auth::user()->role_id == 1){
+            $employers = \App\Models\Employer::with(['user', 'seekerPreference'])->paginate($request->input('per_page', 10));
+            return response(['message' => 'Successfully get', 'data' => $employers, 'status' => true]);
+        }else{
+            $employers = new \App\Models\Employer;
+            if($request->input("state", null)){
+                $employers = $employers->where("state", "like", '%'.$request->input("state", null).'%');
+            }
+            if($request->input("district", null)){
+                $employers = $employers->where("district", "like", '%'.$request->input("district", null).'%');
+            }
+            if($request->input("category", null)){
+                $employers = $employers->where("category_id", "like", '%'.$request->input("category", null).'%');
+            }
+
+            return response(['message' => 'Successfully get', 'data' => $employers->count(), 'status' => true]);
+        }
+        
     }
 
     public function registerSeeker(Request $request, $id=0){
@@ -389,8 +406,25 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-        $seekers = \App\Models\Seeker::with(['user'])->paginate($request->input('per_page', 10));
-        return response(['message' => 'Successfully get', 'data' => $seekers, 'status' => true]);
+        if(Auth::check() && Auth::user()->role_id == 1){
+            $seekers = \App\Models\Seeker::with(['user'])->paginate($request->input('per_page', 10));
+            return response(['message' => 'Successfully get', 'data' => $seekers, 'status' => true]);
+        }else{
+            $seekers = new \App\Models\Seeker;
+            if($request->input("state", null)){
+                $seekers = $seekers->where("state", "like", '%'.$request->input("state", null).'%');
+            }
+            if($request->input("district", null)){
+                $seekers = $seekers->where("district", "like", '%'.$request->input("district", null).'%');
+            }
+            if($request->input("category", null)){
+                $seekers = $seekers->where("category_id", "like", '%'.$request->input("category", null).'%');
+            }
+
+            return response(['message' => 'Successfully get', 'data' => $seekers->count(), 'status' => true]);
+        }
+       
+       
     }
     /* delete a user */
     public function delete(Request $request, $id){

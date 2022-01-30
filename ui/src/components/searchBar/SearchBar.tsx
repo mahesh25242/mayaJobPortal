@@ -7,11 +7,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import { FormControl, MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, useForm } from "react-hook-form";
-import { useGetCategoriesQuery } from '../../api/rtk/Categories'
+import { useGetCategoriesQuery } from '../../api/rtk/Categories';
+import { useGetEmployersQuery } from '../../api/rtk/Employer';
+import { useGetSeekersQuery } from '../../api/rtk/jobSeeker';
 import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+import Alert from '@mui/material/Alert';
+
 
 export default function SearchBar(){
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const [filter , SetFilter] = useState(null);
+    const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({
         defaultValues: {
             type: 'employee',
             state: '',
@@ -19,10 +25,13 @@ export default function SearchBar(){
             district: ''
         }
     });
-    const onSubmit = (data:any) => console.log(data);
-    const { data, error, isLoading } = useGetCategoriesQuery('categories')
+    const onSubmit = (data:any) => {
+        SetFilter(data);        
+    };
+    const { data, error, isLoading } = useGetCategoriesQuery('categories');
 
-    return(<Stack component="form" 
+    return(<>
+        <Stack component="form" 
         direction={{ xs: 'column', md: 'row' }}
         sx={{ p: '2px 4px',  alignItems: 'center' }} 
         onSubmit={handleSubmit(onSubmit)}>  
@@ -88,5 +97,39 @@ export default function SearchBar(){
                 <IconButton type="submit" sx={{ p: '10px', display: { xs: "none", md: "block" } }} aria-label="search">
                     <SearchIcon />
                 </IconButton>                
-    </Stack>);
+    </Stack>{
+        getValues("type")=="employee" && filter &&  <SearchEmployerResult filter={filter}/>
+    }    
+    {
+         getValues("type")!=="employee" && filter &&  <SearchJobSeekerResult filter={filter}/>
+    }
+    </>);
 };
+
+function SearchEmployerResult(props: any){    
+    const { data, error, isLoading } = useGetEmployersQuery(props.filter);        
+  
+    let total = 0;
+    if(data?.data?.total >= 0){
+        total = data?.data?.total;
+    }else{
+        total = data?.data;
+    }    
+    return (<div style={{marginTop: '20px'}}>
+       <Alert severity="info">We found {total} job seeker(s) registered!</Alert>
+    </div>);
+}
+
+function SearchJobSeekerResult(props: any){
+    const { data, error, isLoading } = useGetSeekersQuery(props.filter);
+    let total = 0;
+    if(data?.data?.total >= 0){
+        total = data?.data?.total;
+    }else{
+        total = data?.data;
+    }
+    total = total ?? 0;    
+    return (<div style={{marginTop: '20px'}}>
+        <Alert severity="info">We found {total} employer(s) registered!</Alert>
+    </div>);
+}

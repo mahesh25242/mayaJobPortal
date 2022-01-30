@@ -14,10 +14,15 @@ export function BlogHome(){
 
     return (
         <div>
-            <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center'}}>
-                Blog Home
-            </Typography>
-            {data && data.map((row:any, idx:number) => <BlogCard key={idx} blog={row}/>)}
+          {
+            data && data.length > 0 && <>
+                <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'center'}}>
+                  Blog Home
+              </Typography>
+              {data && data.map((row:any, idx:number) => <BlogCard key={idx} blog={row}/>)}
+            </>
+          }
+            
         </div>
     );
 }

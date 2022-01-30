@@ -60,8 +60,11 @@ class BlogController extends Controller
     }
 
     public function blogs(Request $request){       
-        $blogs = \App\Models\Blog::all();
-        return response($blogs);
+        $blogs = new \App\Models\Blog;
+        if(!Auth::check() || Auth::user()->role_id != 1){
+            $blogs = $blogs->where("status", 1);
+        }
+        return response($blogs->get());
     }
 
     public function viewDetails($id=0){       
