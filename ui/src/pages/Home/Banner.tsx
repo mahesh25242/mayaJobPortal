@@ -1,10 +1,9 @@
 import Carousel from 'react-material-ui-carousel'
-import { Paper, Button } from '@mui/material'
+import { Paper } from '@mui/material'
 import { useBannersQuery } from '../../api/rtk/Setting';
 
 
-const Item = (props: any) =>{
-    console.log(props)
+const Item = (props: any) =>{    
     return (
         <Paper style={{height: '200px'}}>
             <img src={props.item.image_path} />      
@@ -13,18 +12,19 @@ const Item = (props: any) =>{
 };
 
 const Banner = () => {
-    const { data, error, isLoading } = useBannersQuery('')
+    const { data, error, isLoading } = useBannersQuery('')  
+  
     
-
-    
-
     return (
-        <div>
-            <Carousel>
+        <div>   
             {
-               data &&  data.map( (item:any, i:number) => item.image_path && <Item key={i} item={item} /> )
-            }
-            </Carousel>
+                data != null && <Carousel>
+                {
+                     data.map( (item:any, i:number) => item.image_path && <Item key={i} item={item} /> )
+                }
+                </Carousel>
+            }         
+            
         </div>
     )
 

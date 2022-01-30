@@ -13,9 +13,12 @@ import { useGetSeekersQuery } from '../../api/rtk/jobSeeker';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export default function SearchBar(){
+    const [loading, setLoading] = useState(false);
+
     const [filter , SetFilter] = useState(null);
     const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({
         defaultValues: {
@@ -26,6 +29,7 @@ export default function SearchBar(){
         }
     });
     const onSubmit = (data:any) => {
+        setLoading(true)
         SetFilter(data);        
     };
     const { data, error, isLoading } = useGetCategoriesQuery('categories');
@@ -90,18 +94,26 @@ export default function SearchBar(){
                         )}
                     />                   
                 </FormControl>                 
-                <Button type="submit" variant="contained" color="primary" fullWidth sx={{
+                <LoadingButton
+                loading={loading}                
+              
+                 type="submit" variant="contained" color="primary" fullWidth sx={{
                     marginTop: '10px',
                     display: { xs: "block", md: "none" }
-                    }}>Search</Button>
-                <IconButton type="submit" sx={{ p: '10px', display: { xs: "none", md: "block" } }} aria-label="search">
+                    }}>Search</LoadingButton>
+                <LoadingButton 
+                loading={loading}                
+                variant="outlined"
+              
+                type="submit" sx={{ padding: '10px 0px', marginLeft: '10px', display: { xs: "none", md: "block" } }} aria-label="search">
                     <SearchIcon />
-                </IconButton>                
-    </Stack>{
-        getValues("type")=="employee" && filter &&  <SearchEmployerResult filter={filter}/>
+                </LoadingButton>                
+    </Stack>
+    {
+        getValues("type")=="employee" && filter &&  <SearchEmployerResult filter={filter} setLoading={setLoading}/>
     }    
     {
-         getValues("type")!=="employee" && filter &&  <SearchJobSeekerResult filter={filter}/>
+         getValues("type")!=="employee" && filter &&  <SearchJobSeekerResult filter={filter} setLoading={setLoading}/>
     }
     </>);
 };
@@ -109,6 +121,9 @@ export default function SearchBar(){
 function SearchEmployerResult(props: any){    
     const { data, error, isLoading } = useGetEmployersQuery(props.filter);        
   
+    if(!isLoading){
+        props.setLoading(false);
+    }
     let total = 0;
     if(data?.data?.total >= 0){
         total = data?.data?.total;
@@ -116,13 +131,19 @@ function SearchEmployerResult(props: any){
         total = data?.data;
     }    
     return (<div style={{marginTop: '20px'}}>
-       <Alert severity="info">We found {total} job seeker(s) registered!</Alert>
+        {
+            total > 0 && <Alert severity="info">We found {total} job seeker(s) registered!</Alert>
+        }       
     </div>);
 }
 
 function SearchJobSeekerResult(props: any){
     const { data, error, isLoading } = useGetSeekersQuery(props.filter);
+    if(!isLoading){
+        props.setLoading(false);
+    }
     let total = 0;
+    
     if(data?.data?.total >= 0){
         total = data?.data?.total;
     }else{
@@ -130,6 +151,8 @@ function SearchJobSeekerResult(props: any){
     }
     total = total ?? 0;    
     return (<div style={{marginTop: '20px'}}>
-        <Alert severity="info">We found {total} employer(s) registered!</Alert>
+        {
+            total > 0 && <Alert severity="info">We found {total} employer(s) registered!</Alert>
+        }        
     </div>);
 }
