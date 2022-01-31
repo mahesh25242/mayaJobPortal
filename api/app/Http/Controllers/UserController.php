@@ -353,8 +353,8 @@ class UserController extends Controller
         $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
         $user->save();
 
-        $dob = '';
-        if($request->input('dob', '')){
+        $dob = null;
+        if($request->input('dob', null)){
             $dob = Carbon::parse($request->input('dob', ''));
             $dob = $dob->format('Y-m-d');
         }            
@@ -387,8 +387,8 @@ class UserController extends Controller
                 'expected_salary' => $request->input('expected_salary', 1),
                 'lat' => $request->input('lat', ''),
                 'lng' => $request->input('lng', ''),
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
+                'created_by' => Auth::check()  ? Auth::user()->id : 0,
+                'updated_by' => Auth::check() ? Auth::user()->id : 0,
             ],
         );
 

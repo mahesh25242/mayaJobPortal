@@ -46,8 +46,7 @@ const pages = [
 
 
 const ResponsiveAppBar = () => {
-  const [drawerState, setDrawerState] = useState(false);
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [drawerState, setDrawerState] = useState(false);  
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const [loggedMenu, setLoggedMenu] = useState<any>({
@@ -65,16 +64,12 @@ const ResponsiveAppBar = () => {
   const dispatch = useDispatch();
   const { token } = useSelector(getAuth);
   
-  const handleOpenNavMenu = (event: any) => {
-    setAnchorElNav(event.currentTarget);
-  };
+
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -86,7 +81,7 @@ const ResponsiveAppBar = () => {
 
   useEffect(() => {
     if(token && token.token) {
-      if(token.token?.role_id == 1){
+      if(token.token?.role_id === 1){
         setLoggedMenu({
           settings: [
               {
@@ -169,7 +164,7 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h6"
             noWrap            
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, textDecoration: 'none', color: '#fff' }}
             component={RouterLink} to='/' >
             Job Protal
           </Typography>
@@ -180,8 +175,7 @@ const ResponsiveAppBar = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={toggleDrawer(true)}
-              // onClick={handleOpenNavMenu}
+              onClick={toggleDrawer(true)}              
               color="inherit"
             >
               <MenuIcon />
@@ -209,15 +203,14 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h6"
             noWrap            
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, textDecoration: 'none', color: '#fff'  }}
             component={RouterLink} to='/' >
             Job Protal
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {[...pages, ...loggedMenu?.main].map((page, idx) => (
               <Button
-                key={idx}
-                onClick={handleCloseNavMenu}
+                key={idx}                
                 sx={{ my: 2, color: 'white', display: 'block' }}  
                 component={RouterLink} to={page.url}              
               >                  
@@ -248,7 +241,7 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              { loggedMenu?.settings.map((setting:any, idx:number) => (<MenuItem key={idx} onClick={handleCloseNavMenu} component={RouterLink} to={setting.url}>
+              { loggedMenu?.settings.map((setting:any, idx:number) => (<MenuItem key={idx} onClick={handleCloseUserMenu} component={RouterLink} to={setting.url}>
                   <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
