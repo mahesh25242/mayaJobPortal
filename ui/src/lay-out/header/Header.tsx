@@ -72,7 +72,7 @@ const ResponsiveAppBar = () => {
 
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    setAnchorElUser(null); 
   };
 
   useEffect(() => {     
