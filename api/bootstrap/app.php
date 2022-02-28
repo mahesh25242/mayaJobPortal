@@ -100,6 +100,7 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 
 $app->register(Kreait\Laravel\Firebase\ServiceProvider::class);
 
+$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -112,6 +113,7 @@ $app->register(Kreait\Laravel\Firebase\ServiceProvider::class);
 */
 
 $app->configure('auth');
+$app->configure('dompdf');
 
 \Dusterio\LumenPassport\LumenPassport::routes($app, ['prefix' => 'v1/oauth']);
 
