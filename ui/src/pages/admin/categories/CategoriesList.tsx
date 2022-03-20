@@ -47,7 +47,9 @@ export default function CategoriesList() {
       <Helmet>
         <title>Categories</title>
       </Helmet>
-        <CreateCategory category={category} setCategory={setCategory} setSnakMessage={setSnakMessage}/>
+      {
+        category?.id >= 0 && <CreateCategory category={category} setCategory={setCategory} setSnakMessage={setSnakMessage}/>
+      }        
        <Typography gutterBottom variant="h5" component="div">
           Categories
         </Typography>

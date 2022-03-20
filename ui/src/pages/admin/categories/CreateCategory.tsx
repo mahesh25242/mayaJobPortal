@@ -34,18 +34,18 @@ export default function CreateCategory(props: any) {
     });
 
     React.useEffect(() => {
+        console.log(props);
         setValue("name", props?.category?.name ?? '');
         setValue("description", props?.category?.description ?? '');
         setValue("id", props?.category?.id ?? 0);
-    }, [props]);
+    }, []);
   
   const handleClose = () => props?.setCategory(null);
 const [ saveCategory ] = useSaveCategoryMutation();
 // const [login] = useLoginMutation();
 
       
-  const onSubmit = (data:any) => { 
-      console.log(data)
+  const onSubmit = (data:any) => {       
     const loginResponse = saveCategory(data).unwrap().then(res=>{
         console.log(res); 
         props.setSnakMessage(res.message);   
