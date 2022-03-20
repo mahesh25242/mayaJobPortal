@@ -91,7 +91,7 @@ export default function JobSekkersList() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.id}
+                <Link href='#' onClick={() => setSeeker(row)}>{row.id}</Link>                
               </TableCell>
               <TableCell align="right">
                 <Link href='#' onClick={() => setSeeker(row)}>{row.user.name}</Link>
