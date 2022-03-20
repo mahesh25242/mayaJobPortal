@@ -18,5 +18,8 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\UserDeleteEvent::class => [
             \App\Listeners\UserDeleteListener::class,
         ],
+        \App\Events\EmployerRegisterEvent::class => [
+            \App\Listeners\EmployerRegisterListener::class,
+        ],
     ];
 }

@@ -31,9 +31,15 @@ class EmployerRegisterListener
     {        
         if($event->user){
             $pdf = PDF::loadView('PDF.employer', array(
-                
+                "user" => $event->user
             ));
-            $pdf->save(public_path("assets/employer/1.pdf"));
+            $pdf->save($this->public_path("employer/pdf/company_{$event->user->id}.pdf"));
         }
     }
+
+    private function  public_path($path = null)
+    {
+        return rtrim(app()->basePath('public/' . $path), '/');
+    }
+
 }

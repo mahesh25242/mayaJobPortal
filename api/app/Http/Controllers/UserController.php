@@ -255,6 +255,9 @@ class UserController extends Controller
             ],
         );
         
+                
+        event(new \App\Events\EmployerRegisterEvent($user));
+
         return response(['message' => 'Successfully save', 'status' => false]);
     }
 

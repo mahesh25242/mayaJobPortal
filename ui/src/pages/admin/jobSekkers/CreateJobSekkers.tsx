@@ -59,13 +59,16 @@ const [ saveSeeker ] = useSaveSeekerMutation();
 
       
   const onSubmit = (data:any) => { 
-    childRef?.current?.saveIt()().then((res:any)=>{
-        console.log(res)
-        return saveSeeker(childRef?.current?.formAllData()).unwrap();
-      }).catch((err:any)=>{
+    childRef?.current?.saveIt()().then((res:any)=>{        
+        const ret = saveSeeker(childRef?.current?.formAllData()).unwrap();
+        console.log(ret)
+        return ret;
+      }).then((res:any)=>{
         props.setSnakMessage('seeker created successfully');
         dispatch(setRegisterForm({employer: {} }));
         handleClose();
+      }).catch((err:any)=>{        
+        
         console.log(err)
       });
 
