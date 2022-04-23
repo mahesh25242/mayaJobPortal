@@ -24,20 +24,21 @@ const style = {
 };
 
 export default function CreateCategory(props: any) {
-    const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
-        defaultValues: {
-            name: props?.category?.name ?? '',
-            description: props?.category?.description ?? '',
-            id: props?.category?.id ?? 0,
-            status: props?.category?.status ?? 1,
-        }
+    const { register, handleSubmit, control, formState: { errors }, setValue, getValues,reset } = useForm({
+        // defaultValues: {
+        //     name: props?.category?.name ?? '',
+        //     description: props?.category?.description ?? '',
+        //     id: props?.category?.id ?? 0,
+        //     status: !!props?.category?.status ?? 1,
+        // }
     });
 
     React.useEffect(() => {
-        console.log(props);
+        const status = !props?.category ? 1 : +props?.category?.status ?? 1;
         setValue("name", props?.category?.name ?? '');
         setValue("description", props?.category?.description ?? '');
         setValue("id", props?.category?.id ?? 0);
+        setValue("status", status);        
     }, []);
   
   const handleClose = () => props?.setCategory(null);
@@ -100,7 +101,7 @@ const [ saveCategory ] = useSaveCategoryMutation();
                     <Controller
                         name={"status"}                        
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
+                        render={({ field: { onChange, value = 1 } }) => (
                             <TextField  select                           
                             label="Description"
                             onChange={onChange} value={value} 

@@ -53,7 +53,7 @@ export default function CategoriesList() {
        <Typography gutterBottom variant="h5" component="div">
           Categories
         </Typography>
-      <Button variant="contained" onClick={(e)=> setCategory({id: 0})}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> setCategory({id: 0, status: 1})}>Careate New</Button>
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
