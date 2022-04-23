@@ -5,10 +5,10 @@ export default function Home() {
         <div>
             <Helmet>
                 <title>
-                    Admin Dashboard
+                    Employer Dashboard
                 </title>
             </Helmet>
-            <h1>Home</h1>
+            <h1>Employer Home</h1>
             
         </div>
     );

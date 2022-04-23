@@ -27,8 +27,14 @@ export default function Login(){
 
     const onSubmit = (data:any) => { 
         dispatch(checkLogin(data)).then((res) => {
-            if(res?.payload)
+            console.log(res);
+            if(res?.payload?.role_id === 1){
                 navigate("/admin");
+            }else if(res?.payload?.role_id === 2){
+                navigate("/employer");
+            }else if(res?.payload?.role_id === 3){
+                navigate("/candidate");
+            }
         });                
 
     };
@@ -71,6 +77,7 @@ export default function Login(){
                             error={!!errors.password}
                             helperText={ (errors.password) ? errors.password?.message: '' }
                             label="Password"
+                            type="password"
                             onChange={onChange} value={value} 
                             placeholder='Enter your Password'                            
                             sx={{ m: 1,  }}                            

@@ -9,6 +9,8 @@ import {  HelmetProvider } from 'react-helmet-async';
 import { Container } from '@mui/material';
 
 
+
+
 const AppRoutes = () => {
   const About = React.lazy(() => import("./pages/about/About"));
   const Home = React.lazy(() => import("./pages/Home/Home"));
@@ -22,7 +24,9 @@ const AppRoutes = () => {
   const BlogDetails = React.lazy(() => import("./pages/blog/BlogDetails"));
   const Login = React.lazy(() => import("./pages/admin/login/Login"));
   const Register = React.lazy(() => import("./pages/register/Register"));
-
+  const Candidate = React.lazy(() => import("./pages/candidate/Candidate"));
+  const Employer = React.lazy(() => import("./pages/employer/Employer"));
+  
   return <Routes>
   <Route path="/" element={<LayOut />}>
     <Route index 
@@ -79,6 +83,20 @@ const AppRoutes = () => {
         <React.Suspense fallback={<>...</>}>
           <Container>
             <Admin />
+          </Container>
+        </React.Suspense>
+      } />
+      <Route path="candidate/*" element={
+        <React.Suspense fallback={<>...</>}>
+          <Container>
+            <Candidate />
+          </Container>
+        </React.Suspense>
+      } />
+      <Route path="employer/*" element={
+        <React.Suspense fallback={<>...</>}>
+          <Container>
+            <Employer />
           </Container>
         </React.Suspense>
       } />

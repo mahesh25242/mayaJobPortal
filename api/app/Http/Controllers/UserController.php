@@ -195,6 +195,7 @@ class UserController extends Controller
 
             $user =  new \App\Models\User();
             $user->status = 1;
+            $user->role_id = 2;
             $user->password = Hash::make($request->input("password", ''));
            
         }
@@ -347,6 +348,7 @@ class UserController extends Controller
             
             $user = new \App\Models\User();
             $user->status = 1;
+            $user->role_id = 3;
             $user->password = Hash::make($request->input("password", ''));
         }            
         $user->name = $request->input("contact_name", '');

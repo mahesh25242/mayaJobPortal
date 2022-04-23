@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import Login from "../admin/login/Login";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import {
@@ -8,8 +8,11 @@ import {
 } from "../../api/users/AuthenticationSlice";
 import { AlternateEmailTwoTone } from "@mui/icons-material";
 import Home from "./home/Home";
+import Login from "../admin/login/Login";
 
-export default function Admin(){ 
+
+
+export default function Employer(){ 
   const dispatch = useDispatch();
   const { token } = useSelector(getAuth);
 
@@ -19,7 +22,7 @@ export default function Admin(){
         <Routes>   
         <Route path="login" element={<Login />} />        
           {
-            token && token.loading === false &&  <Route path="/*" element={
+            token &&   <Route path="/*" element={
               <PrivateRoute>
                 <DashboardLayout />
               </PrivateRoute>}>
@@ -33,6 +36,7 @@ export default function Admin(){
 }
 
 function PrivateRoute({ children }: any) {    
+  
     const { token } = useSelector(getAuth);       
     return !!token.token ? children :   <Navigate to="/admin/login" />;
 }
@@ -44,7 +48,7 @@ function DashboardLayout() {
     return (
       <div>   
         <Routes>
-            <Route path="/" element={<Home />} />                                                                        
+            <Route path="/" element={<Home />} />                                                                       
         </Routes>                
         <Outlet />
       </div>
