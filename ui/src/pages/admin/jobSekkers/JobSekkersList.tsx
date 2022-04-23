@@ -52,11 +52,10 @@ export default function JobSekkersList() {
       seekData = {...seeker, ...{
         email: seeker?.user?.email,
         phone: seeker?.user?.phone,                
-        contact_name: seeker?.user?.name,
+        name: seeker?.user?.name,
         id: seeker?.user?.id,
       }}
-    }
-    
+    }    
     dispatch(setOtpPhone( {page: 'seeker' } ))    
     dispatch(setRegisterForm({seeker: seekData}));
     setSeeker(seeker); 
@@ -91,12 +90,12 @@ export default function JobSekkersList() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <Link href='#' onClick={() => setSeeker(row)}>{row.id}</Link>                
+                <Link href='#' onClick={() => editSeeker(row)}>{row?.id}</Link>                
               </TableCell>
               <TableCell align="right">
-                <Link href='#' onClick={() => setSeeker(row)}>{row.user.name}</Link>
+                <Link href='#' onClick={() => editSeeker(row)}>{row?.user?.name}</Link>
               </TableCell>
-              <TableCell align="right">{row.status_text}</TableCell>              
+              <TableCell align="right">{row?.status_text}</TableCell>              
               <TableCell align="right">                
                 <Button onClick={() => delCat(row)}>Delete</Button>
               </TableCell>

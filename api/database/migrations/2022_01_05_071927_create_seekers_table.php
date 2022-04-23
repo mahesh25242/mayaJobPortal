@@ -20,6 +20,7 @@ class CreateSeekersTable extends Migration
             $table->string('phone')->nullable(); 
             $table->string('address')->nullable();                 
             $table->string('country')->nullable();                 
+            $table->string('nationality')->nullable();                 
             $table->string('state')->nullable();                 
             $table->string('city')->nullable();                 
             $table->string('district')->nullable();                 

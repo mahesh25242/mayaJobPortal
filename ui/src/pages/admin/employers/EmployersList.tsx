@@ -46,7 +46,7 @@ export default function EmployersList() {
     
   }
 
-  const editEMployer = (employer: any) =>{    
+  const editEmployer = (employer: any) =>{    
     let empData = employer;
     if(employer){
       empData = {...employer, ...{
@@ -70,7 +70,7 @@ export default function EmployersList() {
        <Typography gutterBottom variant="h5" component="div">
           Employers
         </Typography>
-      <Button variant="contained" onClick={(e)=> editEMployer({id: 0})}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> editEmployer({id: 0})}>Careate New</Button>
       <Search /> 
       <Table  aria-label="simple table">
         <TableHead>
@@ -91,7 +91,7 @@ export default function EmployersList() {
                 {row.id}
               </TableCell>
               <TableCell align="right">
-                <Link href='#' onClick={() => editEMployer(row) }>{row.name}</Link>
+                <Link href='#' onClick={() => editEmployer(row) }>{row.name}</Link>
               </TableCell>
               <TableCell align="right">{row.status_text}</TableCell>              
               <TableCell align="right">                
