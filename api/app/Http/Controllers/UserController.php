@@ -374,6 +374,7 @@ class UserController extends Controller
                 'phone' => $request->input('secondry_phone', ''),
                 'address' => $request->input('address', ''),
                 'country' => $request->input('country', ''),
+                'category_id' => $request->input('category_id', ''),
                 'nationality' => $request->input('nationality', ''),
                 'state' => $request->input('state', ''),
                 'district' => $request->input('district', ''),

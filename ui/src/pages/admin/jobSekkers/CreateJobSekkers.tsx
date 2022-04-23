@@ -47,7 +47,7 @@ export default function CreateJobSekkers(props: any) {
  
 
   const handleClose = () => {
-    dispatch(setRegisterForm({ employer: {} }));
+    dispatch(setRegisterForm({ seeker: {} }));
     props?.setSeeker(null)
   };
   const [saveSeeker] = useSaveSeekerMutation();
@@ -60,7 +60,7 @@ export default function CreateJobSekkers(props: any) {
       return ret;
     }).then((res: any) => {
       props.setSnakMessage('seeker created successfully');
-      dispatch(setRegisterForm({ employer: {} }));
+      dispatch(setRegisterForm({ seeker: {} }));
       handleClose();
     }).catch((err: any) => {
 
