@@ -21,5 +21,8 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\EmployerRegisterEvent::class => [
             \App\Listeners\EmployerRegisterListener::class,
         ],
+        \App\Events\SeekerRegisterEvent::class => [
+            \App\Listeners\SeekerRegisterListener::class,
+        ],
     ];
 }
