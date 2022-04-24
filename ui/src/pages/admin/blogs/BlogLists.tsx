@@ -19,7 +19,7 @@ import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
 import { Helmet } from 'react-helmet-async';
 
-export default function CategoriesList() {  
+export default function BlogListList() {  
     
 
     const [blog, setBlog] = React.useState<any>(null);
@@ -54,7 +54,7 @@ export default function CategoriesList() {
        <Typography gutterBottom variant="h5" component="div">
           Blogs
         </Typography>
-      <Button variant="contained" onClick={(e)=> setBlog({id: 0, status: 0})}>Careate New</Button>
+      <Button variant="contained" onClick={(e)=> setBlog({id: 0, status: 0})}>Create New</Button>
       
 
       <Table  aria-label="simple table">

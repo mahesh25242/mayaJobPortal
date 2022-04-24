@@ -19,16 +19,15 @@ import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
 
-import { Helmet } from 'react-helmet-async';
-import ListTable from './ListTable';
 
-export default function JobSekkersList() {
+
+export default function ListTable(props: any) {
     const [snakMessage, setSnakMessage] = React.useState<string>('');
     const [seeker, setSeeker] = React.useState<any>(null);
     const [filters, setFilters] = React.useState<any>(null);
-
+    
     const dispatch = useDispatch();    
-    const { data, error, isLoading } = useGetSeekersQuery('')
+    const { data, error, isLoading } = useGetSeekersQuery(props.filters)
     const [ deleteSeeker ] = useDeleteSeekerMutation();
     
     
@@ -48,38 +47,39 @@ export default function JobSekkersList() {
     
   }
 
-  const editSeeker = (seeker: any) =>{    
-    let seekData = seeker;
-    if(seeker){
-      seekData = {...seeker, ...{
-        email: seeker?.user?.email,
-        phone: seeker?.user?.phone,                
-        name: seeker?.user?.name,
-        id: seeker?.user?.id,
-      }}
-    }    
-    dispatch(setOtpPhone( {page: 'seeker' } ))    
-    dispatch(setRegisterForm({seeker: seekData}));
-    setSeeker(seeker); 
-  };
-
-  return (
-    <TableContainer component={Paper}>
-      <Helmet>
-        <title>Job Seekers</title>
-      </Helmet>
-      <Typography gutterBottom variant="h5" component="div">
-          Job Sekkers
-        </Typography>      
-        <CreateJobSekkers seeker={seeker} setSeeker={setSeeker} setSnakMessage={setSnakMessage} />       
-        
-      <Button variant="contained" onClick={(e)=> editSeeker({id: 0})}>Create New</Button>
-      <Search setFilters={setFilters}/>
-      
-      <ListTable editSeeker={editSeeker} filters={filters}/>
-      {
-        snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
-      } 
-    </TableContainer>
+  
+  return (    
+      <Table  aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Id</TableCell>
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Options</TableCell>            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        { data && data?.data && data?.data?.data && data?.data?.data.map((row:any) => (
+            <TableRow
+              key={row.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                <Link href='#' onClick={() => props.editSeeker(row)}>{row?.id}</Link>                
+              </TableCell>
+              <TableCell align="right">
+                <Link href='#' onClick={() => props.editSeeker(row)}>{row?.user?.name}</Link>
+              </TableCell>
+              <TableCell align="right">{row?.status_text}</TableCell>              
+              <TableCell align="right">                
+                <Button onClick={() => delCat(row)}>Delete</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+          {
+            (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          }
+        </TableBody>
+      </Table>     
   );
 }

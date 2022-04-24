@@ -273,8 +273,15 @@ class UserController extends Controller
         }
 
         if(Auth::check() && Auth::user()->role_id == 1){
-            $employers = \App\Models\Employer::with(['user', 'seekerPreference'])->paginate($request->input('per_page', 10));
-            return response(['message' => 'Successfully get', 'data' => $employers, 'status' => true]);
+            $employers = \App\Models\Employer::with(['user', 'seekerPreference']);
+            if($request->input("category", null)){
+                $employers = $employers->where("category_id", $request->input("category", null));
+            }
+            if($request->input("name", null)){
+                $employers = $employers->where("name","like", "%".$request->input("name", null)."%");
+            }
+
+            return response(['message' => 'Successfully get', 'data' => $employers->paginate($request->input('per_page', 10)), 'status' => true]);
         }else{
             $employers = new \App\Models\Employer;
             if($request->input("state", null)){

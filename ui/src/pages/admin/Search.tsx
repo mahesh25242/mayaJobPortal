@@ -12,7 +12,7 @@ export default function Search(props: any) {
     const [val, setVal] = React.useState<DateRange<Date>>([null, null]);
     const { data, error, isLoading } = useGetCategoriesQuery('categories');
 
-    const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
         defaultValues: {
             name: '',
             category: '',
@@ -20,8 +20,20 @@ export default function Search(props: any) {
         }
     });
 
+    const resetForm = () => {
+        setValue('name', '');
+        setValue('category', '');
+        setValue('joined_range', null);
+        props.setFilters(getValues());
+    }
     const onSubmit = (data:any) => { 
-        console.log(data);
+        const postParms = {
+            category: data.category,
+            name: data.name,
+            start: data.joined_range ? data.joined_range[0].toISOString() : null,
+            end: data.joined_range ? data.joined_range[0].toISOString() : null,
+        }
+        props.setFilters(postParms);        
     };
 
     return <Box>
@@ -86,6 +98,9 @@ export default function Search(props: any) {
 
             <Button type="submit" variant="contained">
                 Search
+            </Button>
+            <Button type="button" variant="outlined" onClick={resetForm} >
+                Reset
             </Button>
 
 
