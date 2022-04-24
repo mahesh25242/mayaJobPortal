@@ -280,7 +280,9 @@ class UserController extends Controller
             if($request->input("name", null)){
                 $employers = $employers->where("name","like", "%".$request->input("name", null)."%");
             }
-
+            if($request->input("start", null) && $request->input("end", null)){
+                $seekers = $employers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
+            }
             return response(['message' => 'Successfully get', 'data' => $employers->paginate($request->input('per_page', 10)), 'status' => true]);
         }else{
             $employers = new \App\Models\Employer;
@@ -424,8 +426,19 @@ class UserController extends Controller
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
         if(Auth::check() && Auth::user()->role_id == 1){
-            $seekers = \App\Models\Seeker::with(['user'])->paginate($request->input('per_page', 10));
-            return response(['message' => 'Successfully get', 'data' => $seekers, 'status' => true]);
+            $seekers = \App\Models\Seeker::with(['user']);
+            if($request->input("category", null)){
+                $seekers = $seekers->where("category_id", $request->input("category", null));
+            }
+            if($request->input("name", null)){
+                $seekers = $seekers->whereHas("user", function ($query) use($request) {
+                    $query->where('name', 'like', "%".$request->input("name", null)."%");
+                });
+            }
+            if($request->input("start", null) && $request->input("end", null)){
+                $seekers = $seekers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
+            }
+            return response(['message' => 'Successfully get', 'data' => $seekers->paginate($request->input('per_page', 10)), 'status' => true]);
         }else{
             $seekers = new \App\Models\Seeker;
             if($request->input("state", null)){

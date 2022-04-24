@@ -30,8 +30,8 @@ export default function Search(props: any) {
         const postParms = {
             category: data.category,
             name: data.name,
-            start: data.joined_range ? data.joined_range[0].toISOString() : null,
-            end: data.joined_range ? data.joined_range[0].toISOString() : null,
+            start: data.joined_range ? data.joined_range[0].toISOString() : '',
+            end: data.joined_range ? data.joined_range[1].toISOString() : '',
         }
         props.setFilters(postParms);        
     };
