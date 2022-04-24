@@ -503,11 +503,18 @@ class UserController extends Controller
         }
         $file = '';
         if($user && $user->role_id == 2){
-            $file = app()->basePath('public/' . "seeker/pdf/seeker_{$user->id}.pdf");
-        }else if($user){
             $file = app()->basePath('public/' . "employer/pdf/company_{$user->id}.pdf");
+        }else if($user){
+            $file = app()->basePath('public/' . "seeker/pdf/seeker_{$user->id}.pdf");            
         }        
-       
+        if(!file_exists($file)){
+            if($user && $user->role_id == 2){
+                event(new \App\Events\EmployerRegisterEvent($user));
+            }else if($user && $user->role_id == 3){
+                event(new \App\Events\SeekerRegisterEvent($user));
+            }
+            
+        }
     
         return response()->download($file);
     }
