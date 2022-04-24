@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice';
 import { setRegisterForm } from '../../../components/registration/registerFormSlice';
-import CreateJobSekkers from '../../admin/jobSekkers/CreateJobSekkers';
+import CreateEmployer from '../../admin/employers/CreateEmployer';
 
 export default function Home() {
     return (
@@ -24,18 +24,19 @@ export default function Home() {
 const Profile = () => {    
     const { data, error, isLoading } = useLoggedUserQuery('');  
     const [snakMessage, setSnakMessage] = React.useState<string>('');
-    const [seeker, setSeeker] = React.useState<any>();    
+    const [employer, setEmployer] = React.useState<any>();    
     const dispatch = useDispatch();   
 
     const edit = () => {
-        const seeker = {id : 0};
+        const employer = {...data?.employer , contact_name: data?.name, phone: data?.phone, email: data?.email, id: data?.id};
         dispatch(setOtpPhone( {page: 'seeker' } ))    
-        dispatch(setRegisterForm({seeker: seeker}));
-        setSeeker(seeker); 
+        dispatch(setRegisterForm({employer: employer}));
+        setEmployer(employer); 
+        console.log(employer);
     }
 
     return (<>
-        <CreateJobSekkers seeker={seeker} setSeeker={setSeeker} setSnakMessage={setSnakMessage}/>      
+        <CreateEmployer employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage}/>      
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
                 <Typography variant="h5" component="div">

@@ -192,11 +192,17 @@ class UserController extends Controller
                 }
                 
             }
-
-            $user =  new \App\Models\User();
-            $user->status = 1;
-            $user->role_id = 2;
-            $user->password = Hash::make($request->input("password", ''));
+            $user = ($id && Auth::id() == $id) ? \App\Models\User::find($id) : new \App\Models\User();            
+            if($user->id){
+                if($request->input("password", null)){
+                    $user->password = Hash::make($request->input("password", ''));
+                }
+            }else{
+                $user->status = 1;
+                $user->role_id = 2;
+                $user->password = Hash::make($request->input("password", ''));
+            }
+            
            
         }
         
@@ -224,8 +230,10 @@ class UserController extends Controller
                 'phone' => $request->input('secondry_phone', ''),
                 'address' => $request->input('address', ''),
                 'country' => $request->input('country', ''),
+                'nationality' => $request->input('nationality', ''),
                 'state' => $request->input('state', ''),
                 'district' => $request->input('district', ''),
+                'pin' => $request->input('pin', ''),
                 'city' => $request->input('city', ''),
                 'category_id' => $request->input('category_id', ''),
                 'status' => $request->input('status', 1),
@@ -341,6 +349,7 @@ class UserController extends Controller
             }
 
         }else{
+            
             if(!Auth::check() && $request->input("accessToken", null)){
                 $auth = app('firebase.auth');
                 try {
@@ -354,11 +363,17 @@ class UserController extends Controller
                 }
                 
             }
-            
-            $user = new \App\Models\User();
-            $user->status = 1;
-            $user->role_id = 3;
-            $user->password = Hash::make($request->input("password", ''));
+            $user = ($id && Auth::id() == $id) ? \App\Models\User::find($id) : new \App\Models\User();
+            if($user->id){
+                if($request->input("password", null)){
+                    $user->password = Hash::make($request->input("password", ''));
+                }
+            }else{
+                $user->status = 1;
+                $user->role_id = 3;
+                $user->password = Hash::make($request->input("password", ''));
+            }
+           
         }            
         $user->name = $request->input("contact_name", '');
         $user->email = $request->input("email", '');
@@ -476,7 +491,7 @@ class UserController extends Controller
     }
 
     public function getUser(){
-        return response(Auth::user());
+        return response(\App\Models\User::with(["seeker", "employer"])->find(Auth::user()->id));
     }
     //
 }

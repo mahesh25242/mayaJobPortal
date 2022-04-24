@@ -30,7 +30,7 @@ const Profile = () => {
     const dispatch = useDispatch();   
     
     const edit = () =>{
-        const seeker = {id : 0};
+        const seeker = {...data?.seeker, name: data?.name, phone: data?.phone, email: data?.email};
         dispatch(setOtpPhone( {page: 'seeker' } ))    
         dispatch(setRegisterForm({seeker: seeker}));
         setSeeker(seeker); 
