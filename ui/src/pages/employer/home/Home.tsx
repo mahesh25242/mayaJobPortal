@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice';
 import { setRegisterForm } from '../../../components/registration/registerFormSlice';
 import CreateEmployer from '../../admin/employers/CreateEmployer';
+import instance from '../../../api/axios/Axios';
+import { saveAs } from 'file-saver';
 
 export default function Home() {
     return (
@@ -35,6 +37,16 @@ const Profile = () => {
         console.log(employer);
     }
 
+    const download = () =>{
+        instance.get('/downloadPDF', {
+            responseType: 'blob'
+        }).then(res => {            
+
+            saveAs(res?.data, 'details.pdf');                        
+        });
+    }
+
+    
     return (<>
         <CreateEmployer employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage}/>      
         <Card sx={{ minWidth: 275 }}>
@@ -51,7 +63,7 @@ const Profile = () => {
             </CardContent>
             <CardActions>
                 <Button size="small" onClick={edit}>Edit</Button>
-                <Button size="small">Download PDF</Button>
+                <Button size="small" onClick={download}>Download PDF</Button>
             </CardActions>
         </Card>
         </>

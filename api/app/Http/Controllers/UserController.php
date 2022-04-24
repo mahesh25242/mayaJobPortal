@@ -493,5 +493,23 @@ class UserController extends Controller
     public function getUser(){
         return response(\App\Models\User::with(["seeker", "employer"])->find(Auth::user()->id));
     }
+
+    public function downloadPDF($id=0){
+        $user = null;
+        if(Auth::check() && Auth::user()->role_id == 1){
+            $user = \App\Models\User::with(["seeker", "employer"])->find($id);
+        }else{
+            $user = \App\Models\User::with(["seeker", "employer"])->find(Auth::id());
+        }
+        $file = '';
+        if($user && $user->role_id == 2){
+            $file = app()->basePath('public/' . "seeker/pdf/seeker_{$user->id}.pdf");
+        }else if($user){
+            $file = app()->basePath('public/' . "employer/pdf/company_{$user->id}.pdf");
+        }        
+       
+    
+        return response()->download($file);
+    }
     //
 }

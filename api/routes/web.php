@@ -22,6 +22,8 @@ $router->get('/key', function() {
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {  
+    
+    
     $router->post('checkLogin','UserController@checkLogin');
     $router->post('refreshToken','UserController@refreshToken');
     
@@ -55,14 +57,16 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             
         });
 
-
+        $router->get('downloadPDF[/{id}]','UserController@downloadPDF');
+        
         $router->group(['prefix' => 'employer'], function () use ($router) {
             $router->get('/','UserController@employers');              
             $router->delete('delete/{id}','UserController@delete');
+           
         });
         $router->group(['prefix' => 'seeker'], function () use ($router) {
             $router->get('/','UserController@seeker');               
-            $router->delete('delete/{id}','UserController@delete');
+            $router->delete('delete/{id}','UserController@delete');            
             
         });
 

@@ -6,6 +6,8 @@ import { setOtpPhone } from '../../../components/mobileOtp/OtpMobileSlice';
 import { setRegisterForm } from '../../../components/registration/registerFormSlice';
 import React from 'react';
 import CreateJobSekkers from '../../admin/jobSekkers/CreateJobSekkers';
+import instance from '../../../api/axios/Axios';
+import { saveAs } from 'file-saver';
 
 export default function Home() {    
     
@@ -36,6 +38,14 @@ const Profile = () => {
         setSeeker(seeker); 
     }
 
+    const download = () =>{
+        instance.get('/downloadPDF', {
+            responseType: 'blob'
+        }).then(res => {            
+
+            saveAs(res?.data, 'details.pdf');                        
+        });
+    }
     return (
         <>
          <CreateJobSekkers seeker={seeker} setSeeker={setSeeker} setSnakMessage={setSnakMessage}/>      
@@ -53,7 +63,7 @@ const Profile = () => {
             </CardContent>
             <CardActions>
                 <Button size="small" onClick={edit}>Edit</Button>
-                <Button size="small">Download PDF</Button>
+                <Button size="small" onClick={download}>Download PDF</Button>
             </CardActions>
         </Card>
         </>
