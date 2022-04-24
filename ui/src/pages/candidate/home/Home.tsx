@@ -1,6 +1,8 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useLoggedUserQuery }  from '../../../api/rtk/user';
+import { Link } from 'react-router-dom';
+
 export default function Home() {    
     
     return (
@@ -33,7 +35,7 @@ const Profile = () => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Edit</Button>
+                <Button size="small" component={Link} to={'edit'}>Edit</Button>
                 <Button size="small">Download PDF</Button>
             </CardActions>
         </Card>

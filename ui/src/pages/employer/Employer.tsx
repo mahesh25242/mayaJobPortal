@@ -9,6 +9,7 @@ import {
 import { AlternateEmailTwoTone } from "@mui/icons-material";
 import Home from "./home/Home";
 import Login from "../admin/login/Login";
+import { Update } from "./update/Update";
 
 
 
@@ -48,7 +49,8 @@ function DashboardLayout() {
     return (
       <div>   
         <Routes>
-            <Route path="/" element={<Home />} />                                                                       
+            <Route path="/" element={<Home />} />   
+            <Route path="/edit" element={<Update />} />                                                                             
         </Routes>                
         <Outlet />
       </div>

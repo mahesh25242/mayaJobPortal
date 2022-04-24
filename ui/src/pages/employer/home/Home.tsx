@@ -1,8 +1,9 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useLoggedUserQuery } from '../../../api/rtk/user';
+import { Link } from 'react-router-dom';
 
-export default function Home() {    
+export default function Home() {
     return (
         <div>
             <Helmet>
@@ -11,16 +12,16 @@ export default function Home() {
                 </title>
             </Helmet>
             <Profile />
-            
+
         </div>
     );
 }
 
 const Profile = () => {
-    const { data, error, isLoading } = useLoggedUserQuery('');       
+    const { data, error, isLoading } = useLoggedUserQuery('');
     return (
         <Card sx={{ minWidth: 275 }}>
-            <CardContent>                
+            <CardContent>
                 <Typography variant="h5" component="div">
                     {data?.name}
                 </Typography>
@@ -32,7 +33,7 @@ const Profile = () => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Edit</Button>
+                <Button size="small" component={Link} to={'edit'}>Edit</Button>
                 <Button size="small">Download PDF</Button>
             </CardActions>
         </Card>
