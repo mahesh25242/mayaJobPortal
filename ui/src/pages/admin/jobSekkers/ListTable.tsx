@@ -18,6 +18,7 @@ import { setRegisterForm } from '../../../components/registration/registerFormSl
 import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
+import { Pagination } from '@mui/material';
 
 
 
@@ -48,7 +49,7 @@ export default function ListTable(props: any) {
   }
 
   
-  return (    
+  return ( <>
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -80,6 +81,13 @@ export default function ListTable(props: any) {
             (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
           }
         </TableBody>
-      </Table>     
+      </Table>    
+      {
+            data && data?.data && data?.data?.data &&
+            <Pagination count={data.data?.last_page} variant="outlined" color="primary" 
+            onChange={(event,val)=> props.setFilters({...props.filters, page: val})}   />
+        }
+        
+      </>
   );
 }

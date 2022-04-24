@@ -50,7 +50,7 @@ export default function EmployersList() {
       <Button variant="contained" onClick={(e) => editEmployer({ id: 0 })}>Create New</Button>
       <Search setFilters={setFilters}/>
 
-      <ListTable editEmployer={editEmployer} filters={filters} />
+      <ListTable editEmployer={editEmployer} filters={filters} setFilters={setFilters} />
       {
         snakMessage && snakMessage.length > 0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage} />
       }

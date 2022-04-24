@@ -76,7 +76,7 @@ export default function JobSekkersList() {
       <Button variant="contained" onClick={(e)=> editSeeker({id: 0})}>Create New</Button>
       <Search setFilters={setFilters}/>
       
-      <ListTable editSeeker={editSeeker} filters={filters}/>
+      <ListTable editSeeker={editSeeker} filters={filters} setFilters={setFilters}/>
       {
         snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
       } 

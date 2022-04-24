@@ -10,10 +10,10 @@ import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rt
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
+import { alertTitleClasses, Pagination } from '@mui/material';
 
 export default function ListTable(props: any) {
-    const [snakMessage, setSnakMessage] = React.useState<string>('');
-
+    const [snakMessage, setSnakMessage] = React.useState<string>('');    
     const dispatch = useDispatch();
     const { data, error, isLoading } = useGetEmployersQuery(props.filters)
     const [deleteEmployer] = useDeleteEmployerMutation();
@@ -36,8 +36,9 @@ export default function ListTable(props: any) {
 
     }
 
-
+    
     return (
+        <>
         <Table aria-label="simple table">
             <TableHead>
                 <TableRow>
@@ -69,6 +70,13 @@ export default function ListTable(props: any) {
                     (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
                 }
             </TableBody>
-        </Table>
+        </Table>        
+        {
+            data && data?.data && data?.data?.data &&
+            <Pagination count={data.data?.last_page} variant="outlined" color="primary" 
+            onChange={(event,val)=> props.setFilters({...props.filters, page: val})}   />
+        }
+        
+        </>
     );
 }
