@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CreateBlog from './CreateBlog';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetBlogsQuery, useDeleteBlogMutation } from '../../../api/rtk/blog'
+import { useGetBlogsQuery, useDeleteBlogMutation, blogsApi } from '../../../api/rtk/blog'
 
 
 import Link from '@mui/material/Link';
@@ -21,7 +21,7 @@ import { Helmet } from 'react-helmet-async';
 
 export default function BlogListList() {  
     
-
+    
     const [blog, setBlog] = React.useState<any>(null);
     const [snakMessage, setSnakMessage] = React.useState<string>('');
 
@@ -30,9 +30,9 @@ export default function BlogListList() {
     const [ deleteBlog ] = useDeleteBlogMutation();
     
     
-  //   React.useEffect(() => {
-  //     dispatch(fetchCategories());    
-  // }, []);
+    React.useEffect(() => {      
+      dispatch(blogsApi.util.invalidateTags(['Blogs']))        
+    }, []);
   const delBlog = (blog: any) =>{
     const isDelete = window.confirm('Are you sure you want to delete this blog?');
     if(isDelete){
