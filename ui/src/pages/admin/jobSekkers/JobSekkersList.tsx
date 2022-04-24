@@ -35,18 +35,7 @@ export default function JobSekkersList() {
   //   React.useEffect(() => {
   //     dispatch(fetchCategories());    
   // }, []);
-  const delCat = (seeker: any) =>{
-    const conf =  window.confirm(`Are you sure you want to delete ${seeker.name}?`);
-    if(conf){
-      deleteSeeker(seeker).unwrap().then(res=>{
-        console.log(res);
-        setSnakMessage('seeker deleted successfully');
-      }).catch(err=>{
-        console.log(err);
-      });
-    }
-    
-  }
+  
 
   const editSeeker = (seeker: any) =>{    
     let seekData = seeker;
