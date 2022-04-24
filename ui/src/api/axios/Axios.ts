@@ -41,7 +41,6 @@ instance.interceptors.response.use(function (response) {
 
         const tokenResponse =  instance.post(`refreshToken`, postData);
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + 'as';
-alert(1)
         return instance(originalRequest);
 
         // try{

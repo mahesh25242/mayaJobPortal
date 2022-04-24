@@ -5,6 +5,7 @@ import { baseQry } from "./baseQry";
 export const UserApi = createApi({
   reducerPath: "UserApi",
   baseQuery: baseQry(),
+  tagTypes:["LoggedUser"],
   endpoints: (builder) => ({
     changePassword: builder.mutation({
       query: (user) => ({
@@ -15,11 +16,24 @@ export const UserApi = createApi({
           //     'content-type': 'text/plain',
           //  },
 
-      }) ,     
-    })   
+      }) ,  
+
+    }),
+    loggedUser: builder.query({
+      query: () => ({
+          url: `user`,
+        //   headers: {
+        //     'content-type': 'text/plain',
+        //  },
+
+      }) , 
+      
+      providesTags: ["LoggedUser"],     
+      // invalidatesTags: ["LoggedUser"],
+    }),   
   })
 });
 
 
-export const { useChangePasswordMutation } = UserApi;
+export const { useChangePasswordMutation, useLoggedUserQuery } = UserApi;
 

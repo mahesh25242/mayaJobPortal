@@ -136,7 +136,7 @@ const ResponsiveAppBar = () => {
           main: [
             {
               title: 'Dashboard',
-              url: '/admin'
+              url: token.token?.role_id === 2 ? '/employer' : '/candidate'
             },                    
           ]
         });

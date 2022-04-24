@@ -1,7 +1,8 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-
-export default function Home() {
+import { useLoggedUserQuery }  from '../../../api/rtk/user';
+export default function Home() {    
+    
     return (
         <div>
             <Helmet>
@@ -10,28 +11,25 @@ export default function Home() {
                 </title>
             </Helmet>
 
-            <Profile />
+            <Profile  />
         </div>
     );
 }
 
 const Profile = () => {
+    const { data, error, isLoading } = useLoggedUserQuery('');  
+     
     return (
         <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Word of the Day
-                </Typography>
+            <CardContent>                
                 <Typography variant="h5" component="div">
-                    zsas
+                    {data?.name}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    adjective
+                    {data?.phone}
                 </Typography>
                 <Typography variant="body2">
-                    well meaning and kindly.
-                    <br />
-                    {'"a benevolent smile"'}
+                    Click EDIT for edit your profile and Download PDF for download details in pdf format.
                 </Typography>
             </CardContent>
             <CardActions>

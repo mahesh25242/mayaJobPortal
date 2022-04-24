@@ -12,6 +12,7 @@ import {
   } from "../../../api/users/AuthenticationSlice";
 import { useAppDispatch } from "../../../app/store";
 import { Helmet } from 'react-helmet-async';
+import { UserApi} from '../../../api/rtk/user';
 
 export default function Login(){
     const navigate = useNavigate();
@@ -26,8 +27,8 @@ export default function Login(){
     const { token } = useSelector(getAuth);
 
     const onSubmit = (data:any) => { 
-        dispatch(checkLogin(data)).then((res) => {
-            console.log(res);
+        dispatch(checkLogin(data)).then((res) => {            
+            dispatch(UserApi.util.invalidateTags(['LoggedUser']))             
             if(res?.payload?.role_id === 1){
                 navigate("/admin");
             }else if(res?.payload?.role_id === 2){
