@@ -19,6 +19,8 @@ import Link from '@mui/material/Link';
 import Search from '../Search';
 import Alert from '@mui/material/Alert';
 import { Pagination } from '@mui/material';
+import instance from '../../../api/axios/Axios';
+import saveAs from 'file-saver';
 
 
 
@@ -48,6 +50,15 @@ export default function ListTable(props: any) {
     
   }
 
+  const download = (seeker: any) =>{   
+    
+    instance.get(`/downloadPDF/${seeker.user_id}`, {
+        responseType: 'blob'
+    }).then(res => {            
+        saveAs(res?.data, `${seeker?.user?.name}.pdf`);                        
+    });
+}
+
   
   return ( <>
       <Table  aria-label="simple table">
@@ -74,6 +85,7 @@ export default function ListTable(props: any) {
               <TableCell align="right">{row?.status_text}</TableCell>              
               <TableCell align="right">                
                 <Button onClick={() => delCat(row)}>Delete</Button>
+                <Button onClick={() => download(row)}>Download</Button>
               </TableCell>
             </TableRow>
           ))}

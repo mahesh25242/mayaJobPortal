@@ -11,6 +11,8 @@ import { useGetEmployersQuery, useDeleteEmployerMutation } from '../../../api/rt
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import { alertTitleClasses, Pagination } from '@mui/material';
+import instance from '../../../api/axios/Axios';
+import saveAs from 'file-saver';
 
 export default function ListTable(props: any) {
     const [snakMessage, setSnakMessage] = React.useState<string>('');    
@@ -34,6 +36,14 @@ export default function ListTable(props: any) {
             });
         }
 
+    }
+    const download = (employer: any) =>{
+        
+        instance.get(`/downloadPDF/${employer.user_id}`, {
+            responseType: 'blob'
+        }).then(res => {            
+            saveAs(res?.data, `${employer?.name}.pdf`);                        
+        });
     }
 
     
@@ -63,6 +73,7 @@ export default function ListTable(props: any) {
                         <TableCell align="right">{row.status_text}</TableCell>
                         <TableCell align="right">
                             <Button onClick={() => delEmployer(row)}>Delete</Button>
+                            <Button onClick={() => download(row)}>Download</Button>
                         </TableCell>
                     </TableRow>
                 ))}
