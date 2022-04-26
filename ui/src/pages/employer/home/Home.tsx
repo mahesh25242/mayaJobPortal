@@ -39,6 +39,9 @@ const Profile = () => {
 
     const download = () =>{
         instance.get('/downloadPDF', {
+            params: {
+                rand: Math.random()
+            },
             responseType: 'blob'
         }).then(res => {            
 

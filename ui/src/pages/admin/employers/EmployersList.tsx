@@ -23,17 +23,19 @@ export default function EmployersList() {
 
   const editEmployer = (employer: any) => {
     let empData = employer;
+    
     if (employer) {
       empData = {
         ...employer, ...{
           email: employer?.user?.email,
+          secondry_phone: employer?.phone,
           phone: employer?.user?.phone,
           contact_name: employer?.user?.name,
           id: employer?.user?.id,
         }
       }
     }
-
+    console.log(empData)
     dispatch(setOtpPhone({ page: 'employer' }))
     dispatch(setRegisterForm({ employer: empData }));
     setEmployer(employer);
