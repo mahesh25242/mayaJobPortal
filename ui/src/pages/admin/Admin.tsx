@@ -21,8 +21,12 @@ import { useLoggedUserQuery } from "../../api/rtk/user";
 export default function Admin(){ 
   const dispatch = useDispatch();
   const { token } = useSelector(getAuth);
-  const { data, error, isLoading } = useLoggedUserQuery('');  
-  
+  const { data, error, isLoading } = useLoggedUserQuery('');    
+  if(token?.token && error){
+    dispatch(signOut())
+    localStorage.removeItem('token');
+    return <Navigate to="/sign-in" />;     
+  }
 
     return (<>    
         <Routes>   
@@ -43,7 +47,7 @@ export default function Admin(){
 
 function PrivateRoute({ children }: any) {  
   const { token } = useSelector(getAuth);        
-  return !!token.token ? children :   <Navigate to="/admin/login" />; 
+  return !!token.token ? children :   <Navigate to="/sign-in" />; 
 }
   
 
