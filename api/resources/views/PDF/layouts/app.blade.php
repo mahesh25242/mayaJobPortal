@@ -1,5 +1,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <style>
+	.mainbg{
+		background-color: #f5f5f5;
+	}
 	.text-left {
 		text-align: left;
 	}
