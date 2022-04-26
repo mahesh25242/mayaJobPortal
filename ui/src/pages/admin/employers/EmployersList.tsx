@@ -32,6 +32,15 @@ export default function EmployersList() {
           phone: employer?.user?.phone,
           contact_name: employer?.user?.name,
           id: employer?.user?.id,
+          gender: employer?.seeker_preference?.gender,
+          marital_status: employer?.seeker_preference?.marital,
+          food_accommodation: employer?.seeker_preference?.food_accommodation,
+          working_time: employer?.seeker_preference?.working_time,
+          salary: employer?.seeker_preference?.salary,
+          experience: employer?.seeker_preference?.experience,
+          qualifications: employer?.seeker_preference?.qualifications,
+          other_demands: employer?.seeker_preference?.other_demands,
+
         }
       }
     }

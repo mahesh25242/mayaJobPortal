@@ -40,7 +40,13 @@ export default function CreateEmployer(props: any) {
   // console.log(registerForm, page);
   const onSubmit = () => {
     childRef?.current?.saveIt()().then(() => {
-      return saveEmployer(childRef?.current?.formAllData()).unwrap();
+      const formData = childRef?.current?.formAllData();
+
+      const postData = {
+        ...formData,
+        ...{marital: formData?.marital_status,}
+      }
+      return saveEmployer(postData).unwrap();
     })
       .then((res: any) => {
         console.log(res);
