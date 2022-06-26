@@ -58,6 +58,9 @@ export default function CreateEmployer(props: any) {
         handleClose();
       })
       .catch((err: any) => {
+        if(err?.status == 422){        
+          childRef?.current?.setErrors(err?.data?.errors)
+        }
         console.log(err)
       });
 

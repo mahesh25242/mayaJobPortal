@@ -63,7 +63,10 @@ export default function CreateJobSekkers(props: any) {
       dispatch(setRegisterForm({ seeker: {} }));
       handleClose();
     }).catch((err: any) => {
-
+      if(err?.status == 422){        
+        childRef?.current?.setErrors(err?.data?.errors)
+      }
+      
       console.log(err)
     });
 

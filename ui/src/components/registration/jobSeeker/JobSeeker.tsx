@@ -48,7 +48,7 @@ interface IFormValues {
 
 const JobSeeker = forwardRef((props, seekRef) => {
     const formData = useSelector((state: RootState) => state.registerForm?.seeker)    
-    const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
+    const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
         defaultValues: { ...formData, ...{ category_id: (formData?.category_id > 0) ? formData?.category_id : 0 } }
     });
 
@@ -64,7 +64,8 @@ const JobSeeker = forwardRef((props, seekRef) => {
         dispatch(setRegisterForm({ seeker: data }))
         dispatch(setOtpPhone({ mobile: getValues('phone'), page: 'seeker' }))
     };
-    const onError = (errors: any) => {
+    const onError = (errors: any) => { 
+        console.log(errors)       
         throw new Error('Validation failed');
     };
 
@@ -79,8 +80,12 @@ const JobSeeker = forwardRef((props, seekRef) => {
             let data = getValues();
             data = { ...data, contact_name: data?.name };
             return data;
+        },
+        setErrors(errors:any){            
+            for(let err in errors){                
+                setError((err as keyof IFormValues), { type: 'required', message: errors[err][0] })
+            }
         }
-
     }));
 
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -320,7 +325,8 @@ const JobSeeker = forwardRef((props, seekRef) => {
                         name={"pin"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                            <TextField fullWidth onChange={onChange} value={value} label={"Pin"} />
+                            <TextField error={!!errors.pin} helperText={(errors.pin) ? errors.pin?.message : ''}
+                             fullWidth onChange={onChange} value={value} label={"Pin"} />
                         )}
                     />
                 </FormControl>

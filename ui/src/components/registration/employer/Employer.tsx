@@ -46,7 +46,7 @@ interface IFormValues {
 const Employer = forwardRef((props, empRef) =>  {
     // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
     const formData = useSelector((state: RootState) => state.registerForm?.employer)    
-    const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm<IFormValues>({
+    const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
         defaultValues: {...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
     const dispatch = useDispatch()
@@ -61,6 +61,11 @@ const Employer = forwardRef((props, empRef) =>  {
         },
         formAllData(){
             return getValues();
+        },
+        setErrors(errors:any){            
+            for(let err in errors){                
+                setError((err as keyof IFormValues), { type: 'required', message: errors[err][0] })
+            }
         }
     
       }));
