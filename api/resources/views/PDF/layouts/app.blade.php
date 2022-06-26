@@ -1,5 +1,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <style>
+	h1{
+		font-size: 24px;
+		text-decoration: underline;
+	}
+	h3{
+		font-size: 15px;
+		text-decoration: underline;
+		margin: 0px 20px 30px 20px;
+	}
+	h4{
+		font-size: 15px;
+		margin: 0px;
+		padding:0px;
+	}
+	.center{
+		text-align: center;
+	}
+	.rightHead{
+		background-color: #e5e5e5;
+		border-bottom: 1px solid #000;
+	}
+	.leftblock{
+		margin: 10px;
+	}
+	.leftHead{
+		text-decoration: underline;
+	}
+	.rightHeadAns{
+		margin: 10px;
+	}
+	.leftBg{
+		background-color: #e5e5e5;
+		padding:12px;		
+	}
 	.mainbg{
 		background-color: #f5f5f5;
 	}

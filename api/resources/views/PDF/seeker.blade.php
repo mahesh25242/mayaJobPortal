@@ -3,122 +3,166 @@
 <table class="text-left" width="100%" border="0" cellspacing="0" cellpadding="0" >
     <tbody>       
         <tr>
-            <td style="padding-bottom:20px;" class="mainbg" width="40%">		                      
+            <td class="leftBg" width="32%">		                      
                 <table class="text-left" width="100%" border="0" cellspacing="0" cellpadding="0" >
                     <tr>
                         <td>
-                            {{ $user->name }}
+                            <div class="leftblock">
+                                <b>{{ $user->name }}</b>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {{ $user->email }}
+                            <div class="leftblock">
+                                <span class="leftHead">Email Id: </span>
+                                {{ $user->email }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {{ $user->seeker->phone }}<br/>
-                            {{ $user->phone }}
+                            <div class="leftblock">
+                                <span class="leftHead">Mobile: </span>
+                                <div>
+                                    <a href="tel:{{ $user->seeker->phone }}">{{ $user->seeker->phone }}</a></br>
+                                    <a href="tel:{{ $user->phone }}">{{ $user->phone }}</a>
+                                </div>
+                                <br/>
+                                
+                            </div>                            
                         </td>
                     </tr>                   
                     <tr>
                         <td>
-                            Address: {{ $user->seeker->address }}
+                            <div class="leftblock">
+                                Address: {{ $user->seeker->address }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Nationality: {{ $user->seeker->nationality }}
+                            <div class="leftblock">
+                                Nationality: {{ $user->seeker->nationality }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            State: {{ $user->seeker->state }}
+                            <div class="leftblock">
+                                State: {{ $user->seeker->state }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Country: {{ $user->seeker->country }}
+                            <div class="leftblock">
+                                Country: {{ $user->seeker->country }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            City: {{ $user->seeker->city }}
+                            <div class="leftblock">
+                                City: {{ $user->seeker->city }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Pin: {{ $user->seeker->pin }}
+                            <div class="leftblock">
+                                Pin: {{ $user->seeker->pin }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Date of Birth: {{ $user->seeker->dob }}
+                            <div class="leftblock">
+                                Date of Birth: {{ $user->seeker->dob }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Gender: {{ $user->seeker->gender }}
+                            <div class="leftblock">
+                                Gender: {{ $user->seeker->gender }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Religion: {{ $user->seeker->religion }}
+                            <div class="leftblock">
+                                Religion: {{ $user->seeker->religion }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Maritial Status: {{ $user->seeker->marital }}
+                            <div class="leftblock">
+                                Maritial Status: {{ $user->seeker->marital }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Languages: {{ $user->seeker->languages }}
+                            <div class="leftblock">
+                                Languages: {{ $user->seeker->languages }}
+                            </div>
                         </td>
                     </tr>
                 </table>
 		    </td>
             <td>
-                Resume for {{ $user->seeker->category->name }}   
+                <h1>Resume for {{ $user->seeker->category->name }}   </h1>                   
                 <table class="text-left" width="100%" border="0" cellspacing="0" cellpadding="0" >
                     <tr>
                         <td>
-                            <div class="mainbg">
+                            <div class="rightHead">
                                 Educational Qualification
                             </div>
-                            {{ $user->seeker->edu_qualification }}
+                            <div class="rightHeadAns">
+                                {{ $user->seeker->edu_qualification }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="mainbg">
+                            <div class="rightHead">
                                 Technical Qualifications
                             </div>
-                            {{ $user->seeker->tech_qualification }}
+                            <div class="rightHeadAns">
+                                {{ $user->seeker->tech_qualification }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="mainbg">
+                            <div class="rightHead">
                                 Work Experience
                             </div>
-                            {{ $user->seeker->experience  }}
+                            <div class="rightHeadAns">
+                                {{ $user->seeker->experience  }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="mainbg">
+                            <div class="rightHead">
                                 Accademic Profile
                             </div>
-                            {{ $user->seeker->academic_profile  }}
+                            <div class="rightHeadAns">
+                                {{ $user->seeker->academic_profile  }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="mainbg">
+                            <div class="rightHead">
                                 Expected Salary
                             </div>
-                            {{ $user->seeker->expected_salary  }}
+                            <div class="rightHeadAns">
+                                {{ $user->seeker->expected_salary  }}
+                            </div>
                         </td>
                     </tr>                    
                 </table>   
