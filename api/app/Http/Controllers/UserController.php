@@ -178,6 +178,8 @@ class UserController extends Controller
             if($request->input("password", null)){
                 $user->password = Hash::make($request->input("password", ''));
             }
+            $user->status = 1;
+            $user->role_id = 2;
         }else{
             if(!Auth::check() && $request->input("accessToken", null)){
                 $auth = app('firebase.auth');
@@ -347,7 +349,8 @@ class UserController extends Controller
             if($request->input("password", null)){
                 $user->password = Hash::make($request->input("password", ''));
             }
-
+            $user->status = 1;
+            $user->role_id = 3;
         }else{
             
             if(!Auth::check() && $request->input("accessToken", null)){
@@ -383,6 +386,8 @@ class UserController extends Controller
             $user->created_by = Auth::user()->id;
             
         $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
+        
+        
         $user->save();
 
         $dob = null;
