@@ -24,6 +24,10 @@ measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 const fire = initializeApp(firebaseConfig);
 
 const auth = getAuth(fire);
+auth.settings.appVerificationDisabledForTesting = true
+
+// set this to remove reCaptcha web
+// fire.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
 const recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
     'size': 'invisible',
     'callback': (response:any) => {
