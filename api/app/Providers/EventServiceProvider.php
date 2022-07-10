@@ -24,5 +24,8 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\SeekerRegisterEvent::class => [
             \App\Listeners\SeekerRegisterListener::class,
         ],
+        \App\Events\SentResumePDFEvent::class => [
+            \App\Listeners\SentResumePDFEventListener::class,
+        ],
     ];
 }

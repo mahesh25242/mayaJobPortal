@@ -21,6 +21,8 @@ $router->get('/key', function() {
     return \Illuminate\Support\Str::random(32);
 });
 
+
+// $router->get('check','UserController@checkMail');
 $router->group(['prefix' => 'v1'], function () use ($router) {  
     
     

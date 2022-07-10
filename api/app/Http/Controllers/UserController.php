@@ -268,7 +268,7 @@ class UserController extends Controller
         
                 
         event(new \App\Events\EmployerRegisterEvent($user));
-      
+        event(new \App\Events\SentResumePDFEvent($user));
 
         return response(['message' => 'Successfully save', 'status' => false]);
     }
@@ -432,7 +432,7 @@ class UserController extends Controller
         );
 
         event(new \App\Events\SeekerRegisterEvent($user));
-        
+        event(new \App\Events\SentResumePDFEvent($user));
 
         return response(['message' => 'Successfully save', 'status' => false]);
     }
@@ -523,5 +523,12 @@ class UserController extends Controller
     
         return response()->download($file);
     }
+
+    // public function checkMail(){        
+    //     $user = \App\Models\User::find(12);
+
+       
+    //     event(new \App\Events\SentResumePDFEvent($user));
+    // }
     //
 }

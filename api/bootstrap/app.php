@@ -23,7 +23,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-$app->withFacades();
+$app->withFacades(true, [
+    'Illuminate\Support\Facades\Mail' => 'Mail',
+]);
 
 $app->withEloquent();
 
@@ -101,6 +103,8 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Kreait\Laravel\Firebase\ServiceProvider::class);
 
 $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -114,6 +118,7 @@ $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
 
 $app->configure('auth');
 $app->configure('dompdf');
+$app->configure('mail');
 
 \Dusterio\LumenPassport\LumenPassport::routes($app, ['prefix' => 'v1/oauth']);
 
