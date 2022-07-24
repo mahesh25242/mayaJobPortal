@@ -44,6 +44,7 @@ interface IFormValues {
     lng?: string;
     user: any;
     contact_name?: string;
+    id?: number;
 }
 
 const JobSeeker = forwardRef((props, seekRef) => {
@@ -60,7 +61,8 @@ const JobSeeker = forwardRef((props, seekRef) => {
 
 
 
-    const onSubmit = (data: any) => {        
+    const onSubmit = (data: any) => { 
+        console.log(data)       
         dispatch(setRegisterForm({ seeker: data }))
         dispatch(setOtpPhone({ mobile: getValues('phone'), page: 'seeker' }))
     };
@@ -85,7 +87,8 @@ const JobSeeker = forwardRef((props, seekRef) => {
             for(let err in errors){                
                 setError((err as keyof IFormValues), { type: 'required', message: errors[err][0] })
             }
-        }
+        },
+        isSeeker: true        
     }));
 
     const { ref, autocompleteRef } = usePlacesWidget({

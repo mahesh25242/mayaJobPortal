@@ -113,7 +113,7 @@
                 </table>
 		    </td>
             <td>
-                <h1>Resume for {{ $user->seeker->category->name }}   </h1>                   
+                <h1>Resume for {{ $user->seeker->category ? $user->seeker->category->name : '' }}   </h1>                   
                 <table class="text-left" width="100%" border="0" cellspacing="0" cellpadding="0" >
                     <tr>
                         <td>

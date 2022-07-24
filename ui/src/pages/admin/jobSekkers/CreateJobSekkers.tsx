@@ -55,7 +55,7 @@ export default function CreateJobSekkers(props: any) {
 
 
   const onSubmit = (data: any) => {
-    childRef?.current?.saveIt()().then((res: any) => {
+    childRef?.current?.saveIt()().then((res: any) => {      
       const ret = saveSeeker(childRef?.current?.formAllData()).unwrap();      
       return ret;
     }).then((res: any) => {
@@ -63,7 +63,7 @@ export default function CreateJobSekkers(props: any) {
       dispatch(setRegisterForm({ seeker: {} }));
       handleClose();
     }).catch((err: any) => {
-      if(err?.status == 422){        
+      if(err?.status === 422){        
         childRef?.current?.setErrors(err?.data?.errors)
       }
       

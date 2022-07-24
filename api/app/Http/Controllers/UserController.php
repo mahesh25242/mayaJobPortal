@@ -181,6 +181,7 @@ class UserController extends Controller
             $user->status = 1;
             $user->role_id = 2;
         }else{
+            $status = 1;
             if(!Auth::check() && $request->input("accessToken", null)){
                 $auth = app('firebase.auth');
                 try {
@@ -200,7 +201,7 @@ class UserController extends Controller
                     $user->password = Hash::make($request->input("password", ''));
                 }
             }else{
-                $user->status = 1;
+                $user->status = $status;
                 $user->role_id = 2;
                 $user->password = Hash::make($request->input("password", ''));
             }
@@ -266,11 +267,16 @@ class UserController extends Controller
             ],
         );
         
-                
-        event(new \App\Events\EmployerRegisterEvent($user));
-        event(new \App\Events\SentResumePDFEvent($user));
+        try{
+            event(new \App\Events\EmployerRegisterEvent($user));
+            event(new \App\Events\SentResumePDFEvent($user));
+        }catch (\Exception $e) {             
+            return response(["success" => false, "message"=> $e->getMessage()], 404);
+        }
 
-        return response(['message' => 'Successfully save', 'status' => false]);
+        
+
+        return response(['message' => 'Successfully save', 'status' => true, "user"=>$user]);
     }
 
     public  function employers(Request $request){
@@ -341,7 +347,8 @@ class UserController extends Controller
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
-
+        
+        
         if(Auth::check() && Auth::user()->role_id == 1){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($request->input("status", null))
@@ -352,7 +359,7 @@ class UserController extends Controller
             $user->status = 1;
             $user->role_id = 3;
         }else{
-            
+            $status = 1;
             if(!Auth::check() && $request->input("accessToken", null)){
                 $auth = app('firebase.auth');
                 try {
@@ -365,6 +372,8 @@ class UserController extends Controller
                     ], 'status' => false], 422);                    
                 }
                 
+            }else{
+                $status = 0;
             }
             $user = ($id && Auth::id() == $id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($user->id){
@@ -372,7 +381,7 @@ class UserController extends Controller
                     $user->password = Hash::make($request->input("password", ''));
                 }
             }else{
-                $user->status = 1;
+                $user->status = $status;
                 $user->role_id = 3;
                 $user->password = Hash::make($request->input("password", ''));
             }
@@ -430,11 +439,15 @@ class UserController extends Controller
                 'updated_by' => Auth::check() ? Auth::user()->id : 0,
             ],
         );
+        try{
+            // event(new \App\Events\SeekerRegisterEvent($user));
+            // event(new \App\Events\SentResumePDFEvent($user));
+        }catch (\Exception $e) {             
+            return response(["success" => false, "message"=> $e->getMessage()], 404);
+        }
+        
 
-        event(new \App\Events\SeekerRegisterEvent($user));
-        event(new \App\Events\SentResumePDFEvent($user));
-
-        return response(['message' => 'Successfully save', 'status' => false]);
+        return response(['message' => 'Successfully save', 'status' => true, "user"=>$user]);
     }
 
     public function seeker(Request $request){

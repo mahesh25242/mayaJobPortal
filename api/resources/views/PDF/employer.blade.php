@@ -82,7 +82,7 @@
                 </table>
 		    </td>
             <td>
-                <h1>Job Vaccancy for {{ $user->employer->category->name }}   </h1>
+                <h1>Job Vaccancy for {{ $user->employer->category ? $user->employer->category->name : '' }}   </h1>
                 <table class="text-left" width="100%" border="0" cellspacing="0" cellpadding="0" >
                     <tr>
                         <td>
