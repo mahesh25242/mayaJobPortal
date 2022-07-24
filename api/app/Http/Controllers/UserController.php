@@ -268,8 +268,10 @@ class UserController extends Controller
         );
         
         try{
-            event(new \App\Events\EmployerRegisterEvent($user));
-            event(new \App\Events\SentResumePDFEvent($user));
+            if($user->status){
+                event(new \App\Events\EmployerRegisterEvent($user));
+                event(new \App\Events\SentResumePDFEvent($user));
+            }            
         }catch (\Exception $e) {             
             return response(["success" => false, "message"=> $e->getMessage()], 404);
         }
@@ -440,8 +442,11 @@ class UserController extends Controller
             ],
         );
         try{
-            // event(new \App\Events\SeekerRegisterEvent($user));
-            // event(new \App\Events\SentResumePDFEvent($user));
+            if($user->status){
+                event(new \App\Events\SeekerRegisterEvent($user));
+                event(new \App\Events\SentResumePDFEvent($user));
+            }
+            
         }catch (\Exception $e) {             
             return response(["success" => false, "message"=> $e->getMessage()], 404);
         }

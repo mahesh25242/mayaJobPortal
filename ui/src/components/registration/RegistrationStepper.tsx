@@ -24,15 +24,14 @@ const RegistrationStepper  = (props:any) => {
   const handleNext = () => {
       
     if(activeStep === steps.length - 1) {
-      
+      console.log(childRef?.current)
       childRef?.current?.verification()().then((res:any)=>{
         console.log(res)
       }).catch((err:any)=>{
         console.log(err)
       });
     }else{      
-      childRef?.current?.saveIt()().then(()=>{
-        console.log(childRef?.current)
+      childRef?.current?.saveIt()().then(()=>{        
         if(childRef?.current?.isSeeker){
           const ret = saveSeeker(childRef?.current?.formAllData()).unwrap();      
           return ret;

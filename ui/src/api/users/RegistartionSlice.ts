@@ -20,7 +20,7 @@ export const triggerRegister = createAsyncThunk(
      try {
         //const response = await fetch(`url`); //where you want to fetch data
         //Your Axios code part.
-        const response = await instance.post(`${data.page}/register`, data);//where you want to fetch data
+        const response = await instance.post(`${data.page}/register/${data.user_id ?? null}`, data);//where you want to fetch data
         return await response;
       } catch (error:any) {
          return thunkAPI.rejectWithValue({ error: error.message });

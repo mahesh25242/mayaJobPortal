@@ -46,6 +46,7 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
       // dispatch(triggerRegister({postData: formData, page: page}));      
         if(data?.code && confirmationResult){
           confirmationResult?.confirm(data?.code).then((result:any) => {
+            console.log(formData);
               dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));    
                 console.log(result)
                 // User signed in successfully.
@@ -66,14 +67,17 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
   };
 
   useEffect(() => {    
-    PhoneOtp(`+91${mobile}`).then((confirmationResult) => {            
+    PhoneOtp(`+919995453566`).then((confirmationResult) => {            
       setConfirmationResult(confirmationResult);                
     });    
   }, [mobile]);
     useImperativeHandle(ref, () => ({
       verification(){
-        if(confirmationResult)
+        if(confirmationResult){
           return handleSubmit(verify, onError);
+        }
+        return () => Promise.reject({});
+          
           
 
       }
