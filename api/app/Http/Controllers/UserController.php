@@ -194,6 +194,8 @@ class UserController extends Controller
                     ], 'status' => false], 422);                    
                 }
                 
+            }else{
+                $status = 0;
             }
             $user = ($id && Auth::id() == $id) ? \App\Models\User::find($id) : new \App\Models\User();            
             if($user->id){
