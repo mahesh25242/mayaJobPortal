@@ -465,7 +465,7 @@ const JobSeeker = forwardRef((props, seekRef) => {
                         name={"academic_profile"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                            <TextField multiline fullWidth onChange={onChange} value={value} label={"Academic Profile"} />
+                            <TextField multiline fullWidth onChange={onChange} value={value} label={"Academic Profile (College education detail)"} />
                         )}
                     />
                 </FormControl>

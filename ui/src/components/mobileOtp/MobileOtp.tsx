@@ -110,7 +110,7 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
           Invalid OTP
         </Alert>
       </Snackbar>
-   </Paper><Button>If not get Re-sent OTP?</Button></>);
+   </Paper>OTP sent to your mobile <Button>If not click here to Re-sent OTP?</Button></>);
 });
 
 
