@@ -14,13 +14,13 @@ import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
-
+import { usePlacesWidget } from "react-google-autocomplete";
 
 export default function SearchBar(){
     const [loading, setLoading] = useState(false);
 
     const [filter , SetFilter] = useState(null);
-    const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, getValues, setValue } = useForm({
         defaultValues: {
             type: 'employee',
             state: '',
@@ -34,6 +34,40 @@ export default function SearchBar(){
     };
     const { data, error, isLoading } = useGetCategoriesQuery('categories');
 
+    const { ref: refState } = usePlacesWidget({
+        apiKey: process.env.REACT_APP_GOOGLE_MAP_API,
+        onPlaceSelected: (place) => {
+            console.log(place);
+            place.address_components.forEach((element: any) => {                                                
+                if (element.types.includes("administrative_area_level_1")) {
+                    setValue("state", element.long_name)
+                }              
+            });           
+        },
+        options: {
+            types: ["(regions)"],
+            // componentRestrictions: { country: "ru" },
+        },
+
+    });
+
+    const { ref: refDistrict } = usePlacesWidget({
+        apiKey: process.env.REACT_APP_GOOGLE_MAP_API,
+        onPlaceSelected: (place) => {
+            console.log(place);
+            place.address_components.forEach((element: any) => {                                
+                if (element.types.includes("administrative_area_level_2")) {
+                    setValue("district", element.long_name)
+                }                
+            });           
+        },
+        options: {
+            types: ["(regions)"],
+            // componentRestrictions: { country: "ru" },
+        },
+
+    });
+
     return(<>
         <Stack component="form" 
         direction={{ xs: 'column', md: 'row' }}
@@ -44,7 +78,7 @@ export default function SearchBar(){
                         name={"state"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"State"} />                                                    
+                        <TextField inputRef={refState} fullWidth onChange={onChange} value={value} label={"State"} />                                                    
                         )}
                     />                   
                 </FormControl>                 
@@ -55,7 +89,7 @@ export default function SearchBar(){
                         name={"district"}
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
-                        <TextField fullWidth onChange={onChange} value={value} label={"District"} />                                                    
+                        <TextField inputRef={refDistrict} fullWidth onChange={onChange} value={value} label={"District"} />                                                    
                         )}
                     />                   
                 </FormControl> 
