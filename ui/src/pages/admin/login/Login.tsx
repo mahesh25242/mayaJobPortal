@@ -13,14 +13,16 @@ import {
 import { useAppDispatch } from "../../../app/store";
 import { Helmet } from 'react-helmet-async';
 import { UserApi} from '../../../api/rtk/user';
+import Grid from '@mui/material/Grid';
+import { Link  } from 'react-router-dom';
 
 export default function Login(){
     const navigate = useNavigate();
 
     const { register, handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
-            email: "admin@mayajobs.com",
-            password: "123456"
+            email: '', //"admin@mayajobs.com",
+            password: '' //"123456"
         }
     });
     const dispatch = useAppDispatch();
@@ -43,7 +45,7 @@ export default function Login(){
     return (<>
     <Helmet>
         <title>Login</title>
-    </Helmet>
+    </Helmet>    
     <h1>Login</h1>
         <Stack component="form"             
             sx={{ p: '2px 4px',  alignItems: 'center' }}
@@ -86,9 +88,20 @@ export default function Login(){
                         )}
                     />                   
                 </FormControl>
-                <Button type="submit" variant="contained">
-                    Sign In
-                </Button>
+                <Grid container spacing={2}>
+                    <Grid item xs={8}>
+                        <Link to={'/forgot-password'}>Forgot Password?</Link>
+                        
+                    </Grid>
+                    <Grid item xs={4}>
+                    <Button type="submit" variant="contained">
+                            Sign In
+                        </Button>
+                    </Grid> 
+                </Grid>
+
+                
+              
         </Stack></>
     );
 }

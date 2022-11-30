@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Stack from "@mui/material/Stack";
@@ -8,10 +9,10 @@ import { useChangePasswordMutation } from '../../api/rtk/user'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-
+import CustomSnackbar from '../../components/snakBar/CustomSnackbar';
 
 export default function ChangePassword(){
-
+    const [snakMessage, setSnakMessage] = React.useState<string>('');
     const formSchema = Yup.object().shape({
         old_password: Yup.string()
           .required('Old Password is required'),
@@ -37,6 +38,7 @@ export default function ChangePassword(){
     const onSubmit = (data:any) => { 
         console.log(data)
       const loginResponse = changePassword(data).unwrap().then(res=>{
+        setSnakMessage('Password changes successfully');
           console.log(res);        
       }).catch(err=>{
           console.log(err)
@@ -104,6 +106,10 @@ export default function ChangePassword(){
                 <Button variant="contained" color="primary" type="submit">
                     Change Password
                 </Button>
+
+                {
+                    snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
+                } 
             </Stack>
         </div>        
     )

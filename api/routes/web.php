@@ -28,6 +28,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     
     $router->post('checkLogin','UserController@checkLogin');
     $router->post('refreshToken','UserController@refreshToken');
+    $router->put('seNewPassword','UserController@seNewPassword');
     
     $router->get('categories','CategoryController@categories');
     $router->get('blogs','BlogController@blogs');
@@ -39,6 +40,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/user', 'UserController@getUser');    
+        $router->put('/changePassword', 'UserController@changePassword');    
         
         $router->group(['prefix' => 'categories'], function () use ($router) {            
             $router->post('/{id}','CategoryController@save');

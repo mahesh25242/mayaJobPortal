@@ -10,6 +10,11 @@ import { setOtpPhone } from '../../mobileOtp/OtpMobileSlice'
 import { setRegisterForm } from '../registerFormSlice'
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useGetCategoriesQuery } from "../../../api/rtk/Categories";
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility'; 
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import React from "react";
 
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
@@ -49,6 +54,11 @@ const Employer = forwardRef((props, empRef) =>  {
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
         defaultValues: {...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
     const dispatch = useDispatch()
     
     const { data, error, isLoading } = useGetCategoriesQuery('categories');
@@ -183,13 +193,28 @@ const Employer = forwardRef((props, empRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"password"}   
-                        rules={{ required: { value: (!formData?.id) ? true : false, message: 'Passord is required'} }}             
+                        rules={{ required: { value: (!formData?.id) ? true : false, message: 'Password is required'} }}             
                         control={control}
                         render={({ field: { onChange, value =  '' } }) => (
                         <TextField 
                         error={!!errors.password}
                         helperText={ (errors.password) ? errors.password?.message: '' }
-                        type="password" fullWidth onChange={onChange} value={value} label={"Password"} />
+                        type={showPassword ? "text" : "password"} 
+                        fullWidth onChange={onChange} value={value} label={"Password"} 
+                        InputProps={{ // <-- This is where the toggle button is added.
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                >
+                                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }}  
+                        />
                         )}
                     />                   
                 </FormControl>
@@ -197,13 +222,13 @@ const Employer = forwardRef((props, empRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"phone"}   
-                        rules={{ required: { value: true, message: 'Primary Phone is required'} }}             
+                        rules={{ required: { value: true, message: 'Primary Phone is required (with country code)'} }}             
                         control={control}
                         render={({ field: { onChange, value =  '' } }) => (
                         <TextField 
                         error={!!errors.phone}
                         helperText={ (errors.phone) ? errors.phone?.message: '' }
-                        type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone"} />
+                        type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone (with country code)"} />
                         )}
                     />                   
                 </FormControl>

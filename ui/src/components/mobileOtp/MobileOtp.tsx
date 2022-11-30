@@ -17,8 +17,10 @@ import {
   triggerRegister,
   setRegistration
 } from "../../api/users/RegistartionSlice";
+import { useNavigate } from "react-router-dom";
 
-const MobileOtp = forwardRef((props, ref:any) =>  {
+const MobileOtp = forwardRef((props:any, ref:any) =>  {
+  const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [confirmationResult, setConfirmationResult] = useState<any>(null);
     const mayaRegister = useSelector(setRegistration)?.register;
@@ -28,7 +30,7 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
 
     const formData = registerForm[page as keyof typeof registerForm];
     
-    const mobile = formData?.phone;
+    const mobile = formData?.phone ?? props?.mobile;
     
     const { register, handleSubmit, control, formState: { errors } } = useForm();
 
@@ -46,12 +48,15 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
       // dispatch(triggerRegister({postData: formData, page: page}));      
         if(data?.code && confirmationResult){
           confirmationResult?.confirm(data?.code).then((result:any) => {
-            
-              dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));    
-                console.log(result)
-                // User signed in successfully.
-                const user = result.user;
+              const user = result.user;
+              if(props.forgotPass){
+                // user?.phoneNumber
+                navigate(`/set-new-password/${result._tokenResponse.idToken}`);
+              }else{
+                dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));
                 localStorage.setItem("user", JSON.stringify(user));
+              }                                  
+                                
                 // ...
             }).catch((error:any) => {
                 console.log(error);
@@ -66,11 +71,26 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
       throw new Error('Validation failed');        
   };
 
+
+  const sendSMsOTP = () =>{   
+    if(mobile){      
+      PhoneOtp(`${mobile}`).then((confirmationResult) => {             
+        console.log(confirmationResult);   
+        setConfirmationResult(confirmationResult);                
+      }).catch(err=>{        
+        console.error(err);
+      }); 
+    }else{
+      throw new Error('no mobile number found');
+    }    
+  }
   useEffect(() => {    
-    PhoneOtp(`+91${mobile}`).then((confirmationResult) => {            
-      setConfirmationResult(confirmationResult);                
-    });    
-  }, [mobile]);
+    sendSMsOTP();
+    
+    return( () =>{
+      console.log(confirmationResult);
+    })
+  }, []);
     useImperativeHandle(ref, () => ({
       verification(){
         if(confirmationResult){
@@ -110,7 +130,12 @@ const MobileOtp = forwardRef((props, ref:any) =>  {
           Invalid OTP
         </Alert>
       </Snackbar>
-   </Paper>OTP sent to your mobile <Button>If not click here to Re-sent OTP?</Button></>);
+   </Paper>
+   {props?.childDom}
+   OTP sent to your mobile <Button onClick={sendSMsOTP}>If not click here to Re-sent OTP?</Button>
+   
+   
+   </>);
 });
 
 

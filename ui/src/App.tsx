@@ -23,6 +23,8 @@ const AppRoutes = () => {
   const Admin = React.lazy(() => import("./pages/admin/Admin"));
   const BlogDetails = React.lazy(() => import("./pages/blog/BlogDetails"));
   const Login = React.lazy(() => import("./pages/admin/login/Login"));
+  const ForgotPassword = React.lazy(() => import("./pages/admin/ForgotPassword/ForgotPassword"));
+  const SetNewPassword = React.lazy(() => import("./pages/admin/ForgotPassword/SetNewPassword"));
   const Register = React.lazy(() => import("./pages/register/Register"));
   const Candidate = React.lazy(() => import("./pages/candidate/Candidate"));
   const Employer = React.lazy(() => import("./pages/employer/Employer"));
@@ -69,6 +71,20 @@ const AppRoutes = () => {
         <React.Suspense fallback={<>...</>}>
           <Container>
             <Login />
+          </Container>
+        </React.Suspense>
+      } />
+       <Route path="forgot-password" element={
+        <React.Suspense fallback={<>...</>}>
+          <Container>
+            <ForgotPassword />
+          </Container>
+        </React.Suspense>
+      } />
+       <Route path="set-new-password/:key" element={
+        <React.Suspense fallback={<>...</>}>
+          <Container>
+            <SetNewPassword />
           </Container>
         </React.Suspense>
       } />

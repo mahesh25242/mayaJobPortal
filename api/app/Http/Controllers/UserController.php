@@ -544,6 +544,60 @@ class UserController extends Controller
         return response()->download($file);
     }
 
+    public function changePassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'old_password' => ['required'],
+            'new_password' => ['required'],
+            'confirm_password' => ['required'],
+        ]);
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        if(!Hash::check($request->input('old_password'), auth()->user()->password)){
+            return response(['message' => 'User not found', 'status' => false], 422);
+        }
+        \App\Models\User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->input('new_password'))
+        ]);
+        
+
+        return response(['message' => 'Successfully updated ', 'status' => true]);
+    }
+
+    public function seNewPassword(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'newPassword' => ['required'],            
+        ]);
+        if($validator->fails()){
+            return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
+        }
+        if(!Auth::check() && $request->input("key", null)){
+            $auth = app('firebase.auth');
+            try {
+                $verifiedIdToken = $auth->verifyIdToken($request->input("key", null));
+                $uid = $verifiedIdToken->claims()->get('sub');
+                $user = $auth->getUser($uid);    
+                
+                $dbUser = \App\Models\User::where([
+                        "phone" => $user->phoneNumber           
+                       ])->first();
+                if($dbUser){                    
+                    $dbUser->password = Hash::make($request->input("newPassword", ''));
+                    $dbUser->save();
+                }
+            } catch (FailedToVerifyToken $e) {
+                return response(['message' => 'Validation errors', 'errors' =>  [
+                    "accessToken" => ["Invalid access token"]
+                ], 'status' => false], 422);                    
+            }
+            
+        }else{
+            $status = 0;
+        }
+
+        return response(['message' => 'Successfully updated ', 'status' => true]);
+    }
     // public function checkMail(){        
     //     $user = \App\Models\User::find(12);
 

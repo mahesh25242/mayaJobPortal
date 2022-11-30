@@ -30,10 +30,22 @@ export const UserApi = createApi({
       
       providesTags: ["LoggedUser"],     
       // invalidatesTags: ["LoggedUser"],
+    }),
+    setNewPassword: builder.mutation({
+      query: (user) => ({
+          url: `seNewPassword/`,
+          method: 'PUT',
+          body: user
+          //   headers: {
+          //     'content-type': 'text/plain',
+          //  },
+
+      }) ,  
+
     }),   
   })
 });
 
 
-export const { useChangePasswordMutation, useLoggedUserQuery } = UserApi;
+export const { useChangePasswordMutation, useLoggedUserQuery, useSetNewPasswordMutation } = UserApi;
 

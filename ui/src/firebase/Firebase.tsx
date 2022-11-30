@@ -24,22 +24,27 @@ measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 const fire = initializeApp(firebaseConfig);
 
 const auth = getAuth(fire);
-auth.settings.appVerificationDisabledForTesting = true
+// auth.settings.appVerificationDisabledForTesting = true
 
 // set this to remove reCaptcha web
 // fire.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
-const recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+const recaptchaVerifier = new RecaptchaVerifier('sign-in-button',     
+    {
     'size': 'invisible',
-    'callback': (response:any) => {
-        // console.log(response)
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        // onSignInSubmit();
+    // 'callback': (response:any) => {
+    //     return response;
+    //     console.log(response)
+    //     // reCAPTCHA solved, allow signInWithPhoneNumber.
+    //     // onSignInSubmit();
+    // }
     }
-    }, auth);
+    , auth);
 
-const PhoneOtp = (phone: string = '') =>{
-
-    return signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+const PhoneOtp = async (phone: string = '') =>{        
+    return signInWithPhoneNumber(auth, phone, recaptchaVerifier).then(res=>{
+        console.log(res)
+        return res;
+    });
     
     // signInWithPhoneNumber(auth, phone, recaptchaVerifier).then((confirmationResult) => {
     //     // SMS sent. Prompt user to type the code from the message, then sign the
