@@ -15,16 +15,19 @@ import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility'; 
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React from "react";
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
+
+
 
 const genders  = ["any", "male", "female"];
 const maritalStatus  = ["any", "married", "unmarried"];
 
 interface IFormValues {
-    phone?: string;
+    phone: string;
     category_id?: number;
     name?: string;
     email?: string;
-    secondry_phone?: string;
+    secondry_phone: string;
     contact_name?: string;
     address?: string;
     country?: string;
@@ -52,7 +55,7 @@ const Employer = forwardRef((props, empRef) =>  {
     // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
     const formData = useSelector((state: RootState) => state.registerForm?.employer)    
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
-        defaultValues: {...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
+        defaultValues: {phone: '',...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -218,8 +221,24 @@ const Employer = forwardRef((props, empRef) =>  {
                         )}
                     />                   
                 </FormControl>
-
                 <FormControl fullWidth>                    
+                    <Controller
+                        name={"phone"}
+                        rules={{ validate: matchIsValidTel }}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <MuiTelInput
+                            {...field}
+                            defaultCountry="IN"
+                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            error={fieldState.invalid}
+                            placeholder="Primary Mobile number"
+                            label="Primary Mobile"
+                          />
+                        )}
+                    />                   
+                </FormControl>
+                {/* <FormControl fullWidth>                    
                     <Controller
                         name={"phone"}   
                         rules={{ required: { value: true, message: 'Primary Phone is required (with country code)'} }}             
@@ -231,9 +250,27 @@ const Employer = forwardRef((props, empRef) =>  {
                         type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone (with country code)"} />
                         )}
                     />                   
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl fullWidth>                    
+                    <Controller
+                        name={"secondry_phone"}
+                        rules={{ validate: matchIsValidTel }}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <MuiTelInput
+                            {...field}
+                            defaultCountry="IN"
+                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            error={fieldState.invalid}
+                            placeholder="Alternate Mobile number"
+                            label="Alternate Mobile"
+                          />
+                        )}
+                    />                   
+                </FormControl>
+
+                {/* <FormControl fullWidth>                    
                     <Controller
                         name={"secondry_phone"}
                         control={control}
@@ -241,7 +278,7 @@ const Employer = forwardRef((props, empRef) =>  {
                         <TextField  type="tel" fullWidth onChange={onChange} value={value} label={"Alternate Phone"} />
                         )}
                     />                   
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl fullWidth>                    
                     <Controller

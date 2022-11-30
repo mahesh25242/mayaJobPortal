@@ -15,15 +15,15 @@ import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility'; 
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import React from "react";
-
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 
 
 interface IFormValues {
-    phone?: string;
+    phone: string;
     category_id?: number;
     name?: string;
     email?: string;
-    secondry_phone?: string;
+    secondry_phone: string;
     address?: string;
     nationality?: string;
     dob?: string;
@@ -225,7 +225,24 @@ const JobSeeker = forwardRef((props, seekRef) => {
                     />
                 </FormControl>
 
-                <FormControl fullWidth>
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"phone"}
+                        rules={{ validate: matchIsValidTel }}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <MuiTelInput
+                            {...field}
+                            defaultCountry="IN"
+                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            error={fieldState.invalid}
+                            placeholder="Primay Mobile number"
+                            label="Primay Mobile"
+                          />
+                        )}
+                    />                   
+                </FormControl>
+                {/* <FormControl fullWidth>
                     <Controller
                         name={"phone"}
                         rules={{ required: { value: true, message: 'Phone is required' } }}
@@ -237,9 +254,26 @@ const JobSeeker = forwardRef((props, seekRef) => {
                                 type="tel" fullWidth onChange={onChange} value={value} label={"Primay Phone (with country code)"} />
                         )}
                     />
-                </FormControl>
+                </FormControl> */}
 
-                <FormControl fullWidth>
+                <FormControl fullWidth>                    
+                    <Controller
+                        name={"secondry_phone"}
+                        rules={{ validate: matchIsValidTel }}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <MuiTelInput
+                            {...field}
+                            defaultCountry="IN"
+                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            error={fieldState.invalid}
+                            placeholder="Alternate Mobile number"
+                            label="Alternate Mobile"
+                          />
+                        )}
+                    />                   
+                </FormControl>
+                {/* <FormControl fullWidth>
                     <Controller
                         name={"secondry_phone"}
                         control={control}
@@ -247,7 +281,7 @@ const JobSeeker = forwardRef((props, seekRef) => {
                             <TextField type="tel" fullWidth onChange={onChange} value={value} label={"Alternate Phone"} />
                         )}
                     />
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl fullWidth>
                     <Controller

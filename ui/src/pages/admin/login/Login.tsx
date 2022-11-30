@@ -15,11 +15,15 @@ import { Helmet } from 'react-helmet-async';
 import { UserApi} from '../../../api/rtk/user';
 import Grid from '@mui/material/Grid';
 import { Link  } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import React from "react";
+import { green } from '@mui/material/colors';
 
 export default function Login(){
     const navigate = useNavigate();
-
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    
+    const [loading, setLoading] = React.useState(false);
+    const { register, handleSubmit, control, formState: { errors }, setError } = useForm({
         defaultValues: {
             email: '', //"admin@mayajobs.com",
             password: '' //"123456"
@@ -29,15 +33,31 @@ export default function Login(){
     const { token } = useSelector(getAuth);
 
     const onSubmit = (data:any) => { 
-        dispatch(checkLogin(data)).then((res) => {            
-            dispatch(UserApi.util.invalidateTags(['LoggedUser']))             
-            if(res?.payload?.role_id === 1){
-                navigate("/admin");
-            }else if(res?.payload?.role_id === 2){
-                navigate("/employer");
-            }else if(res?.payload?.role_id === 3){
-                navigate("/candidate");
+        setLoading(true);
+        dispatch(checkLogin(data)).then((res) => {  
+            setLoading(false);            
+            if(res?.payload?.error){
+                console.log(res?.payload?.error);
+                const { errors, error_description } = res?.payload?.error      
+                if(errors){
+                    const { email = null } = errors   
+                    email && setError("email",  { type: 'custom', message: email });
+                }else if(error_description){
+                    setError("email",  { type: 'custom', message: error_description });
+                }
+                
+            }else{
+                
+                dispatch(UserApi.util.invalidateTags(['LoggedUser']))             
+                if(res?.payload?.role_id === 1){
+                    navigate("/admin");
+                }else if(res?.payload?.role_id === 2){
+                    navigate("/employer");
+                }else if(res?.payload?.role_id === 3){
+                    navigate("/candidate");
+                }
             }
+            
         });                
 
     };
@@ -94,9 +114,24 @@ export default function Login(){
                         
                     </Grid>
                     <Grid item xs={4}>
-                    <Button type="submit" variant="contained">
-                            Sign In
+                    <Button type="submit" variant="contained" disabled={loading}>
+                            Sign In   
                         </Button>
+                        
+                        {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                                }}
+                            />
+                            )}
+                            
                     </Grid> 
                 </Grid>
 

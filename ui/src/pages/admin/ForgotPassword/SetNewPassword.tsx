@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import {
     checkLogin,
     getAuth
@@ -21,10 +21,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility'; 
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSetNewPasswordMutation } from '../../../api/rtk/user';
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+
 
 export default function SetNewPassword(){
+  
+    const [loading, setLoading] = React.useState(false);
     let params = useParams();
     const childRef: null | {current: any} = React.useRef();  
     const navigate = useNavigate();
@@ -35,7 +40,7 @@ export default function SetNewPassword(){
 
     const [ setNewPassword ] = useSetNewPasswordMutation();
 
-    const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, getValues, setError } = useForm({
         defaultValues: {
             newPassword: '', //"admin@mayajobs.com",            
         }
@@ -44,13 +49,17 @@ export default function SetNewPassword(){
     
 
     const onSubmit = (data:any) => {        
+      setLoading(true);          
      
-     
-     const loginResponse = setNewPassword({...data, key: params?.key}).unwrap().then(res=>{
+     const loginResponse = setNewPassword({...data, key: params?.key}).unwrap().then(res=>{      
       // setSnakMessage('Password changes successfully');
-        console.log(res);        
+        console.log(res); 
+        navigate("/sign-in");       
     }).catch(err=>{
+      setError("newPassword",  { type: 'custom', message: err?.data?.message });
         console.log(err)
+    }).finally(()=>{
+      setLoading(false);          
     });
     };
    
@@ -102,9 +111,22 @@ export default function SetNewPassword(){
                         
                     </Grid>
                     <Grid item xs={4}>
-                    <Button type="submit" variant="contained">
+                    <Button type="submit" variant="contained" disabled={loading}>
                             Save
                         </Button>
+                        {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                                }}
+                            />
+                            )}
                     </Grid> 
                 </Grid>
 

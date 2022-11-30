@@ -17,6 +17,9 @@ import Grid from '@mui/material/Grid';
 import { Link  } from 'react-router-dom';
 import MobileOtp from '../../../components/mobileOtp/MobileOtp';
 import React from "react";
+import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
+
+
 
 export default function ForgotPassword(){
     const [ mobile, setMobile] = React.useState('');
@@ -31,8 +34,7 @@ export default function ForgotPassword(){
     const dispatch = useAppDispatch();
     const { token } = useSelector(getAuth);
 
-    const onSubmit = (data:any) => {        
-     
+    const onSubmit = (data:any) => {             
       if(mobile){
         childRef?.current?.verification()().then((res:any)=>{
             console.log(res)
@@ -53,27 +55,26 @@ export default function ForgotPassword(){
         <Stack component="form"             
             sx={{ p: '2px 4px',  alignItems: 'center' }}
             onSubmit={handleSubmit(onSubmit)}>
-            
-
+                        
            {!mobile && <FormControl fullWidth>                    
                     <Controller
                         name={"mobile"}
-                        rules={{ required: { value: true, message: 'Mobile is required'} }}
+                        rules={{ validate: matchIsValidTel }}
                         control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                            <TextField
-                            error={!!errors.mobile}
-                            helperText={ (errors.mobile) ? errors.mobile?.message: '' }
-                            label="Mobile (With country code Example: +91 for India)"
-                            onChange={onChange} value={value} 
-                            placeholder='Enter your mobile'                            
-                            sx={{ m: 1,  }}                            
+                        render={({ field, fieldState }) => (
+                          <MuiTelInput
+                            {...field}
+                            defaultCountry="IN"
+                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            error={fieldState.invalid}
+                            placeholder="Mobile number"
+                            label="Registered Mobile"
                           />
                         )}
                     />                   
                 </FormControl>} 
                 {mobile && <MobileOtp forgotPass={true} mobile={mobile} ref={childRef} childDom={<Button onClick={()=> setMobile('')}>Back to Forgot Password?</Button>}/>}
-              
+                          <br/>
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
                         <Link to={'/sign-in'}>Back to Log In?</Link>

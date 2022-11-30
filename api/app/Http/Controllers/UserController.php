@@ -149,7 +149,7 @@ class UserController extends Controller
             'category_id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,'.$id],
-            'phone' => ['required', 'unique:users,phone,'.$id, 'integer'],                
+            'phone' => ['required', 'unique:users,phone,'.$id],                
             'contact_name' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
@@ -327,7 +327,7 @@ class UserController extends Controller
             'category_id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,'.$id],
-            'phone' => ['required', 'unique:users,phone,'.$id, 'integer'],   
+            'phone' => ['required', 'unique:users,phone,'.$id],   
             // 'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
             // 'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],              
             'nationality' => ['required'],
@@ -585,6 +585,7 @@ class UserController extends Controller
                 if($dbUser){                    
                     $dbUser->password = Hash::make($request->input("newPassword", ''));
                     $dbUser->save();
+                    return response(['message' => 'Successfully updated ', 'status' => true]);
                 }
             } catch (FailedToVerifyToken $e) {
                 return response(['message' => 'Validation errors', 'errors' =>  [
@@ -592,11 +593,11 @@ class UserController extends Controller
                 ], 'status' => false], 422);                    
             }
             
-        }else{
-            $status = 0;
         }
+        
+        return response(['message' => 'unexpected error ', 'status' => false], 422);
 
-        return response(['message' => 'Successfully updated ', 'status' => true]);
+        
     }
     // public function checkMail(){        
     //     $user = \App\Models\User::find(12);

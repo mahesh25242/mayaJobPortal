@@ -27,11 +27,12 @@ export const checkLogin = createAsyncThunk(
           response = await instance.post(`checkLogin`, postData).then(res =>{
             token = res.data;
             instance.defaults.headers.common['Authorization'] = `Bearer ${token.access_token}`;
-
+            
             return instance.get(`user`);
           }).then(res=>{
             return {...token, ...{role_id: res?.data?.role_id}};
           });//where you want to fetch data
+          
           return await response;
         }
         // else{
@@ -53,7 +54,7 @@ export const checkLogin = createAsyncThunk(
         
         
       } catch (error:any) {
-         return thunkAPI.rejectWithValue({ error: error.message });
+         return thunkAPI.rejectWithValue({ error: error.response?.data });
       }
 });
 
