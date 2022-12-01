@@ -15,6 +15,7 @@ const AppRoutes = () => {
   const About = React.lazy(() => import("./pages/about/About"));
   const Home = React.lazy(() => import("./pages/Home/Home"));
   const Banner = React.lazy(() => import("./pages/Home/Banner"));
+  const PrivacyAndPolicy = React.lazy(() => import("./pages/privacyAndPolicy/PrivacyAndPolicy"));
   const Contact = React.lazy(() => import("./pages/Contact/Contact"));
   const NotFound = React.lazy(() => import("./pages/NotFound/NotFound"));
   const Terms = React.lazy(() => import("./pages/Terms/Terms"));
@@ -64,6 +65,13 @@ const AppRoutes = () => {
         <React.Suspense fallback={<>...</>}>
           <Container>
             <Terms />
+          </Container>
+        </React.Suspense>
+      } />
+    <Route path="privacy-policy" element={
+        <React.Suspense fallback={<>...</>}>
+          <Container>
+            <PrivacyAndPolicy />
           </Container>
         </React.Suspense>
       } />

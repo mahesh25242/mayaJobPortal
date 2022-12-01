@@ -37,7 +37,11 @@ const pages = [
     {
         title: 'Terms',
         url: '/terms'
-    }    
+    }    ,
+    {
+      title: 'Privacy & Policy',
+      url: '/privacy-policy'
+  }   
 ];
 
 

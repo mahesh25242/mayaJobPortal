@@ -1,5 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import Container from '@mui/material/Container';
+import CardContent from '@mui/material/CardContent';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 
 export default function About(){
     return(<>
@@ -7,26 +11,52 @@ export default function About(){
             <title>About Us</title>
         </Helmet>
         <Container fixed>
-        <div>
-            <p>
-                Fiya.In Website Is Only For Job Activity. FIA is just a domain name. The registered name on the fia.in website is under the name Maya Accounting Online Training. 
-            </p>
             
-            <div>
-            <h5>Office Address</h5>
-                    MAYA ACCOUNTING ONLINE TRAINING CENTER
-                    PMC 17 / 418,
-                    MATTAMANA BUILDING,2 ND FLOOR,
-                    OPP. MUNICIPAL OFFICE
-                    PERUMBAVOOR P O
-                    PERUMBAVOOR
-                    ERNAKULAM DIST.
-                    KERALA
-                    INDIA- 683542
-
-                    MOB :  09497550035 , OFFICE :04842595578 
-                    Email: mayataxtraining@gmail.com
-            </div>
+        <div>     
+        <h1>About Us</h1>            
+            <Card>
+                <CardContent>                    
+                   <Grid container spacing={2}>                        
+                        <Grid item md={4}>
+                            <Typography variant="h5" component="div">
+                                MAYA ACCOUNTING ONLINE TRAINING CENTER
+                            </Typography>
+                            <Typography>
+                                PMC 17 / 418,
+                            </Typography>
+                            <Typography >
+                                MATTAMANA BUILDING,2 ND FLOOR,
+                            </Typography>
+                            <Typography>
+                                OPP. MUNICIPAL OFFICE                   
+                            </Typography>
+                            <Typography>
+                                PERUMBAVOOR P O                                      
+                            </Typography>
+                            <Typography>
+                                PERUMBAVOOR
+                            </Typography>
+                            <Typography>
+                                ERNAKULAM DIST.                   
+                            </Typography>
+                            <Typography>
+                                KERALA, INDIA- 683542             
+                            </Typography>
+                            <Typography>
+                                MOB :  <a href="tel://09497550035">09497550035</a> , OFFICE :<a href="tel://04842595578">04842595578</a>              
+                            </Typography>
+                            <Typography>
+                                Email: <a href="mailto:mayataxtraining@gmail.com.com">mayataxtraining@gmail.com</a>            
+                            </Typography>
+                        </Grid>    
+                        <Grid item md={8}>
+                            <Typography>
+                                Fiya.In Website Is Only For Job Activity. FIA is just a domain name. The registered name on the fia.in website is under the name Maya Accounting Online Training. 
+                            </Typography>
+                        </Grid>                   
+                    </Grid>
+                </CardContent>                
+            </Card>                    
         </div>
         </Container>
         
