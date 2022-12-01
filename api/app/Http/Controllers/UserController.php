@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
+
 
 class UserController extends Controller
 {
@@ -574,8 +576,16 @@ class UserController extends Controller
         }
         if(!Auth::check() && $request->input("key", null)){
             $auth = app('firebase.auth');
-            try {
+            try {                
                 $verifiedIdToken = $auth->verifyIdToken($request->input("key", null));
+                
+             
+            } catch (FailedToVerifyToken $e) {                
+                return response(['message' => 'User not exists', 'errors' =>  [
+                    "accessToken" => ["Invalid access token"]
+                ], 'status' => false], 422);                    
+            }
+            if(isset($verifiedIdToken) && $verifiedIdToken){
                 $uid = $verifiedIdToken->claims()->get('sub');
                 $user = $auth->getUser($uid);    
                 
@@ -587,10 +597,6 @@ class UserController extends Controller
                     $dbUser->save();
                     return response(['message' => 'Successfully updated ', 'status' => true]);
                 }
-            } catch (FailedToVerifyToken $e) {
-                return response(['message' => 'Validation errors', 'errors' =>  [
-                    "accessToken" => ["Invalid access token"]
-                ], 'status' => false], 422);                    
             }
             
         }

@@ -34,7 +34,7 @@ export default function ForgotPassword(){
     const dispatch = useAppDispatch();
     const { token } = useSelector(getAuth);
 
-    const onSubmit = (data:any) => {             
+    const onSubmit = (data:any) => {              
       if(mobile){
         childRef?.current?.verification()().then((res:any)=>{
             console.log(res)
@@ -68,7 +68,9 @@ export default function ForgotPassword(){
                             helperText={fieldState.invalid ? "Mobile is invalid" : ""}
                             error={fieldState.invalid}
                             placeholder="Mobile number"
-                            label="Registered Mobile"
+                            label="Registered Mobile"                             
+                            onChange={(e, contryCode) => field.onChange(contryCode?.numberValue)} 
+                            splitCallingCode={true}
                           />
                         )}
                     />                   

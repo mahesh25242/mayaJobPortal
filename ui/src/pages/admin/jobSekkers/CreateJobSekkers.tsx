@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { useDispatch } from 'react-redux';
 import { setRegisterForm } from '../../../components/registration/registerFormSlice'
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -31,7 +33,7 @@ const style = {
 export default function CreateJobSekkers(props: any) {
   const childRef: null | { current: any } = React.useRef();
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = React.useState(false);
   const { register, handleSubmit, control, formState: { errors }, setValue } = useForm({
     defaultValues: {
       name: props?.seeker?.name ?? '',
@@ -54,7 +56,8 @@ export default function CreateJobSekkers(props: any) {
   // const [login] = useLoginMutation();
 
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: any) => {    
+    setLoading(true);     
     childRef?.current?.saveIt()().then((res: any) => {      
       const ret = saveSeeker(childRef?.current?.formAllData()).unwrap();      
       return ret;
@@ -68,6 +71,8 @@ export default function CreateJobSekkers(props: any) {
       }
       
       console.log(err)
+    }).finally(()=>{
+      setLoading(false);    
     });
 
 
@@ -92,9 +97,23 @@ export default function CreateJobSekkers(props: any) {
             Cancel
           </Button>
           {' '}
-          <Button type="submit" variant="contained" onClick={onSubmit}>
+          <Button type="submit" variant="contained" onClick={onSubmit} disabled={loading}>
             Save
           </Button>
+          {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                                }}
+                            />
+                            )}
+
         </div>
       </Box>
     </Modal>

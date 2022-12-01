@@ -55,7 +55,7 @@ const Employer = forwardRef((props, empRef) =>  {
     // const mobile = useSelector((state: RootState) => state.otpMobile.mobile)
     const formData = useSelector((state: RootState) => state.registerForm?.employer)    
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
-        defaultValues: {phone: '',...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
+        defaultValues: {phone: '',secondry_phone:'',...formData, ...{category_id: (formData?.category_id > 0) ? formData?.category_id : 0}}
     });
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -234,6 +234,8 @@ const Employer = forwardRef((props, empRef) =>  {
                             error={fieldState.invalid}
                             placeholder="Primary Mobile number"
                             label="Primary Mobile"
+                            onChange={(e, contryCode) => field.onChange(contryCode?.numberValue)} 
+                            splitCallingCode={true}
                           />
                         )}
                     />                   
@@ -255,7 +257,7 @@ const Employer = forwardRef((props, empRef) =>  {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"secondry_phone"}
-                        rules={{ validate: matchIsValidTel }}
+                        // rules={{ validate: matchIsValidTel }}
                         control={control}
                         render={({ field, fieldState }) => (
                           <MuiTelInput
@@ -264,7 +266,9 @@ const Employer = forwardRef((props, empRef) =>  {
                             helperText={fieldState.invalid ? "Mobile is invalid" : ""}
                             error={fieldState.invalid}
                             placeholder="Alternate Mobile number"
-                            label="Alternate Mobile"
+                            label="Alternate Mobile" 
+                            onChange={(e, contryCode) => field.onChange(contryCode?.numberValue)} 
+                            splitCallingCode={true}
                           />
                         )}
                     />                   

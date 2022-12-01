@@ -54,7 +54,7 @@ interface IFormValues {
 const JobSeeker = forwardRef((props, seekRef) => {
     const formData = useSelector((state: RootState) => state.registerForm?.seeker)    
     const { register, handleSubmit, control, formState: { errors }, getValues, setValue, setError } = useForm<IFormValues>({
-        defaultValues: { ...formData, ...{ category_id: (formData?.category_id > 0) ? formData?.category_id : 0 } }
+        defaultValues: {phone: '',secondry_phone:'', ...formData, ...{ category_id: (formData?.category_id > 0) ? formData?.category_id : 0 } }
     });
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -69,8 +69,7 @@ const JobSeeker = forwardRef((props, seekRef) => {
 
 
 
-    const onSubmit = (data: any) => { 
-        console.log(data)       
+    const onSubmit = (data: any) => {         
         dispatch(setRegisterForm({ seeker: data }))
         dispatch(setOtpPhone({ mobile: getValues('phone'), page: 'seeker' }))
     };
@@ -237,7 +236,10 @@ const JobSeeker = forwardRef((props, seekRef) => {
                             helperText={fieldState.invalid ? "Mobile is invalid" : ""}
                             error={fieldState.invalid}
                             placeholder="Primay Mobile number"
-                            label="Primay Mobile"
+                            label="Primay Mobile" 
+                            splitCallingCode={true} 
+                            onChange={(e, contryCode) => field.onChange(contryCode?.numberValue)} 
+                            
                           />
                         )}
                     />                   
@@ -259,7 +261,7 @@ const JobSeeker = forwardRef((props, seekRef) => {
                 <FormControl fullWidth>                    
                     <Controller
                         name={"secondry_phone"}
-                        rules={{ validate: matchIsValidTel }}
+                        // rules={{ validate: matchIsValidTel }}
                         control={control}
                         render={({ field, fieldState }) => (
                           <MuiTelInput
@@ -268,7 +270,10 @@ const JobSeeker = forwardRef((props, seekRef) => {
                             helperText={fieldState.invalid ? "Mobile is invalid" : ""}
                             error={fieldState.invalid}
                             placeholder="Alternate Mobile number"
-                            label="Alternate Mobile"
+                            label="Alternate Mobile" 
+                            splitCallingCode={true} 
+                            onChange={(e, contryCode) => field.onChange(contryCode?.numberValue)} 
+                            
                           />
                         )}
                     />                   

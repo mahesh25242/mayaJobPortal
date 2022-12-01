@@ -6,7 +6,8 @@ import Employer from '../../../components/registration/employer/Employer';
 import Button from '@mui/material/Button';
 import { setRegisterForm } from '../../../components/registration/registerFormSlice'
 import { useDispatch } from 'react-redux';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,7 +27,7 @@ export default function CreateEmployer(props: any) {
   const childRef: null | { current: any } = React.useRef();
   const dispatch = useDispatch();
 
-
+  const [loading, setLoading] = React.useState(false);
 
   const handleClose = () => {
     dispatch(setRegisterForm({ employer: {} }));
@@ -39,6 +40,7 @@ export default function CreateEmployer(props: any) {
 
   // console.log(registerForm, page);
   const onSubmit = () => {
+    setLoading(true);
     childRef?.current?.saveIt()().then(() => {
       const formData = childRef?.current?.formAllData();
 
@@ -62,6 +64,8 @@ export default function CreateEmployer(props: any) {
           childRef?.current?.setErrors(err?.data?.errors)
         }
         console.log(err)
+      }).finally(()=>{
+        setLoading(false);    
       });
 
     // const loginResponse = saveEmployer(data).unwrap().then(res=>{
@@ -84,9 +88,24 @@ export default function CreateEmployer(props: any) {
             Cancel
           </Button>
           {' '}
-          <Button type="submit" variant="contained" onClick={onSubmit}>
+          <Button type="submit" variant="contained" onClick={onSubmit} disabled={loading}>
             Save
           </Button>
+
+          {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                                }}
+                            />
+                            )}
+
         </div>
       </Box>
     </Modal>

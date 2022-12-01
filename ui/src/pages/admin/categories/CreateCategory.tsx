@@ -9,7 +9,8 @@ import { Controller, useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { useSaveCategoryMutation } from '../../../api/rtk/Categories'
 import MenuItem from '@mui/material/MenuItem';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -32,7 +33,7 @@ export default function CreateCategory(props: any) {
         //     status: !!props?.category?.status ?? 1,
         // }
     });
-
+    const [loading, setLoading] = React.useState(false);
     React.useEffect(() => {
         const status = !props?.category ? 1 : +props?.category?.status ?? 1;
         setValue("name", props?.category?.name ?? '');
@@ -46,13 +47,16 @@ const [ saveCategory ] = useSaveCategoryMutation();
 // const [login] = useLoginMutation();
 
       
-  const onSubmit = (data:any) => {       
-    const loginResponse = saveCategory(data).unwrap().then(res=>{
-        console.log(res); 
+  const onSubmit = (data:any) => {  
+    
+    setLoading(true);     
+    const loginResponse = saveCategory(data).unwrap().then(res=>{        
         props.setSnakMessage(res.message);   
         handleClose();    
     }).catch(err=>{
         console.log(err)
+    }).finally(()=>{
+      setLoading(false);    
     });
   };
   return (     
@@ -123,9 +127,24 @@ const [ saveCategory ] = useSaveCategoryMutation();
                         Cancel
                     </Button>
                     { ' ' }
-                    <Button type="submit" variant="contained">
+                    <Button type="submit" variant="contained" disabled={loading}>
                         Save
                     </Button>
+
+                    {loading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-12px',
+                                marginLeft: '-12px',
+                                }}
+                            />
+                            )}
+
                 </div>                 
 
             </Stack>         
