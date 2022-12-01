@@ -69,10 +69,11 @@ export default function SearchBar(){
     });
 
     return(<>
+    <h3>Search a Job or Staff Here</h3>
         <Stack component="form" 
         direction={{ xs: 'column', md: 'row' }}
         sx={{ p: '2px 4px',  alignItems: 'center' }} 
-        onSubmit={handleSubmit(onSubmit)}>  
+        onSubmit={handleSubmit(onSubmit)}>              
                 <FormControl fullWidth sx={{ marginBottom: { xs: "20px", md: "0" } }}>                    
                     <Controller
                         name={"state"}
@@ -122,8 +123,8 @@ export default function SearchBar(){
                         control={control}
                         render={({ field: { onChange, value = '' } }) => (
                         <ToggleButtonGroup fullWidth onChange={onChange} value={value} exclusive>                                                    
-                            <ToggleButton value="employee">Employee</ToggleButton>
-                            <ToggleButton value="employeer">Employeer</ToggleButton>                            
+                            <ToggleButton value="employee">Looking for a staff</ToggleButton>
+                            <ToggleButton value="employeer">Looking for a job</ToggleButton>                            
                         </ToggleButtonGroup>
                         )}
                     />                   

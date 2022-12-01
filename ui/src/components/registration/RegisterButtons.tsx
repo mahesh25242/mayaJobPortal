@@ -15,26 +15,24 @@ export default function RegisterButtons(){
         <Card sx={{ width: {xs: '100%', md: '50%'}, marginBottom: {xs: '20px', md: '0'}, marginRight: {xs: '0', md: '10px'} , padding: '10px' }}>
             <CardContent>
                 <Typography  color="text.secondary" component="div" variant="h5">
-                    Employee
+                    I need a job, Create your C.V. for free
                 </Typography>
-                <Typography>
-                    If you are a Employee please  <Button 
+                <br/>
+                <Button 
                     variant="contained" color="primary"
-                    component={RouterLink} to="register/employee">click here</Button> to register
-                </Typography>
+                    component={RouterLink} to="register/employee">Employee Register</Button>
             </CardContent>
         </Card>  
 
         <Card sx={{ width: {xs: '100%', md: '50%'}, marginLeft: {xs: '0', md: '10px'}, padding: '10px' }}>
             <CardContent>
                 <Typography  color="text.secondary" component="div" variant="h5">
-                    Employer
+                    I need a staff, Create your company details
                 </Typography>
-                <Typography>
-                    If you are a employer please  <Button 
+                <br/>
+                <Button 
                     component={RouterLink} to="register/employer"
-                    variant="contained" color="primary">click here</Button> to register
-                </Typography>
+                    variant="contained" color="primary">Employer Register</Button>
             </CardContent>
         </Card>               
     </Stack>)
