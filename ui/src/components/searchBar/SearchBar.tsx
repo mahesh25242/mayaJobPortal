@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { usePlacesWidget } from "react-google-autocomplete";
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 export default function SearchBar(){
     const [loading, setLoading] = useState(false);
@@ -167,7 +169,11 @@ function SearchEmployerResult(props: any){
     }    
     return (<div style={{marginTop: '20px'}}>
         {
-            total > 0 && <Alert severity="info">We found {total} job seeker(s) registered!</Alert>
+            total > 0 && <Alert severity="info">
+                We found {total} job seeker(s) registered!
+                <Link sx={{ml: 3}}                    
+                    component={RouterLink} to="contact">Click Here to contact</Link>
+            </Alert>
         }  
         {
             total === 0 && <Alert severity="info">No job seeker found!</Alert>
@@ -190,7 +196,11 @@ function SearchJobSeekerResult(props: any){
     total = total ?? 0;    
     return (<div style={{marginTop: '20px'}}>
         {
-            total > 0 && <Alert severity="info">We found {total} employer(s) registered!</Alert>
+            total > 0 && <Alert severity="info">
+                We found {total} employer(s) registered!
+                <Link sx={{ml: 3}}                    
+                    component={RouterLink} to="contact">Click Here to contact</Link>
+            </Alert>
         }    
         {
             total === 0 && <Alert severity="info">No employer found!</Alert>
