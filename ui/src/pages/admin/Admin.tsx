@@ -16,7 +16,7 @@ import JobSekkersList from "./jobSekkers/JobSekkersList";
 import BlogLists from "./blogs/BlogLists";
 import instance from "../../api/axios/Axios";
 import { useLoggedUserQuery } from "../../api/rtk/user";
-
+import Box from '@mui/material/Box';
 
 export default function Admin(){ 
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ export default function Admin(){
     return <Navigate to="/sign-in" />;     
   }
 
-    return (<>    
+    return (<>     
         <Routes>   
         <Route path="login" element={<Login />} />        
           {
@@ -55,7 +55,7 @@ function DashboardLayout() {
   
    
     return (
-      <div>   
+      <Box sx={{mt: 2}}>   
         <Routes>
             <Route path="/" element={<Home />} />                        
             <Route path="/categories" element={<CategoriesList />} />                               
@@ -65,7 +65,7 @@ function DashboardLayout() {
             <Route path="/settings" element={<SettingLists />} />                                      
         </Routes>                
         <Outlet />
-      </div>
+      </Box>
     );
   }
   

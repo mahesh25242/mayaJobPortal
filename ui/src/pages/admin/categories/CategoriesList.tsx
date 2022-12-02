@@ -17,6 +17,8 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 import { Helmet } from 'react-helmet-async';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function CategoriesList() {
   
@@ -42,23 +44,38 @@ export default function CategoriesList() {
       });
     }    
   }
-  return (
-    <TableContainer component={Paper}>
-      <Helmet>
+  return (<>
+   <Helmet>
         <title>Categories</title>
       </Helmet>
+      <Typography gutterBottom variant="h5" component="div">
+        <Grid container spacing={2}>
+              <Grid item md={10}>
+              Categories
+              </Grid>
+              <Grid item md={2} >
+                <Box display="flex" justifyContent="flex-end">
+                <Button variant="contained" onClick={(e)=> setCategory({id: 0, status: 1})}>Create New</Button>
+                </Box>
+              </Grid>
+          </Grid>
+          
+          
+        </Typography>    
+
+    <TableContainer>
+     
       {
         category?.id >= 0 && <CreateCategory category={category} setCategory={setCategory} setSnakMessage={setSnakMessage}/>
       }        
-       <Typography gutterBottom variant="h5" component="div">
-          Categories
-        </Typography>
-      <Button variant="contained" onClick={(e)=> setCategory({id: 0, status: 1})}>Create New</Button>
-      <Table  aria-label="simple table">
+      
+      <Table  aria-label="simple table" size="small">
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
-            <TableCell align="right">Name</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="right">Employers</TableCell>
+            <TableCell align="right">Seeker</TableCell>
             <TableCell align="right">Status</TableCell>
             <TableCell align="right">Options</TableCell>            
           </TableRow>
@@ -72,8 +89,14 @@ export default function CategoriesList() {
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
                 <Link href='#' onClick={() => setCategory(row)}>{row.name}</Link>
+              </TableCell>
+              <TableCell align="right">
+                {row.employer_count}
+              </TableCell>
+              <TableCell align="right">
+                {row.seeker_count}
               </TableCell>
               <TableCell align="right">{row.status_text}</TableCell>              
               <TableCell align="right">                
@@ -90,5 +113,5 @@ export default function CategoriesList() {
         snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
       }      
     </TableContainer>
-  );
+    </>);
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CreateJobSekkers from './CreateEmployer';
@@ -12,6 +12,9 @@ import Search from '../Search';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 import { Helmet } from 'react-helmet-async';
 import ListTable from './ListTable';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+
 export default function EmployersList() {
   const [snakMessage, setSnakMessage] = React.useState<string>('');
   const [employer, setEmployer] = React.useState<any>(null);
@@ -50,15 +53,26 @@ export default function EmployersList() {
     setEmployer(employer);
   };
   return (
-    <TableContainer component={Paper}>
+    <TableContainer >
       <Helmet>
         <title>Employers</title>
       </Helmet>
-      <CreateJobSekkers employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage} />
+      <CreateJobSekkers employer={employer} setEmployer={setEmployer} setSnakMessage={setSnakMessage} />      
       <Typography gutterBottom variant="h5" component="div">
-        Employers
+        <Grid container spacing={2}>
+            <Grid item md={10}>
+              Employers
+            </Grid>
+            <Grid item md={2} >
+              <Box display="flex" justifyContent="flex-end">
+                <Button variant="contained" onClick={(e) => editEmployer({ id: 0 })}>Create New</Button>
+              </Box>
+            </Grid>
+        </Grid>
+        
+        
       </Typography>
-      <Button variant="contained" onClick={(e) => editEmployer({ id: 0 })}>Create New</Button>
+     
       <Search setFilters={setFilters}/>
 
       <ListTable editEmployer={editEmployer} filters={filters} setFilters={setFilters} />

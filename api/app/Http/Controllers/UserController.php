@@ -150,8 +150,8 @@ class UserController extends Controller
         $validationArr = [            
             'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,'.$id],
-            'phone' => ['required', 'unique:users,phone,'.$id],                
+            'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
+            'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],                
             'contact_name' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
@@ -302,6 +302,14 @@ class UserController extends Controller
             if($request->input("name", null)){
                 $employers = $employers->where("name","like", "%".$request->input("name", null)."%");
             }
+            if($request->input("email", null)){
+                $employers = $employers->whereHas("user", function ($query) use($request) {
+                    $query->where('email', 'like', "%".$request->input("email", null)."%");
+                });                
+            }
+            if($request->input("mobile", null)){
+                $employers = $employers->where("phone","like", "%".$request->input("mobile", null)."%");
+            }
             if($request->input("start", null) && $request->input("end", null)){
                 $seekers = $employers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
             }
@@ -328,8 +336,8 @@ class UserController extends Controller
         $validationArr = [
             'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,'.$id],
-            'phone' => ['required', 'unique:users,phone,'.$id],   
+            'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
+            'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],   
             // 'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
             // 'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],              
             'nationality' => ['required'],
@@ -476,6 +484,16 @@ class UserController extends Controller
                 $seekers = $seekers->whereHas("user", function ($query) use($request) {
                     $query->where('name', 'like', "%".$request->input("name", null)."%");
                 });
+            }
+            if($request->input("email", null)){
+                $seekers = $seekers->whereHas("user", function ($query) use($request) {
+                    $query->where('email', 'like', "%".$request->input("email", null)."%");
+                });                
+            }
+            if($request->input("mobile", null)){
+                $seekers = $seekers->whereHas("user", function ($query) use($request) {
+                    $query->where('phone', 'like', "%".$request->input("mobile", null)."%");
+                }); 
             }
             if($request->input("start", null) && $request->input("end", null)){
                 $seekers = $seekers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);

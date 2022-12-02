@@ -21,6 +21,8 @@ import Alert from '@mui/material/Alert';
 
 import { Helmet } from 'react-helmet-async';
 import ListTable from './ListTable';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function JobSekkersList() {
     const [snakMessage, setSnakMessage] = React.useState<string>('');
@@ -53,16 +55,27 @@ export default function JobSekkersList() {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer >
       <Helmet>
         <title>Job Seekers</title>
       </Helmet>
       <Typography gutterBottom variant="h5" component="div">
-          Job Sekkers
+        <Grid container spacing={2}>
+              <Grid item md={10}>
+              Job Sekkers
+              </Grid>
+              <Grid item md={2} >
+                <Box display="flex" justifyContent="flex-end">
+                <Button variant="contained" onClick={(e)=> editSeeker({id: 0})}>Create New</Button>
+                </Box>
+              </Grid>
+          </Grid>
+          
+          
         </Typography>      
         <CreateJobSekkers seeker={seeker} setSeeker={setSeeker} setSnakMessage={setSnakMessage} />       
         
-      <Button variant="contained" onClick={(e)=> editSeeker({id: 0})}>Create New</Button>
+    
       <Search setFilters={setFilters}/>
       
       <ListTable editSeeker={editSeeker} filters={filters} setFilters={setFilters}/>

@@ -44,7 +44,7 @@ class CategoryController extends Controller
     }
 
     public function categories(Request $request){       
-        $categories = \App\Models\Category::orderBy('name', 'ASC')->get();
+        $categories = \App\Models\Category::withCount(["employer", "seeker"])->orderBy('name', 'ASC')->get();       
         return response($categories);
     }
 

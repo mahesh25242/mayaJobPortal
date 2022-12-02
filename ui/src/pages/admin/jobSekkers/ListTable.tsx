@@ -23,7 +23,6 @@ import instance from '../../../api/axios/Axios';
 import saveAs from 'file-saver';
 
 
-
 export default function ListTable(props: any) {
   const [snakMessage, setSnakMessage] = React.useState<string>('');
   const [seeker, setSeeker] = React.useState<any>(null);
@@ -64,11 +63,14 @@ export default function ListTable(props: any) {
 
 
   return (<>
-    <Table aria-label="simple table">
+  <TableContainer component={Paper}>
+    <Table aria-label="simple table" size="small">
       <TableHead>
         <TableRow>
           <TableCell>Id</TableCell>
-          <TableCell align="right">Name</TableCell>
+          <TableCell align="left">Name</TableCell>
+          <TableCell align="left">Email</TableCell>
+          <TableCell align="left">Phone</TableCell>
           <TableCell align="right">Status</TableCell>
           <TableCell align="right">Options</TableCell>
         </TableRow>
@@ -82,8 +84,14 @@ export default function ListTable(props: any) {
             <TableCell component="th" scope="row">
               <Link href='#' onClick={() => props.editSeeker(row)}>{row?.id}</Link>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="left">
               <Link href='#' onClick={() => props.editSeeker(row)}>{row?.user?.name}</Link>
+            </TableCell>
+            <TableCell align="left">
+              <Link href={`mailto:${row.user?.email}`} >{row.user?.email}</Link>              
+            </TableCell>
+            <TableCell align="left">
+              <Link href={`tel://${row?.user?.phone}`}>{row?.user?.phone}</Link>
             </TableCell>
             <TableCell align="right">{row?.status_text}</TableCell>
             <TableCell align="right">
@@ -93,10 +101,11 @@ export default function ListTable(props: any) {
           </TableRow>
         ))}
         {
-          (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+          (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={7}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
         }
       </TableBody>
     </Table>
+    </TableContainer>
     {
       data && data?.data && data?.data?.data &&
       <Pagination count={data.data?.last_page} variant="outlined" color="primary"
