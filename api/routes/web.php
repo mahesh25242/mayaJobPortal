@@ -29,6 +29,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->post('checkLogin','UserController@checkLogin');
     $router->post('refreshToken','UserController@refreshToken');
     $router->put('seNewPassword','UserController@seNewPassword');
+    $router->post('checkRegistered','UserController@checkRegistered');
     
     $router->get('categories','CategoryController@categories');
     $router->get('blogs','BlogController@blogs');

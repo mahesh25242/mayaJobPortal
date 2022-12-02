@@ -12,7 +12,7 @@ import {
   } from "../../../api/users/AuthenticationSlice";
 import { useAppDispatch } from "../../../app/store";
 import { Helmet } from 'react-helmet-async';
-import { UserApi} from '../../../api/rtk/user';
+import { useCheckRegisteredMutation } from '../../../api/rtk/user';
 import Grid from '@mui/material/Grid';
 import { Link  } from 'react-router-dom';
 import MobileOtp from '../../../components/mobileOtp/MobileOtp';
@@ -25,8 +25,9 @@ export default function ForgotPassword(){
     const [ mobile, setMobile] = React.useState('');
     const childRef: null | {current: any} = React.useRef();  
     const navigate = useNavigate();
+    const [ checkRegistered ] = useCheckRegisteredMutation();
 
-    const { register, handleSubmit, control, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, getValues, setError } = useForm({
         defaultValues: {
             mobile: '', //"admin@mayajobs.com",            
         }
@@ -42,7 +43,12 @@ export default function ForgotPassword(){
             console.log(err)
           });
       }else{
-        setMobile(getValues('mobile')); 
+        const loginResponse = checkRegistered({...data}).unwrap().then(res=>{
+          setMobile(getValues('mobile')); 
+        }).catch(err=>{
+          console.log(err?.data?.message);
+          setError("mobile",  { type: 'custom', message: err?.data?.message });
+        });        
       }
       
     };
@@ -65,7 +71,7 @@ export default function ForgotPassword(){
                           <MuiTelInput
                             {...field}
                             defaultCountry="IN"
-                            helperText={fieldState.invalid ? "Mobile is invalid" : ""}
+                            helperText={fieldState.invalid ? (fieldState?.error?.message ? fieldState?.error?.message : 'Mobile is invalid') : ""}
                             error={fieldState.invalid}
                             placeholder="Mobile number"
                             label="Registered Mobile"                             

@@ -43,9 +43,21 @@ export const UserApi = createApi({
       }) ,  
 
     }),   
+    checkRegistered: builder.mutation({
+      query: (user) => ({
+          url: `checkRegistered/`,
+          method: 'POST',
+          body: user
+          //   headers: {
+          //     'content-type': 'text/plain',
+          //  },
+
+      }) ,  
+
+    }),   
   })
 });
 
 
-export const { useChangePasswordMutation, useLoggedUserQuery, useSetNewPasswordMutation } = UserApi;
+export const { useChangePasswordMutation, useLoggedUserQuery, useSetNewPasswordMutation, useCheckRegisteredMutation } = UserApi;
 

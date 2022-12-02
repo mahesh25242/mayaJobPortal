@@ -625,6 +625,21 @@ class UserController extends Controller
 
         
     }
+
+    public function checkRegistered(Request $request){
+        $mobile = $request->input("mobile", null);
+        if($mobile ){
+            $dbUser = \App\Models\User::where([
+                "phone" => $mobile          
+               ])->first();
+            if($dbUser){
+                return response(['message' => 'success', 'status' => true]);
+            }
+        }
+       
+        return response(['message' => 'user not registered with us', 'status' => false], 422);
+        
+    }
     // public function checkMail(){        
     //     $user = \App\Models\User::find(12);
 
