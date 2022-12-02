@@ -308,7 +308,9 @@ class UserController extends Controller
                 });                
             }
             if($request->input("mobile", null)){
-                $employers = $employers->where("phone","like", "%".$request->input("mobile", null)."%");
+                $employers = $employers->whereHas("user", function ($query) use($request) {
+                    $query->where('phone', 'like', "%".$request->input("mobile", null)."%");
+                });                  
             }
             if($request->input("start", null) && $request->input("end", null)){
                 $seekers = $employers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);

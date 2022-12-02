@@ -81,7 +81,7 @@ export default function ListTable(props: any) {
                                 <Link href={`mailto:${row.user?.email}`} >{row.user?.email}</Link>
                             </TableCell>
                             <TableCell align="left">
-                                <Link href={`tel://${row?.phone}`}>{row?.phone}</Link>                                
+                                <Link href={`tel://${row?.phone}`}>{row?.user.phone}</Link>                                
                             </TableCell>
                             <TableCell align="right">{row.status_text}</TableCell>
                             <TableCell align="right">
