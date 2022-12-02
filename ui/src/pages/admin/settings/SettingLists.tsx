@@ -17,42 +17,51 @@ import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 import { Helmet } from 'react-helmet-async';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function SettingLists() {
 
-    const [setting, setSetting] = React.useState<any>(null);
-    const [snakMessage, setSnakMessage] = React.useState<string>('');
-    const dispatch = useDispatch();    
-    const { data, error, isLoading } = useGetSettingsQuery('')
-    
-    
-    
+  const [setting, setSetting] = React.useState<any>(null);
+  const [snakMessage, setSnakMessage] = React.useState<string>('');
+  const dispatch = useDispatch();
+  const { data, error, isLoading } = useGetSettingsQuery('')
+
+
+
   //   React.useEffect(() => {
   //     dispatch(fetchCategories());    
   // }, []);
 
-  return (
+  return (<>
+    <Helmet>
+      <title>Settings</title>
+    </Helmet>
+    <Typography gutterBottom variant="h5" component="div">
+      <Grid container spacing={2}>
+        <Grid item md={10}>
+        Settings
+        </Grid>        
+      </Grid>
+
+
+    </Typography>
+
     <TableContainer component={Paper}>
-      <Helmet>
-        <title>Settings</title>
-      </Helmet>
+
       {
-        setting && <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage}/>
+        setting && <EditSetting setting={setting} setSetting={setSetting} setSnakMessage={setSnakMessage} />
       }
-        
-       <Typography gutterBottom variant="h5" component="div">
-          Settings
-        </Typography>      
-      <Table  aria-label="simple table">
+      <Table aria-label="simple table" size='small'>
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
             <TableCell align="right">Name</TableCell>
-            <TableCell align="right">value</TableCell>            
+            <TableCell align="right">value</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((row:any) => (
+          {data && data.map((row: any) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -63,17 +72,18 @@ export default function SettingLists() {
               <TableCell align="right">
                 <Link href='#' onClick={() => setSetting(row)}>{row.name}</Link>
               </TableCell>
-              <TableCell align="right">{row.value}</TableCell>                          
+              <TableCell align="right">{row.value}</TableCell>
             </TableRow>
           ))}
-          { 
+          {
             (!data || !data.length) && <TableRow><TableCell colSpan={4}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
           }
         </TableBody>
       </Table>
       {
-        snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
-      }  
+        snakMessage && snakMessage.length > 0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage} />
+      }
     </TableContainer>
+  </>
   );
 }

@@ -18,6 +18,8 @@ import Alert from '@mui/material/Alert';
 import CustomSnackbar from '../../../components/snakBar/CustomSnackbar';
 
 import { Helmet } from 'react-helmet-async';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function BlogListList() {  
     
@@ -44,20 +46,31 @@ export default function BlogListList() {
       });
     }    
   }
-  return (
-    <TableContainer component={Paper}>
-       <Helmet>
-            <title>Blogs</title>
-        </Helmet>
+  return (<>
+    <Helmet>
+        <title>Blogs</title>
+    </Helmet>
+    <Typography gutterBottom variant="h5" component="div">
+        <Grid container spacing={2}>
+              <Grid item md={10}>
+              Blogs
+              </Grid>
+              <Grid item md={2} >
+                <Box display="flex" justifyContent="flex-end">
+                <Button variant="contained" onClick={(e)=> setBlog({id: 0, status: 0})}>Create New</Button>
+                </Box>
+              </Grid>
+          </Grid>
+          
+          
+        </Typography>    
 
-        <CreateBlog blog={blog} setBlog={setBlog} setSnakMessage={setSnakMessage}/>
-       <Typography gutterBottom variant="h5" component="div">
-          Blogs
-        </Typography>
-      <Button variant="contained" onClick={(e)=> setBlog({id: 0, status: 0})}>Create New</Button>
+    <TableContainer component={Paper}>
+      
+        <CreateBlog blog={blog} setBlog={setBlog} setSnakMessage={setSnakMessage}/>       
       
 
-      <Table  aria-label="simple table">
+      <Table  aria-label="simple table" size='small'>
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
@@ -93,5 +106,6 @@ export default function BlogListList() {
         snakMessage && snakMessage.length >0 && <CustomSnackbar message={snakMessage} setSnakMessage={setSnakMessage}/>
       }      
     </TableContainer>
+    </>
   );
 }
