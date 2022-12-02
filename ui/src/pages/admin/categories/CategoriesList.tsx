@@ -63,7 +63,7 @@ export default function CategoriesList() {
           
         </Typography>    
 
-    <TableContainer>
+    <TableContainer component={Paper}>
      
       {
         category?.id >= 0 && <CreateCategory category={category} setCategory={setCategory} setSnakMessage={setSnakMessage}/>
