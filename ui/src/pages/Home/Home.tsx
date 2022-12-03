@@ -1,4 +1,3 @@
-import Registration from '../../components/registration/Registration';
 import SearchBar from '../../components/searchBar/SearchBar';
 import { BlogHome } from '../blog/BlogHome';
 import { Helmet } from 'react-helmet-async';
@@ -17,8 +16,7 @@ const Home = () => {
     </Paper>  
     <RegisterButtons />  
     
-    <br/>
-    {/* <Registration/>     */}
+    <br/>    
     <BlogHome />
     </>);
 };

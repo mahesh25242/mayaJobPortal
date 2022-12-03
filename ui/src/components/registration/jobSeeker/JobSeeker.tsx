@@ -24,6 +24,7 @@ interface IFormValues {
     name?: string;
     email?: string;
     secondry_phone: string;
+    home_address: string;
     address?: string;
     nationality?: string;
     dob?: string;
@@ -288,20 +289,20 @@ const JobSeeker = forwardRef((props, seekRef) => {
                     />
                 </FormControl> */}
 
-                <FormControl fullWidth>
-                    <Controller
-                        name={"nationality"}
-                        rules={{ required: { value: true, message: 'Nationality is required' } }}
-                        control={control}
-                        render={({ field: { onChange, value = '' } }) => (
-                            <TextField
-                                error={!!errors.nationality}
-                                helperText={(errors.nationality) ? errors.nationality?.message : ''}
-                                type="text" fullWidth onChange={onChange} value={value} label={"Nationality"} />
-                        )}
-                    />
-                </FormControl>
-
+               
+                <FormControl fullWidth>                    
+                        <Controller
+                            name={"home_address"}    
+                            rules={{ required: { value: true, message: 'Home Address is required'} }}                    
+                            control={control}
+                            render={({ field: { onChange, value = '' } }) => (
+                            <TextField                              
+                            error={!!errors.home_address}
+                            helperText={ (errors.home_address) ? errors.home_address?.message: '' }
+                             fullWidth onChange={onChange} value={value} label={"Home Address"} />
+                            )}
+                        />                   
+                    </FormControl>
                 <FormControl fullWidth>
                     <Controller
                         name={"address"}
@@ -384,6 +385,19 @@ const JobSeeker = forwardRef((props, seekRef) => {
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 mt={2}>
+                     <FormControl fullWidth>
+                    <Controller
+                        name={"nationality"}
+                        rules={{ required: { value: true, message: 'Nationality is required' } }}
+                        control={control}
+                        render={({ field: { onChange, value = '' } }) => (
+                            <TextField
+                                error={!!errors.nationality}
+                                helperText={(errors.nationality) ? errors.nationality?.message : ''}
+                                type="text" fullWidth onChange={onChange} value={value} label={"Nationality"} />
+                        )}
+                    />
+                </FormControl>
                 <FormControl fullWidth>
                     <Controller
                         name={"pin"}

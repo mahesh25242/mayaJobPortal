@@ -20,6 +20,7 @@ class CreateEmployersTable extends Migration
             $table->string('name')->nullable();                                    
             $table->string('phone')->nullable(); 
             $table->string('address')->nullable();                 
+            $table->string('home_address')->nullable();                 
             $table->string('country')->nullable();                 
             $table->string('nationality')->nullable();                 
             $table->string('state')->nullable();                 

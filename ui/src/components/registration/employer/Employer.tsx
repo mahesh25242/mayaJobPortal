@@ -29,6 +29,7 @@ interface IFormValues {
     email?: string;
     secondry_phone: string;
     contact_name?: string;
+    home_address?: string;
     address?: string;
     country?: string;
     pin?: string;
@@ -302,18 +303,32 @@ const Employer = forwardRef((props, empRef) =>  {
 
             <Stack direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                mt={2}>                   
+                mt={2}>    
+                 <FormControl fullWidth>                    
+                        <Controller
+                            name={"home_address"}    
+                            rules={{ required: { value: true, message: 'Home Address is required'} }}                    
+                            control={control}
+                            render={({ field: { onChange, value = '' } }) => (
+                            <TextField                              
+                            error={!!errors.home_address}
+                            helperText={ (errors.home_address) ? errors.home_address?.message: '' }
+                             fullWidth onChange={onChange} value={value} label={"Home Address"} />
+                            )}
+                        />                   
+                    </FormControl>
+               
                     <FormControl fullWidth>                    
                         <Controller
                             name={"address"}    
-                            rules={{ required: { value: true, message: 'Address is required'} }}                    
+                            rules={{ required: { value: true, message: 'Google Address is required'} }}                    
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
                             <TextField  
                             inputRef={ref}
                             error={!!errors.address}
                             helperText={ (errors.address) ? errors.address?.message: '' }
-                             fullWidth onChange={onChange} value={value} label={"Address"} />
+                             fullWidth onChange={onChange} value={value} label={"Google Address"} />
                             )}
                         />                   
                     </FormControl>

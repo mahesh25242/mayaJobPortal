@@ -19,6 +19,7 @@ class CreateSeekersTable extends Migration
             $table->bigInteger('category_id')->default(0);
             $table->string('phone')->nullable(); 
             $table->string('address')->nullable();                 
+            $table->string('home_address')->nullable();                 
             $table->string('country')->nullable();                 
             $table->string('nationality')->nullable();                 
             $table->string('state')->nullable();                 

@@ -36,7 +36,14 @@
                     <tr>
                         <td>
                             <div class="leftblock">
-                                Address: {{ $user->seeker->address }}
+                                Home Address: {{ $user->seeker->home_address }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="leftblock">
+                                Google Address: {{ $user->seeker->address }}
                             </div>
                         </td>
                     </tr>

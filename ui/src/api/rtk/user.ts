@@ -9,7 +9,7 @@ export const UserApi = createApi({
   endpoints: (builder) => ({
     changePassword: builder.mutation({
       query: (user) => ({
-          url: `changePassword/`,
+          url: `changePassword`,
           method: 'PUT',
           body: user
           //   headers: {
@@ -33,7 +33,7 @@ export const UserApi = createApi({
     }),
     setNewPassword: builder.mutation({
       query: (user) => ({
-          url: `seNewPassword/`,
+          url: `seNewPassword`,
           method: 'PUT',
           body: user
           //   headers: {
@@ -44,15 +44,19 @@ export const UserApi = createApi({
 
     }),   
     checkRegistered: builder.mutation({
-      query: (user) => ({
-          url: `checkRegistered/`,
-          method: 'POST',
-          body: user
-          //   headers: {
-          //     'content-type': 'text/plain',
-          //  },
+      query: (user) => {
+        console.log(user);
+        console.log('post')
+        return {
+            url: `checkRegistered`,
+            method: 'POST',
+            body: user
+            //   headers: {
+            //     'content-type': 'text/plain',
+            //  },
 
-      }) ,  
+        }
+      } ,  
 
     }),   
   })
