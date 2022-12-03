@@ -421,7 +421,7 @@ class UserController extends Controller
         
         
         $user->save();
-
+       
         $dob = null;
         if($request->input('dob', null)){
             $dob = Carbon::parse($request->input('dob', ''));

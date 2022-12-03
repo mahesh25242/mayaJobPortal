@@ -47,14 +47,15 @@ const MobileOtp = forwardRef((props:any, ref:any) =>  {
       console.log({...formData, ...{page: page}})
       // dispatch(triggerRegister({postData: formData, page: page}));      
         if(data?.code && confirmationResult){
-          confirmationResult?.confirm(data?.code).then((result:any) => {
+          confirmationResult?.confirm(data?.code).then(async (result:any) => {
               const user = result.user;
               if(props.forgotPass){
                 // user?.phoneNumber
                 navigate(`/set-new-password/${result._tokenResponse.idToken}`);
               }else{
-                dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));
+                await dispatch(triggerRegister({...formData, ...{page: page, accessToken: result._tokenResponse.idToken}}));
                 localStorage.setItem("user", JSON.stringify(user));
+                navigate(`/sign-in`);
               }                                  
                                 
                 // ...
