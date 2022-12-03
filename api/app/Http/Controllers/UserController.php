@@ -150,8 +150,12 @@ class UserController extends Controller
         $validationArr = [            
             'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],                
+            // 'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
+            // 'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],        
+            
+            'email' => ['required', 'email', 'unique:users,email,NULL,'.$id.',deleted_at,NULL'],
+            'phone' => ['required', 'unique:users,phone,NULL,'.$id.',deleted_at,NULL'],   
+
             'contact_name' => ['required'],
             'address' => ['required'],
             'country' => ['required'],            
@@ -339,8 +343,8 @@ class UserController extends Controller
         $validationArr = [
             'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],   
+            'email' => ['required', 'email', 'unique:users,email,NULL,'.$id.',deleted_at,NULL'],
+            'phone' => ['required', 'unique:users,phone,NULL,'.$id.',deleted_at,NULL'],   
             // 'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
             // 'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],              
             'nationality' => ['required'],
@@ -359,13 +363,13 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), $validationArr);
-
-
+       
+       
         if($validator->fails()){
             return response(['message' => 'Validation errors', 'errors' =>  $validator->errors(), 'status' => false], 422);
         }
         
-        
+       
         if(Auth::check() && Auth::user()->role_id == 1){
             $user = ($id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($request->input("status", null))
@@ -377,6 +381,7 @@ class UserController extends Controller
             $user->role_id = 3;
         }else{
             $status = 1;
+            
             if(!Auth::check() && $request->input("accessToken", null)){
                 $auth = app('firebase.auth');
                 try {
@@ -392,6 +397,7 @@ class UserController extends Controller
             }else{
                 $status = 0;
             }
+            
             $user = ($id && Auth::id() == $id) ? \App\Models\User::find($id) : new \App\Models\User();
             if($user->id){
                 if($request->input("password", null)){
@@ -422,7 +428,7 @@ class UserController extends Controller
             $dob = $dob->format('Y-m-d');
         }            
 
-        //create employer
+        //create seeker
         $employer = \App\Models\Seeker::updateOrCreate(
             [
                 'user_id'   => $user->id,
