@@ -21,7 +21,7 @@ class Employer extends Model implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'user_id', 'category_id','name',  'phone', 'address',
+        'user_id', 'category_id','name',  'phone', 'address', 'home_address',
         'country', 'state', 'city', 'district', 'pin',
         'status', 'admin_note', 'lat', 'lng', 'created_by', 
         'updated_by', 'deleted_by', 

@@ -7,7 +7,7 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
-
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -153,8 +153,14 @@ class UserController extends Controller
             // 'email' => ['required', 'email', 'unique:users,email,'.$id.', deleted_at,NULL'],
             // 'phone' => ['required', 'unique:users,phone,'.$id.', deleted_at,NULL'],        
             
-            'email' => ['required', 'email', 'unique:users,email,NULL,'.$id.',deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,'.$id.',deleted_at,NULL'],   
+            // 'email' => ['required', 'email', 'unique:users,email,NULL,'.$id.',deleted_at,NULL'],
+            // 'phone' => ['required', 'unique:users,phone,NULL,'.$id.',deleted_at,NULL'],   
+            'email' => ['required', 'email',  Rule::unique('users')->where(function ($query) {
+                return $query->whereNull('deleted_at');
+            })->ignore($id)  ],
+            'phone' => ['required',   Rule::unique('users')->where(function ($query) {
+                return $query->whereNull('deleted_at');
+            })->ignore($id)],   
 
             'contact_name' => ['required'],
             'address' => ['required'],
@@ -343,8 +349,15 @@ class UserController extends Controller
         $validationArr = [
             'category_id' => ['required'],
             'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email,NULL,'.$id.',deleted_at,NULL'],
-            'phone' => ['required', 'unique:users,phone,NULL,'.$id.',deleted_at,NULL'],   
+            // 'email' => ['required', 'email', 'unique:users,email1,NULL,'.$id.',deleted_at,NULL'],
+            'email' => ['required', 'email',   Rule::unique('users')->where(function ($query) {
+                return $query->whereNull('deleted_at');
+            })->ignore($id)    ],
+            'phone' => ['required',     Rule::unique('users')->where(function ($query) {
+                return $query->whereNull('deleted_at');
+            })->ignore($id)           
+            ],   
+            // 'phone' => ['required', 'unique:users,phone1,NULL,'.$id.',deleted_at,NULL'],   
             // 'email' => ['required', 'email', 'unique:users,email,NULL,id,deleted_at,NULL'],
             // 'phone' => ['required', 'unique:users,phone,NULL,id,deleted_at,NULL', 'integer'],              
             'nationality' => ['required'],

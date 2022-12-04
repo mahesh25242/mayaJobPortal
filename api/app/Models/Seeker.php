@@ -21,7 +21,7 @@ class Seeker extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $fillable = [
-        'user_id', 'category_id', 'phone', 'address', 'country', 'nationality',
+        'user_id', 'category_id', 'phone', 'address', 'home_address', 'country', 'nationality',
         'state', 'city', 'district',  'pin',
         'dob', 'gender', 'religion', 'marital', 'languages',
         'status', 'edu_qualification', 'tech_qualification',
