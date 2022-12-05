@@ -101,7 +101,11 @@ const Employer = forwardRef((props, empRef) =>  {
                 if(element.types.includes("locality")){
                     setValue("city", element.long_name)
                 }
-                if(element.types.includes("administrative_area_level_2")){
+
+            
+
+                if(element.types.includes("administrative_area_level_2") || 
+                    element.types.includes("administrative_area_level_3")){
                     setValue("district", element.long_name)
                 }
                 if(element.types.includes("administrative_area_level_1")){

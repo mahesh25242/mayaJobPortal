@@ -106,10 +106,12 @@ const JobSeeker = forwardRef((props, seekRef) => {
             place.address_components.forEach((element: any) => {
                 if (element.types.includes("locality")) {
                     setValue("city", element.long_name)
-                }
-                if (element.types.includes("administrative_area_level_2")) {
+                }               
+                if(element.types.includes("administrative_area_level_2") || 
+                    element.types.includes("administrative_area_level_3")){
                     setValue("district", element.long_name)
                 }
+
                 if (element.types.includes("administrative_area_level_1")) {
                     setValue("state", element.long_name)
                 }
