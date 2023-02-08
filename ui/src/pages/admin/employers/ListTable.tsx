@@ -61,6 +61,10 @@ export default function ListTable(props: any) {
                         <TableCell align="left">Name</TableCell>
                         <TableCell align="left">Email</TableCell>
                         <TableCell align="left">Phone</TableCell>
+                        <TableCell align="left">Country</TableCell>
+                        <TableCell align="left">State</TableCell>
+                        <TableCell align="left">City</TableCell>
+                        <TableCell align="left">District</TableCell>
                         <TableCell align="right">Status</TableCell>
                         <TableCell align="right">Options</TableCell>
                     </TableRow>
@@ -83,6 +87,10 @@ export default function ListTable(props: any) {
                             <TableCell align="left">
                                 <Link href={`tel://${row?.phone}`}>{row?.user.phone}</Link>                                
                             </TableCell>
+                            <TableCell align="right">{row.country}</TableCell>
+                            <TableCell align="right">{row.state}</TableCell>
+                            <TableCell align="right">{row.city}</TableCell>
+                            <TableCell align="right">{row.district}</TableCell>
                             <TableCell align="right">{row.status_text}</TableCell>
                             <TableCell align="right">
                                 <Button onClick={() => delEmployer(row)}>Delete</Button>
@@ -91,7 +99,7 @@ export default function ListTable(props: any) {
                         </TableRow>
                     ))}
                     {
-                        (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={7}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
+                        (!data || !data?.data?.data.length) && <TableRow><TableCell colSpan={10}><Alert severity="info">No result found!</Alert></TableCell></TableRow>
                     }
                 </TableBody>
             </Table>

@@ -19,7 +19,8 @@ export default function Search(props: any) {
             email: '',
             mobile: '',
             category: '',
-            joined_range: null
+            joined_range: null,
+            country_state_dist: ''
         }
     });
 
@@ -29,6 +30,7 @@ export default function Search(props: any) {
         setValue('mobile', '');
         setValue('category', '');
         setValue('joined_range', null);
+        setValue('country_state_dist', '');
         props.setFilters(getValues());
     }
     const onSubmit = (data: any) => {
@@ -39,6 +41,7 @@ export default function Search(props: any) {
             mobile: data.mobile,
             start: data.joined_range ? data.joined_range[0].toISOString() : '',
             end: data.joined_range ? data.joined_range[1].toISOString() : '',
+            country_state_dist: data?.country_state_dist
         }
         props.setFilters(postParms);
     };
@@ -135,6 +138,22 @@ export default function Search(props: any) {
                                             <TextField {...endProps} />
                                         </>
                                     )}
+                                />
+                            )}
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item md={6}  xs={12}>
+                    <FormControl fullWidth>
+                        <Controller
+                            name={"country_state_dist"}
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <TextField
+                                    type="text"
+                                    label="Country / State / District"
+                                    onChange={onChange} value={value}
+                                    placeholder='Country / State / District'
                                 />
                             )}
                         />

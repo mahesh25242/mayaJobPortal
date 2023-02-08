@@ -324,7 +324,16 @@ class UserController extends Controller
                 });                  
             }
             if($request->input("start", null) && $request->input("end", null)){
-                $seekers = $employers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
+                $employers = $employers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
+            }
+            if($request->input("country_state_dist", null)){
+                $country_state_dist = $request->input("country_state_dist", null);
+                $employers = $employers->where(function ($query) use ($country_state_dist) {
+                    $query->orWhere('country', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('state', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('city', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('district', 'like', "%" . $country_state_dist . "%");
+                });         
             }
             return response(['message' => 'Successfully get', 'data' => $employers->paginate($request->input('per_page', 10)), 'status' => true]);
         }else{
@@ -520,6 +529,15 @@ class UserController extends Controller
             }
             if($request->input("start", null) && $request->input("end", null)){
                 $seekers = $seekers->whereBetween("created_at", [$request->input("start", null), $request->input("end", null)]);
+            }
+            if($request->input("country_state_dist", null)){
+                $country_state_dist = $request->input("country_state_dist", null);
+                $seekers = $seekers->where(function ($query) use ($country_state_dist) {
+                    $query->orWhere('country', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('state', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('city', 'like', "%" . $country_state_dist . "%")
+                        ->orWhere('district', 'like', "%" . $country_state_dist . "%");
+                });         
             }
             return response(['message' => 'Successfully get', 'data' => $seekers->paginate($request->input('per_page', 10)), 'status' => true]);
         }else{
