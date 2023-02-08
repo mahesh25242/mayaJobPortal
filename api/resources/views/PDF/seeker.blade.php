@@ -178,7 +178,5 @@
 
   </tbody>
 </table>
-
-
 @endsection
 

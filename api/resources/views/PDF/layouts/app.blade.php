@@ -64,8 +64,15 @@
 		border-left: 1px solid #ddd;
 		border-right: 1px solid #ddd;
 	}
-
+	.footer-info{
+		text-align: right;
+		color: #6d6d6d;
+		font-size: 10px;
+	}
+	.footer-info a{
+		color: #6d6d6d;
+		text-decoration: none;
+	}
 </style>
 @yield('content')
-
-
+<div class="footer-info">Create CV for free <a href="www.fiya.in" target="_blank">www.fiya.in</a></div>
