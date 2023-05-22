@@ -73,6 +73,20 @@ class UserController extends Controller
                 return response(["success" => false, "message"=> "user not found"], 401);
             }
         }else{
+            // $url = url("v1/oauth/token");
+
+            // $ch = curl_init();
+            // curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_POST, 1);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($ch, CURLOPT_POSTFIELDS,
+            //     "grant_type=password&username=".$request->input("email", '')."&password=".$request->input("password", '')."&client_id=".$oauthClient->id."&client_secret=".$oauthClient->secret);
+            
+            // $response = curl_exec ($ch);
+            // $err = curl_error($ch);  //if you need
+            // curl_close ($ch);
+            // return $response;
+
             $url = url("v1/oauth/token");
 
             $ch = curl_init();
@@ -85,6 +99,11 @@ class UserController extends Controller
             $response = curl_exec ($ch);
             $err = curl_error($ch);  //if you need
             curl_close ($ch);
+            
+            $responseArr = json_decode($response, true);
+            if(isset($responseArr["error"])){
+                 return response($response, 400);
+            }
             return $response;
         }
     

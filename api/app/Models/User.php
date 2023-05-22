@@ -66,4 +66,31 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasOne('App\Models\Employer');
     }
+
+    public function findForPassport($username)
+    {
+        $username = trim($username);
+        $customUsername = 'phone';
+        $userNameExists = $this->where($customUsername, $username)->where("status", 1)->first();
+        if($userNameExists){
+            return $userNameExists;
+        }else{
+            $newUsername = '+'.$username;
+            $userNameExists = $this->where($customUsername, $newUsername)->where("status", 1)->first();
+            if($userNameExists){
+                 return $userNameExists;
+            }else{
+                $newUsername = '+91'.$username;
+                $userNameExists = $this->where($customUsername, $newUsername)->where("status", 1)->first();
+                if($userNameExists){
+                     return $userNameExists;
+                }else{
+                    $userNameExists = $this->where("email", $username)->where("status", 1)->first();
+                    return $userNameExists;
+                }
+                
+            }
+            
+        }
+    }
 }
