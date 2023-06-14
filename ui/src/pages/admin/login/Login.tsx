@@ -70,7 +70,8 @@ export default function Login(){
     </Helmet>    
     <h1>Login</h1>
         <Card>
-            <CardContent>                    
+            <CardContent> 
+                <p>Please Login for download your CV in pdf</p>                   
                 <Stack component="form"             
                     sx={{ p: '2px 4px',  alignItems: 'center' }}
                     onSubmit={handleSubmit(onSubmit)}>
@@ -85,9 +86,9 @@ export default function Login(){
                                     <TextField
                                     error={!!errors.email}
                                     helperText={ (errors.email) ? errors.email?.message: '' }
-                                    label="Email"
+                                    label="Email / Mobile"
                                     onChange={onChange} value={value} 
-                                    placeholder='Enter your Email'                            
+                                    placeholder='Enter your Email / Mobile'                            
                                     sx={{ m: 1,  }}                            
                                 />
                                 )}
