@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function checkLogin(Request $request){
         $validator = Validator::make($request->all(), [                       
-            'email' => ['required'], //email
+            'email' => ['required'],
             'password' => ['required'],                        
         ]);
         
@@ -38,8 +38,8 @@ class UserController extends Controller
            
         $oauthClient = \App\Models\OauthClient::where("password_client", 1)->get()->first();
 
-
-
+      
+    
         if(env('APP_ENV') != "staging"){
           
             $tokenRequest = $request->create(
@@ -47,7 +47,7 @@ class UserController extends Controller
                 'POST'
             );
 
-        
+    
         
         
             $tokenRequest->request->add([
@@ -73,29 +73,16 @@ class UserController extends Controller
                 return response(["success" => false, "message"=> "user not found"], 401);
             }
         }else{
-            // $url = url("v1/oauth/token");
-
-            // $ch = curl_init();
-            // curl_setopt($ch, CURLOPT_URL, $url);
-            // curl_setopt($ch, CURLOPT_POST, 1);
-            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            // curl_setopt($ch, CURLOPT_POSTFIELDS,
-            //     "grant_type=password&username=".$request->input("email", '')."&password=".$request->input("password", '')."&client_id=".$oauthClient->id."&client_secret=".$oauthClient->secret);
-            
-            // $response = curl_exec ($ch);
-            // $err = curl_error($ch);  //if you need
-            // curl_close ($ch);
-            // return $response;
-
             $url = url("v1/oauth/token");
-
+ 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS,
-                "grant_type=password&username=".$request->input("email", '')."&password=".$request->input("password", '')."&client_id=".$oauthClient->id."&client_secret=".$oauthClient->secret);
+                "grant_type=password&username=".urlencode($request->input("email", ''))."&password=".urlencode($request->input("password", ''))."&client_id=".urlencode($oauthClient->id)."&client_secret=".urlencode($oauthClient->secret));
             
+        
             $response = curl_exec ($ch);
             $err = curl_error($ch);  //if you need
             curl_close ($ch);
