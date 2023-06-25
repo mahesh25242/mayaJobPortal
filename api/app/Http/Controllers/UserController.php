@@ -659,6 +659,7 @@ class UserController extends Controller
                        ])->first();
                 if($dbUser){                    
                     $dbUser->password = Hash::make($request->input("newPassword", ''));
+                    $dbUser->status = 1;
                     $dbUser->save();
                     return response(['message' => 'Successfully updated ', 'status' => true]);
                 }

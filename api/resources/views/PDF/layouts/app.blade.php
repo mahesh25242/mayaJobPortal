@@ -75,4 +75,4 @@
 	}
 </style>
 @yield('content')
-<div class="footer-info">Create CV for free <a href="www.fiya.in" target="_blank">www.fiya.in</a></div>
+<div class="footer-info">ip: {{ request()->ip() }}, {{ date('d/m/Y') }} Create CV for free <a href="www.fiya.in" target="_blank">www.fiya.in</a></div>

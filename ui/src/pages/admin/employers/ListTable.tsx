@@ -91,7 +91,7 @@ export default function ListTable(props: any) {
                             <TableCell align="right">{row.state}</TableCell>
                             <TableCell align="right">{row.city}</TableCell>
                             <TableCell align="right">{row.district}</TableCell>
-                            <TableCell align="right">{row.status_text}</TableCell>
+                            <TableCell align="right">{row?.user?.status_text}</TableCell>
                             <TableCell align="right">
                                 <Button onClick={() => delEmployer(row)}>Delete</Button>
                                 <Button onClick={() => download(row)}>Download</Button>
