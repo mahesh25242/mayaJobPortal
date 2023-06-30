@@ -32,7 +32,7 @@ services:
         command: "install --ignore-platform-reqs"                
     myadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: jobphpmyadmin
+        container_name: mayajobphpmyadmin
         ports:
             - "8083:80"
         environment:

@@ -241,52 +241,56 @@ class UserController extends Controller
         
 
         $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
-        $user->save();
+
+        if(!$id || (Auth::check() && $id) )
+            $user->save();
         
         //create employer
-        $employer = \App\Models\Employer::updateOrCreate(
-            [
-                'user_id'   => $user->id,
-            ],
-            [
-                'name' => $request->input('name', ''),
-                'phone' => $request->input('secondry_phone', ''),
-                'address' => $request->input('address', ''),
-                'home_address' => $request->input('home_address', ''),
-                'country' => $request->input('country', ''),
-                'nationality' => $request->input('nationality', ''),
-                'state' => $request->input('state', ''),
-                'district' => $request->input('district', ''),
-                'pin' => $request->input('pin', ''),
-                'city' => $request->input('city', ''),
-                'category_id' => $request->input('category_id', ''),
-                'status' => $request->input('status', 1),
-                'lat' => $request->input('lat', ''),
-                'lng' => $request->input('lng', ''),
-                'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
-                'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
-            ],
-        );
+        if(!$id || (Auth::check() && $id) )
+            $employer = \App\Models\Employer::updateOrCreate(
+                [
+                    'user_id'   => $user->id,
+                ],
+                [
+                    'name' => $request->input('name', ''),
+                    'phone' => $request->input('secondry_phone', ''),
+                    'address' => $request->input('address', ''),
+                    'home_address' => $request->input('home_address', ''),
+                    'country' => $request->input('country', ''),
+                    'nationality' => $request->input('nationality', ''),
+                    'state' => $request->input('state', ''),
+                    'district' => $request->input('district', ''),
+                    'pin' => $request->input('pin', ''),
+                    'city' => $request->input('city', ''),
+                    'category_id' => $request->input('category_id', ''),
+                    'status' => $request->input('status', 1),
+                    'lat' => $request->input('lat', ''),
+                    'lng' => $request->input('lng', ''),
+                    'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                    'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                ],
+            );
 
         //create SeekerPreference
-        $seekerPreference = \App\Models\SeekerPreference::updateOrCreate(
-            [
-                'employer_id'   => $employer->id,
-            ],
-            [
-                'employer_id' => $employer->id,
-                'gender' => $request->input('gender', ''),
-                'marital' => $request->input('marital', ''),
-                'food_accommodation' => $request->input('food_accommodation', ''),
-                'working_time' => $request->input('working_time', ''),
-                'salary' => $request->input('salary', ''),
-                'experience' => $request->input('experience', ''),
-                'qualifications' => $request->input('qualifications', ''),
-                'other_demands' => $request->input('other_demands', ''),
-                'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
-                'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
-            ],
-        );
+        if(!$id || (Auth::check() && $id) )
+            $seekerPreference = \App\Models\SeekerPreference::updateOrCreate(
+                [
+                    'employer_id'   => $employer->id,
+                ],
+                [
+                    'employer_id' => $employer->id,
+                    'gender' => $request->input('gender', ''),
+                    'marital' => $request->input('marital', ''),
+                    'food_accommodation' => $request->input('food_accommodation', ''),
+                    'working_time' => $request->input('working_time', ''),
+                    'salary' => $request->input('salary', ''),
+                    'experience' => $request->input('experience', ''),
+                    'qualifications' => $request->input('qualifications', ''),
+                    'other_demands' => $request->input('other_demands', ''),
+                    'created_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                    'updated_by' => (Auth::check()) ? Auth::user()->id : $user->id,
+                ],
+            );
         
         try{
             if($user->status){
@@ -447,50 +451,51 @@ class UserController extends Controller
             
         $user->updated_by = (Auth::check()) ? Auth::user()->id : 0;
         
-        
-        $user->save();
+        if(!$id || (Auth::check() && $id) )
+            $user->save();
        
         $dob = null;
         if($request->input('dob', null)){
             $dob = Carbon::parse($request->input('dob', ''));
             $dob = $dob->format('Y-m-d');
         }            
-
+        
         //create seeker
-        $employer = \App\Models\Seeker::updateOrCreate(
-            [
-                'user_id'   => $user->id,
-            ],
-            [
-                'name' => $request->input('name', ''),
-                'phone' => $request->input('secondry_phone', ''),
-                'address' => $request->input('address', ''),
-                'home_address' => $request->input('home_address', ''),
-                'country' => $request->input('country', ''),
-                'category_id' => $request->input('category_id', ''),
-                'nationality' => $request->input('nationality', ''),
-                'state' => $request->input('state', ''),
-                'district' => $request->input('district', ''),
-                'city' => $request->input('city', ''),
-                'pin' => $request->input('pin', ''),
-                'dob' => $dob,
-                'gender' => $request->input('gender', ''),
-                'religion' => $request->input('religion', ''),
-                'marital' => $request->input('marital', ''),
-                'languages' => $request->input('languages', ''),
-                'languages' => $request->input('languages', ''),
-                'status' => $request->input('status', 1),
-                'edu_qualification' => $request->input('edu_qualification', 1),
-                'tech_qualification' => $request->input('tech_qualification', 1),
-                'experience' => $request->input('experience', 1),
-                'academic_profile' => $request->input('academic_profile', 1),
-                'expected_salary' => $request->input('expected_salary', 1),
-                'lat' => $request->input('lat', ''),
-                'lng' => $request->input('lng', ''),
-                'created_by' => Auth::check()  ? Auth::user()->id : 0,
-                'updated_by' => Auth::check() ? Auth::user()->id : 0,
-            ],
-        );
+        if(!$id || (Auth::check() && $id) )
+            $employer = \App\Models\Seeker::updateOrCreate(
+                [
+                    'user_id'   => $user->id,
+                ],
+                [
+                    'name' => $request->input('name', ''),
+                    'phone' => $request->input('secondry_phone', ''),
+                    'address' => $request->input('address', ''),
+                    'home_address' => $request->input('home_address', ''),
+                    'country' => $request->input('country', ''),
+                    'category_id' => $request->input('category_id', ''),
+                    'nationality' => $request->input('nationality', ''),
+                    'state' => $request->input('state', ''),
+                    'district' => $request->input('district', ''),
+                    'city' => $request->input('city', ''),
+                    'pin' => $request->input('pin', ''),
+                    'dob' => $dob,
+                    'gender' => $request->input('gender', ''),
+                    'religion' => $request->input('religion', ''),
+                    'marital' => $request->input('marital', ''),
+                    'languages' => $request->input('languages', ''),
+                    'languages' => $request->input('languages', ''),
+                    'status' => $request->input('status', 1),
+                    'edu_qualification' => $request->input('edu_qualification', 1),
+                    'tech_qualification' => $request->input('tech_qualification', 1),
+                    'experience' => $request->input('experience', 1),
+                    'academic_profile' => $request->input('academic_profile', 1),
+                    'expected_salary' => $request->input('expected_salary', 1),
+                    'lat' => $request->input('lat', ''),
+                    'lng' => $request->input('lng', ''),
+                    'created_by' => Auth::check()  ? Auth::user()->id : 0,
+                    'updated_by' => Auth::check() ? Auth::user()->id : 0,
+                ],
+            );
         try{
             if($user->status){
                 event(new \App\Events\SeekerRegisterEvent($user));

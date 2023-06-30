@@ -313,13 +313,13 @@ const Employer = forwardRef((props, empRef) =>  {
                  <FormControl fullWidth>                    
                         <Controller
                             name={"home_address"}    
-                            rules={{ required: { value: true, message: 'Home Address is required'} }}                    
+                            rules={{ required: { value: true, message: 'Company Address is required'} }}                    
                             control={control}
                             render={({ field: { onChange, value = '' } }) => (
                             <TextField                              
                             error={!!errors.home_address}
                             helperText={ (errors.home_address) ? errors.home_address?.message: '' }
-                             fullWidth onChange={onChange} value={value} label={"Home Address"} />
+                             fullWidth onChange={onChange} value={value} label={"Company Address"} />
                             )}
                         />                   
                     </FormControl>
